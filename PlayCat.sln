@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayCat", "PlayCat\PlayCat.csproj", "{07570864-B64A-461E-98AF-D7FF633C6427}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayCat.DataService", "PlayCat.DataService\PlayCat.DataService.csproj", "{BBD315D7-72A2-4E7F-B44B-88DA379ACAB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayCat.Music", "PlayCat.Music\PlayCat.Music.csproj", "{36C2CBF8-365B-40C5-B70E-A4E5E9225B88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayCat.Tests", "PlayCat.Tests\PlayCat.Tests.csproj", "{72A37636-034A-441B-BE6D-CEECE7752BFD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07570864-B64A-461E-98AF-D7FF633C6427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07570864-B64A-461E-98AF-D7FF633C6427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07570864-B64A-461E-98AF-D7FF633C6427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07570864-B64A-461E-98AF-D7FF633C6427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBD315D7-72A2-4E7F-B44B-88DA379ACAB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD315D7-72A2-4E7F-B44B-88DA379ACAB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD315D7-72A2-4E7F-B44B-88DA379ACAB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD315D7-72A2-4E7F-B44B-88DA379ACAB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36C2CBF8-365B-40C5-B70E-A4E5E9225B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36C2CBF8-365B-40C5-B70E-A4E5E9225B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36C2CBF8-365B-40C5-B70E-A4E5E9225B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36C2CBF8-365B-40C5-B70E-A4E5E9225B88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72A37636-034A-441B-BE6D-CEECE7752BFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A37636-034A-441B-BE6D-CEECE7752BFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72A37636-034A-441B-BE6D-CEECE7752BFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72A37636-034A-441B-BE6D-CEECE7752BFD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
