@@ -16,6 +16,7 @@ SignInComponent = __decorate([
     core_1.Component({
         selector: 'signIn',
         templateUrl: './app/signIn/signIn.component.html',
+        styleUrls: ['./app/signIn/signIn.component.css'],
     })
 ], SignInComponent);
 exports.SignInComponent = SignInComponent;
