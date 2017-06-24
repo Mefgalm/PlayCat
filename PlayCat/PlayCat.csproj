@@ -26,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlayCat.DataService\PlayCat.DataService.csproj" />
+    <ProjectReference Include="..\PlayCat.Music\PlayCat.Music.csproj" />
   </ItemGroup>
 
 </Project>

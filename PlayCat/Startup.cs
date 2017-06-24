@@ -11,6 +11,7 @@ using PlayCat.DataService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using PlayCat.Music;
 
 namespace PlayCat
 {
@@ -34,6 +35,9 @@ namespace PlayCat
         {
             // Add framework services.
             services.AddMvc();
+            services.AddOptions();
+            services.Configure<VideoPathOptions>(Configuration);
+
             services.AddDbContext<PlayCatDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 

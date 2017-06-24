@@ -10,13 +10,13 @@
 }
 
 .login {
-        width: 100%;
-        height: auto;
-        position: absolute;
-        font-family: Raleway;
-        background: url('../app/assets/images/bg.jpg') no-repeat fixed;
-        background-size: cover;
-        background-position: 50%;
-        -webkit-font-smoothing: antialiased;
-        font-smoothing: antialiased;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    font-family: Raleway;
+    background: url('../app/assets/images/bg.jpg') no-repeat fixed;
+    background-size: cover;
+    background-position: 50%;
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
 }
