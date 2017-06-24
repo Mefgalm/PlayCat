@@ -10,8 +10,9 @@ var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var router_1 = require("@angular/router");
 var app_component_1 = require("./app.component");
-var signIn_component_1 = require("./signIn/signIn.component");
-var space_component_1 = require("./space/space.component");
+var signIn_component_1 = require("./auth/signIn/signIn.component");
+var signUp_component_1 = require("./auth/signUp/signUp.component");
+var auth_module_1 = require("./auth/auth.module");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -21,6 +22,7 @@ AppModule = __decorate([
     core_1.NgModule({
         imports: [
             platform_browser_1.BrowserModule,
+            auth_module_1.AuthModule,
             router_1.RouterModule.forRoot([
                 {
                     path: '',
@@ -32,12 +34,12 @@ AppModule = __decorate([
                     component: signIn_component_1.SignInComponent,
                 },
                 {
-                    path: 'space',
-                    component: space_component_1.SpaceComponent,
+                    path: 'signUp',
+                    component: signUp_component_1.SignUpComponent,
                 }
             ]),
         ],
-        declarations: [app_component_1.AppComponent, signIn_component_1.SignInComponent, space_component_1.SpaceComponent],
+        declarations: [app_component_1.AppComponent],
         bootstrap: [app_component_1.AppComponent]
     })
 ], AppModule);

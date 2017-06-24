@@ -7,16 +7,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var SpaceComponent = (function () {
-    function SpaceComponent() {
+var SignUpComponent = (function () {
+    function SignUpComponent() {
     }
-    return SpaceComponent;
+    return SignUpComponent;
 }());
-SpaceComponent = __decorate([
+SignUpComponent = __decorate([
     core_1.Component({
-        selector: 'space',
-        templateUrl: './app/space/space.component.html',
+        selector: 'signUp',
+        templateUrl: './app/auth/signUp/signUp.component.html',
+        styleUrls: ['./app/auth/signUp/signUp.component.css'],
     })
-], SpaceComponent);
-exports.SpaceComponent = SpaceComponent;
-//# sourceMappingURL=space.component.js.map
+], SignUpComponent);
+exports.SignUpComponent = SignUpComponent;
+//# sourceMappingURL=signUp.component.js.map

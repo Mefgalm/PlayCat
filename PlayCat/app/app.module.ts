@@ -3,12 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { SignInComponent } from './signIn/signIn.component';
-import { SpaceComponent } from './space/space.component';
+import { SignInComponent } from './auth/signIn/signIn.component';
+import { SignUpComponent } from './auth/signUp/signUp.component';
+
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
     imports: [
         BrowserModule,
+        AuthModule,
         RouterModule.forRoot([
             {
                 path: '',
@@ -20,12 +23,12 @@ import { SpaceComponent } from './space/space.component';
                 component: SignInComponent,
             },
             {
-                path: 'space',
-                component: SpaceComponent,
+                path: 'signUp',
+                component: SignUpComponent,
             }
         ]),
     ],
-    declarations: [AppComponent, SignInComponent, SpaceComponent],
+    declarations: [AppComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
