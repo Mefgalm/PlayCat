@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YoutubeExtractor;
-
-namespace PlayCat.Music
+﻿namespace PlayCat.Music
 {
-    public interface ISaveVideo
+    public interface ISaveVideo<T, K>
     {
-        bool SaveVideo(VideoInfo videoInfo, string folderPath);
+        K SaveVideo(T videoInfo);
     }
 }

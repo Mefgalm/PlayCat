@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YoutubeExtractor;
-
-namespace PlayCat.Music
+﻿namespace PlayCat.Music
 {
-    public interface IExtractAudio
+    public interface IExtractAudio<T, K>
     {
-        bool ExtractAudio(VideoInfo videoInfo, string videoInfoPath);
+        K ExtractAudio(T videoInfo, int bitRate);
     }
 }

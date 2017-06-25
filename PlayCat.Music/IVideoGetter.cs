@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YoutubeExtractor;
-
-namespace PlayCat.Music
+﻿namespace PlayCat.Music
 {
-    public interface IVideoGetter
+    public interface IVideoGetter<T, K>
     {
-        VideoInfo GetVideoInfo(string url);
+        T GetVideoInfo(K resource);
     }
 }
