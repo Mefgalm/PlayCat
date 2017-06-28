@@ -4,12 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PlayCat.Music;
+using PlayCat.DataService;
 
 namespace PlayCat.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly AudioService _audioService;
+
+        public ValuesController(AudioService audioService)
+        {
+            _audioService = audioService;
+        }
 
         // GET api/values
         [HttpGet]

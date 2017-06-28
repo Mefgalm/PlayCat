@@ -120,6 +120,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlayCat.DataModel\PlayCat.DataModel.csproj">
+      <Project>{79c2ee50-34c9-4e5e-bdb1-93df90d658f5}</Project>
+      <Name>PlayCat.DataModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayCat.DataService\PlayCat.DataService.csproj">
       <Project>{bbd315d7-72a2-4e7f-b44b-88da379acab5}</Project>
       <Name>PlayCat.DataService</Name>

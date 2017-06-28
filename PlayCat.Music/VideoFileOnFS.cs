@@ -13,5 +13,7 @@ namespace PlayCat.Music
         public string FileName { get; set; }
         public string FullPath { get; set; }
         public string Extension { get; set; }
+        public string Id { get; set; }     
+        public string Title { get; set; }
     }
 }

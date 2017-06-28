@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Collections.Generic;
 using PlayCat.DataService;
+using PlayCat.DataModel;
 
 namespace PlayCat.Tests
 {

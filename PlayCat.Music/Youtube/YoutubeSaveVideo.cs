@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using YoutubeExtractor;
@@ -17,30 +18,34 @@ namespace PlayCat.Music.Youtube
             _folderPathService = folderPathService;
         }
 
-        public VideoFileOnFS SaveVideo(VideoInfo videoInfo)
+        private string CreateVideoFileName(VideoInfo videoInfo)
+        {
+            return Guid.NewGuid().ToString();
+        }
+
+        public VideoFileOnFS SaveVideo(VideoInfo videoInfo, string videoId)
         {
             if (videoInfo.RequiresDecryption)
             {
                 DownloadUrlResolver.DecryptDownloadUrl(videoInfo);
             }
 
-            string videoFolderPath = _folderPathService.VideoFolderPath();
-            string fullPath = Path.Combine(videoFolderPath, videoInfo.Title + videoInfo.VideoExtension);
+            string videoFolderPath = _folderPathService.VideoFolderPath;
+            string fileName = CreateVideoFileName(videoInfo);
+            string fullPath = Path.Combine(videoFolderPath, fileName + videoInfo.VideoExtension);
 
             var videoDownloader = new VideoDownloader(videoInfo, fullPath);
-
-            // Register the ProgressChanged event and print the current progress
-            //videoDownloader.DownloadProgressChanged += (sender, args) => Console.WriteLine(args.ProgressPercentage);
-
             videoDownloader.Execute();
 
             return new VideoFileOnFS()
             {
                  DateCreated = DateTime.UtcNow,
                  Extension = videoInfo.VideoExtension,
-                 FileName = videoInfo.Title,
+                 FileName = fileName,
                  FolderPath = videoFolderPath,
                  FullPath = fullPath,
+                 Id = videoId,
+                 Title = videoInfo.Title,
             };
         }
     }

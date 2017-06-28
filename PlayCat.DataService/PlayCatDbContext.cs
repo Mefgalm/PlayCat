@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PlayCat.DataModel;
 
 namespace PlayCat.DataService
 {
@@ -9,6 +10,17 @@ namespace PlayCat.DataService
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Audio>()
+                .HasIndex(x => x.UniqueIdentifier)
+                .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Audio> Audios { get; set; }
     }
 }

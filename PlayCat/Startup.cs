@@ -26,9 +26,11 @@ namespace PlayCat
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
+            HostingEnvironment = env;
         }
 
         public IConfigurationRoot Configuration { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,9 +38,19 @@ namespace PlayCat
             // Add framework services.
             services.AddMvc();
             services.AddOptions();
-            services.Configure<VideoPathOptions>(Configuration);
+            services.Configure<FolderOptions>(x =>
+            {
+                IConfigurationSection section = Configuration.GetSection("FolderPaths");
+                x.RelativeAudioFolderPath = section.GetValue<string>("AudioFolderPath");
+                x.AudioFolderPath = HostingEnvironment.ContentRootPath + x.RelativeAudioFolderPath;
+                x.VideoFolderPath = HostingEnvironment.ContentRootPath + section.GetValue<string>("VideoFolderPath");
+            });
+            services.Configure<AudioOptions>(Configuration.GetSection("AudioInfo"));
+            services.Configure<VideoRestrictsOptions>(Configuration.GetSection("VideoRestricts"));
 
             services.AddDbContext<PlayCatDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            ServiceProvider.RegisterService(services);
         }
 
         private void ServeFromDirectory(IApplicationBuilder app, IHostingEnvironment env, string path)
@@ -59,6 +71,7 @@ namespace PlayCat
 
             ServeFromDirectory(app, env, "node_modules");
             ServeFromDirectory(app, env, "app");
+            ServeFromDirectory(app, env, "Audio");
 
             app.Use(async (context, next) =>
             {

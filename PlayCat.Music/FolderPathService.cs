@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System;
+using Microsoft.Extensions.Options;
 
 namespace PlayCat.Music
 {
@@ -11,14 +12,10 @@ namespace PlayCat.Music
             _folderOptions = folderOptions;
         }
 
-        public string AudioFolderPath()
-        {
-            return _folderOptions.Value.AudioFolderPath;
-        }
+        string IFolderPathService.VideoFolderPath => _folderOptions.Value.VideoFolderPath;
 
-        public string VideoFolderPath()
-        {
-            return _folderOptions.Value.VideoFolderPath;
-        }
+        string IFolderPathService.AudioFolderPath => _folderOptions.Value.AudioFolderPath;
+
+        string IFolderPathService.RelativeAudioFolderPath => _folderOptions.Value.RelativeAudioFolderPath;
     }
 }

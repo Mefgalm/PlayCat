@@ -2,6 +2,6 @@
 {
     public interface ISaveVideo<T, K>
     {
-        K SaveVideo(T videoInfo);
+        K SaveVideo(T videoInfo, string videoId);
     }
 }

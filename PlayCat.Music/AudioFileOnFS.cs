@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlayCat.Music
 {
@@ -13,5 +9,8 @@ namespace PlayCat.Music
         public string FileName { get; set; }
         public string FullPath { get; set; }
         public string Extension { get; set; }
+        public string VideoId { get; set; }
+        public string Artist { get; set; }
+        public string Song { get; set; }
     }
 }
