@@ -128,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioService.cs" />
+    <Compile Include="Helpers\Headers.cs" />
     <Compile Include="Migrations\20170622203500_initcreate.cs" />
     <Compile Include="Migrations\20170622203500_initcreate.designer.cs">
       <DependentUpon>20170622203500_initcreate.cs</DependentUpon>
@@ -147,8 +148,11 @@
     <Compile Include="Migrations\PlayCatDbContextModelSnapshot.cs" />
     <Compile Include="PlayCatDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReturnTypes\BaseResult.cs" />
-    <Compile Include="ReturnTypes\UploadAudioResult.cs" />
+    <Compile Include="Response\Factory\IResponse.cs" />
+    <Compile Include="Response\Factory\ResponeImp.cs" />
+    <Compile Include="Response\Factory\ResponseFactory.cs" />
+    <Compile Include="Response\BaseResult.cs" />
+    <Compile Include="Response\UploadAudioResult.cs" />
     <Compile Include="ServiceProvider.cs" />
   </ItemGroup>
   <ItemGroup>

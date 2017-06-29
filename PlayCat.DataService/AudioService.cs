@@ -1,4 +1,4 @@
-﻿using PlayCat.DataService.ReturnTypes;
+﻿using PlayCat.DataService.Response;
 using PlayCat.Music;
 using System;
 using System.Linq;
@@ -20,22 +20,20 @@ namespace PlayCat.DataService
 
         public UploadAudioResult UploadAudio(string youtubeLink) 
         {
-            var uploadAudioResult = new UploadAudioResult();
-
             if (string.IsNullOrWhiteSpace(youtubeLink))
-                return uploadAudioResult.Fail("Link can't be null or white space");
+                return ResponseFactory.With<UploadAudioResult>().Fail("Link can't be null or white space");
 
             VideoInfo videoInfo = _audioExtractor.VideoGetter.GetVideoInfo(youtubeLink);
             if (videoInfo is null)
-                return uploadAudioResult.Fail("Video can't be extracted");
+                return ResponseFactory.With<UploadAudioResult>().Fail("Video can't be extracted");
 
             if (!_audioExtractor.VideoGetter.AllowedSize(videoInfo))
-                return uploadAudioResult.Fail("Maximim size in 25 MB");
+                return ResponseFactory.With<UploadAudioResult>().Fail("Maximim size in 25 MB");
 
             string uniqueIdentifier = _audioExtractor.GetUniqueIdentifierOfVideo(youtubeLink);
 
             if (_dbContext.Audios.Any(x => x.UniqueIdentifier == uniqueIdentifier))
-                return uploadAudioResult.Fail("Video already exists in db");
+                return ResponseFactory.With<UploadAudioResult>().Fail("Video already exists in db");
 
             VideoFileOnFS videoFileOnFS = _audioExtractor.ExtractVideo.SaveVideo(videoInfo, uniqueIdentifier);
 
@@ -57,11 +55,11 @@ namespace PlayCat.DataService
 
             _dbContext.SaveChanges();
 
-            return new UploadAudioResult()
-            {
-                Ok = true,
-                UploadFile = uploadFile,
-            };
+            return ResponseFactory.With(new UploadAudioResult()
+                    {
+                        UploadFile = uploadFile,
+                    })
+                    .Success();
         }
     }
 }
