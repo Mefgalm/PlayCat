@@ -134,6 +134,7 @@
     <Compile Include="AuthService.cs" />
     <Compile Include="BaseService.cs" />
     <Compile Include="Helpers\HttpRequester.cs" />
+    <Compile Include="InviteService.cs" />
     <Compile Include="Migrations\20170622203500_initcreate.cs" />
     <Compile Include="Migrations\20170622203500_initcreate.designer.cs">
       <DependentUpon>20170622203500_initcreate.cs</DependentUpon>
@@ -169,6 +170,7 @@
     <Compile Include="Migrations\PlayCatDbContextModelSnapshot.cs" />
     <Compile Include="PlayCatDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Request\SignUpRequest.cs" />
     <Compile Include="Response\Factory\IResponse.cs" />
     <Compile Include="Response\Factory\ResponeImp.cs" />
     <Compile Include="Response\Factory\ResponseFactory.cs" />
@@ -181,10 +183,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\YotubeExt\YoutubeExtractor-master\YoutubeExtractor\YoutubeExtractor\YoutubeExtractor.csproj">
-      <Project>{ecdc127f-8def-4f99-8300-72c13597339d}</Project>
-      <Name>YoutubeExtractor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlayCat.DataModel\PlayCat.DataModel.csproj">
       <Project>{79c2ee50-34c9-4e5e-bdb1-93df90d658f5}</Project>
       <Name>PlayCat.DataModel</Name>
@@ -196,6 +194,10 @@
     <ProjectReference Include="..\PlayCat.Music\PlayCat.Music.csproj">
       <Project>{36c2cbf8-365b-40c5-b70e-a4e5e9225b88}</Project>
       <Name>PlayCat.Music</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YoutubeExtractor\YoutubeExtractor.csproj">
+      <Project>{ecdc127f-8def-4f99-8300-72c13597339d}</Project>
+      <Name>YoutubeExtractor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
