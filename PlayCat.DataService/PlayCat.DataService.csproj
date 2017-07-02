@@ -94,6 +94,9 @@
     <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="SKGL, Version=2.0.5.3, Culture=neutral, PublicKeyToken=c2850a745143a030, processorArchitecture=MSIL">
+      <HintPath>..\packages\SKGL.2.0.5.3\lib\SKGL.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.3.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
@@ -128,7 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioService.cs" />
-    <Compile Include="Helpers\Headers.cs" />
+    <Compile Include="AuthService.cs" />
+    <Compile Include="BaseService.cs" />
+    <Compile Include="Helpers\HttpRequester.cs" />
     <Compile Include="Migrations\20170622203500_initcreate.cs" />
     <Compile Include="Migrations\20170622203500_initcreate.designer.cs">
       <DependentUpon>20170622203500_initcreate.cs</DependentUpon>
@@ -144,6 +149,22 @@
     <Compile Include="Migrations\20170628135729_audio-artist-and-song-name.cs" />
     <Compile Include="Migrations\20170628135729_audio-artist-and-song-name.designer.cs">
       <DependentUpon>20170628135729_audio-artist-and-song-name.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20170702114223_db-scheme.cs" />
+    <Compile Include="Migrations\20170702114223_db-scheme.designer.cs">
+      <DependentUpon>20170702114223_db-scheme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20170702114739_add-playlist-and-audio-playlist.cs" />
+    <Compile Include="Migrations\20170702114739_add-playlist-and-audio-playlist.designer.cs">
+      <DependentUpon>20170702114739_add-playlist-and-audio-playlist.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20170702115206_add-audio-uploader.cs" />
+    <Compile Include="Migrations\20170702115206_add-audio-uploader.designer.cs">
+      <DependentUpon>20170702115206_add-audio-uploader.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20170702164305_add-auth-token.cs" />
+    <Compile Include="Migrations\20170702164305_add-auth-token.designer.cs">
+      <DependentUpon>20170702164305_add-auth-token.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\PlayCatDbContextModelSnapshot.cs" />
     <Compile Include="PlayCatDbContext.cs" />

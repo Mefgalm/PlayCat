@@ -2,6 +2,6 @@
 {
     public interface IUploadAudio<T, K>
     {
-        K UploadAudio(T audioInfo);
+        K Upload(T audioInfo);
     }
 }

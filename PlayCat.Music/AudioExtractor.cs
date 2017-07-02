@@ -10,13 +10,13 @@ namespace PlayCat.Music
     {
         private IVideoGetter<TVideoInfo, TResource> _videoGetter;
         private ISaveVideo<TVideoInfo, TVideoFile> _extractVideo;
-        private IExtractAudio<TVideoFile, TAudioFile> _extractAudio;
+        private IFFmpeg<TVideoFile, TAudioFile> _extractAudio;
         private IUploadAudio<TAudioFile, TUploadFile> _uploadAudio;      
         
         public AudioExtractor(
             IVideoGetter<TVideoInfo, TResource> videoGetter,
             ISaveVideo<TVideoInfo, TVideoFile> extractVideo,
-            IExtractAudio<TVideoFile, TAudioFile> extractAudio,
+            IFFmpeg<TVideoFile, TAudioFile> extractAudio,
             IUploadAudio<TAudioFile, TUploadFile> uploadAudio)
         {
             _videoGetter = videoGetter;
@@ -35,7 +35,7 @@ namespace PlayCat.Music
             get => _extractVideo;
             set => _extractVideo = value;
         }
-        public IExtractAudio<TVideoFile, TAudioFile> ExtractAudio
+        public IFFmpeg<TVideoFile, TAudioFile> ExtractAudio
         {
             get => _extractAudio;
             set => _extractAudio = value;
@@ -46,7 +46,6 @@ namespace PlayCat.Music
             set => _uploadAudio = value;
         }
 
-        public abstract string GetUniqueIdentifierOfVideo(string url);
-        public abstract string GetUniqueIdentifierOfVideo(TVideoInfo info);
+        public abstract string GetYoutubeUniqueIdentifierOfVideo(string url);
     }
 }

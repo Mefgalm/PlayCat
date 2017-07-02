@@ -12,13 +12,13 @@ namespace PlayCat.Music.Youtube
         public YoutubeAudioExtractor(
             IVideoGetter<VideoInfo, string> videoGetter,
             ISaveVideo<VideoInfo, VideoFileOnFS> saveVideo,
-            IExtractAudio<VideoFileOnFS, AudioFileOnFS> extractAudio,
+            IFFmpeg<VideoFileOnFS, AudioFileOnFS> extractAudio,
             IUploadAudio<AudioFileOnFS, UploadFile> uploadAudio) 
             : base(videoGetter, saveVideo, extractAudio, uploadAudio)
         {
         }
 
-        public override string GetUniqueIdentifierOfVideo(string url)
+        public override string GetYoutubeUniqueIdentifierOfVideo(string url)
         {
             if (url is null)
                 throw new ArgumentNullException(nameof(url));
@@ -28,11 +28,6 @@ namespace PlayCat.Music.Youtube
                 throw new Exception("Wrong youtube url link format");
 
             return url.Substring(index + 1);
-        }
-
-        public override string GetUniqueIdentifierOfVideo(VideoInfo info)
-        {
-            throw new NotImplementedException();
         }
     }
 }

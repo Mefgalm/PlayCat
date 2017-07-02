@@ -2,16 +2,16 @@
 
 namespace PlayCat.Music.Youtube
 {
-    public class YoutubeUploadAudio : IUploadAudio<AudioFileOnFS, UploadFile>
+    public class UploadAudio : IUploadAudio<AudioFileOnFS, UploadFile>
     {
         private IFolderPathService _folderPathService;
 
-        public YoutubeUploadAudio(IFolderPathService folderPathService)
+        public UploadAudio(IFolderPathService folderPathService)
         {
             _folderPathService = folderPathService;
         }
 
-        public UploadFile UploadAudio(AudioFileOnFS audioInfo)
+        public UploadFile Upload(AudioFileOnFS audioInfo)
         {
             return new UploadFile()
             {

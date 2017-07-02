@@ -8,9 +8,10 @@ using PlayCat.DataService;
 namespace PlayCat.DataService.Migrations
 {
     [DbContext(typeof(PlayCatDbContext))]
-    partial class PlayCatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170702115206_add-audio-uploader")]
+    partial class addaudiouploader
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -73,22 +74,6 @@ namespace PlayCat.DataService.Migrations
                     b.ToTable("AudioPlaylists");
                 });
 
-            modelBuilder.Entity("PlayCat.DataModel.AuthToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DateExpired");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AuthTokens");
-                });
-
             modelBuilder.Entity("PlayCat.DataModel.Playlist", b =>
                 {
                     b.Property<Guid>("Id")
@@ -114,8 +99,6 @@ namespace PlayCat.DataService.Migrations
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(100);
-
-                    b.Property<bool>("IsUploading");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(100);
@@ -155,14 +138,6 @@ namespace PlayCat.DataService.Migrations
                     b.HasOne("PlayCat.DataModel.Playlist", "Playlist")
                         .WithMany()
                         .HasForeignKey("PlaylistId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("PlayCat.DataModel.AuthToken", b =>
-                {
-                    b.HasOne("PlayCat.DataModel.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

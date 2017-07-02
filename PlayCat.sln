@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayCat", "PlayCat\PlayCat.csproj", "{07570864-B64A-461E-98AF-D7FF633C6427}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayCat", "PlayCat\PlayCat.csproj", "{07570864-B64A-461E-98AF-D7FF633C6427}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayCat.DataService", "PlayCat.DataService\PlayCat.DataService.csproj", "{BBD315D7-72A2-4E7F-B44B-88DA379ACAB5}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayCat.DataModel", "PlayCat.DataModel\PlayCat.DataModel.csproj", "{79C2EE50-34C9-4E5E-BDB1-93DF90D658F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeExtractor", "..\YotubeExt\YoutubeExtractor-master\YoutubeExtractor\YoutubeExtractor\YoutubeExtractor.csproj", "{ECDC127F-8DEF-4F99-8300-72C13597339D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayCat.ApiModel", "PlayCat.ApiModel\PlayCat.ApiModel.csproj", "{CA9F5A10-38E6-4714-89CB-C2F58B5A8597}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{ECDC127F-8DEF-4F99-8300-72C13597339D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECDC127F-8DEF-4F99-8300-72C13597339D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECDC127F-8DEF-4F99-8300-72C13597339D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA9F5A10-38E6-4714-89CB-C2F58B5A8597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA9F5A10-38E6-4714-89CB-C2F58B5A8597}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA9F5A10-38E6-4714-89CB-C2F58B5A8597}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA9F5A10-38E6-4714-89CB-C2F58B5A8597}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PlayCat.DataService;
 using PlayCat.DataService.Response;
 
@@ -6,19 +6,17 @@ namespace PlayCat.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class AudioController : Controller
+    public class AuthController : Controller
     {
-        private readonly AudioService _audioService;
-
-        public AudioController(AudioService audioService)
+        public AuthController(AudioService audioService)
         {
-            _audioService = audioService;
+            
         }
 
         [HttpGet("uploadAudio")]
         public UploadAudioResult UploadAudio(string youtubeUrl)
         {
-            return _audioService.UploadAudio(youtubeUrl);
+            return null;
         }
     }
 }

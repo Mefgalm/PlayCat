@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlayCat.DataService.Helpers
+namespace PlayCat.DataService.Request
 {
-    public class Headers
+    public class SignUpRequest
     {
-        
+
     }
 }

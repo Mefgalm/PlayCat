@@ -16,11 +16,20 @@ namespace PlayCat.DataService
                 .HasIndex(x => x.UniqueIdentifier)
                 .IsUnique();
 
+            modelBuilder.Entity<AudioPlaylist>()
+                .HasKey(x => new { x.PlaylistId, x.AudioId });
+
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<User> Users { get; set; }
 
         public DbSet<Audio> Audios { get; set; }
+
+        public DbSet<Playlist> Playlists { get; set; }
+
+        public DbSet<AudioPlaylist> AudioPlaylists { get; set; }
+
+        public DbSet<AuthToken> AuthTokens { get; set; }
     }
 }

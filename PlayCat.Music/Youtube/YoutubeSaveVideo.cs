@@ -18,12 +18,7 @@ namespace PlayCat.Music.Youtube
             _folderPathService = folderPathService;
         }
 
-        private string CreateVideoFileName(VideoInfo videoInfo)
-        {
-            return Guid.NewGuid().ToString();
-        }
-
-        public VideoFileOnFS SaveVideo(VideoInfo videoInfo, string videoId)
+        public VideoFileOnFS Save(VideoInfo videoInfo, string videoId)
         {
             if (videoInfo.RequiresDecryption)
             {
@@ -31,7 +26,7 @@ namespace PlayCat.Music.Youtube
             }
 
             string videoFolderPath = _folderPathService.VideoFolderPath;
-            string fileName = CreateVideoFileName(videoInfo);
+            string fileName = videoId;
             string fullPath = Path.Combine(videoFolderPath, fileName + videoInfo.VideoExtension);
 
             var videoDownloader = new VideoDownloader(videoInfo, fullPath);

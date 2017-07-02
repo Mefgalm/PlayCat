@@ -105,9 +105,9 @@
     <Compile Include="UploadFile.cs" />
     <Compile Include="VideoRestrictsOptions.cs" />
     <Compile Include="Youtube\YoutubeAudioExtractor.cs" />
-    <Compile Include="Youtube\YoutubeExtractAudio.cs" />
+    <Compile Include="FFmpegExtractAudio.cs" />
     <Compile Include="Youtube\YoutubeSaveVideo.cs" />
-    <Compile Include="Youtube\YoutubeUploadAudio.cs" />
+    <Compile Include="UploadAudio.cs" />
     <Compile Include="Youtube\YoutubeVideoGetter.cs" />
   </ItemGroup>
   <ItemGroup>

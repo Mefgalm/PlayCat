@@ -4,9 +4,9 @@ using System;
 using System.IO;
 using System.Net;
 
-namespace PlayCat.Music.Youtube
+namespace PlayCat.Music
 {
-    public class YoutubeExtractAudio : IExtractAudio<VideoFileOnFS, AudioFileOnFS>
+    public class FFmpegExtractAudio : IFFmpeg<VideoFileOnFS, AudioFileOnFS>
     {
         //ffmpeg -i video.mp4 -f mp3 -ab 192000 -vn music.mp3
 
@@ -21,7 +21,7 @@ namespace PlayCat.Music.Youtube
         private readonly IOptions<AudioOptions> _audioOptions;
         private readonly IFolderPathService _folderPathService;
 
-        public YoutubeExtractAudio(IOptions<AudioOptions> audioOptions, IFolderPathService folderPathService)
+        public FFmpegExtractAudio(IOptions<AudioOptions> audioOptions, IFolderPathService folderPathService)
         {
             _audioOptions = audioOptions;
             _folderPathService = folderPathService;
@@ -32,6 +32,11 @@ namespace PlayCat.Music.Youtube
             string folderPath = _folderPathService.AudioFolderPath;
             string filename = videoInfo.FileName;
             string fullPath = Path.Combine(folderPath, filename + "." + _audioOptions.Value.DefaultFormat);
+
+            if(File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
 
             var ffMpeg = new FFMpegConverter();
             ffMpeg.Invoke(

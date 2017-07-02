@@ -10,10 +10,6 @@ namespace PlayCat.Helpers
 {
     public static class BaseExtensions
     {
-        public static bool Invert(this bool val)
-        {
-            return !val;
-        }
 
         public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
         {

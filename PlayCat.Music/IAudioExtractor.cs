@@ -7,10 +7,9 @@
     {
         IVideoGetter<TVideoInfo, TResource> VideoGetter { get; set; }
         ISaveVideo<TVideoInfo, TVideoFile> ExtractVideo { get; set; }
-        IExtractAudio<TVideoFile, TAudioFile> ExtractAudio { get; set; }
+        IFFmpeg<TVideoFile, TAudioFile> ExtractAudio { get; set; }
         IUploadAudio<TAudioFile, TUploadFile> UploadAudio { get; set; }
 
-        string GetUniqueIdentifierOfVideo(string url);
-        string GetUniqueIdentifierOfVideo(TVideoInfo videoInfo);
+        string GetYoutubeUniqueIdentifierOfVideo(string url);
     }
 }
