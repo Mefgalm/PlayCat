@@ -8,5 +8,10 @@
         {
             _dbContext = dbContext;
         }
+
+        public void SetDbContext(PlayCatDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
     }
 }

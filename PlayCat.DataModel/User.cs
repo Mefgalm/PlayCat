@@ -1,12 +1,10 @@
-﻿using PlayCat.DataModel.Validation;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace PlayCat.DataModel
 {
-    public class User : IValidationUser
+    public class User
     {
-        //validation block - should be sync with ApiModel.User
         [MaxLength(100)]
         public string FirstName { get; set; }
 
@@ -15,10 +13,12 @@ namespace PlayCat.DataModel
 
         [MaxLength(100)]
         public string NickName { get; set; }
-        //end of validation block
 
         [Key]
         public Guid Id { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string Email { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         public string PasswordHash { get; set; }
@@ -28,8 +28,11 @@ namespace PlayCat.DataModel
 
         public DateTime RegisterDate { get; set; }
 
-        public Guid VerificationCode { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        public string VerificationCode { get; set; }
 
-        public bool IsUploading { get; set; }        
+        public bool IsUploading { get; set; }  
+        
+        public virtual AuthToken AuthToken { get; set; }
     }
 }

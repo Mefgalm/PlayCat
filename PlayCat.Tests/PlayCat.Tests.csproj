@@ -191,6 +191,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auth.cs" />
     <Compile Include="YoutubeUpload.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -203,6 +204,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlayCat.ApiModel\PlayCat.ApiModel.csproj">
+      <Project>{ca9f5a10-38e6-4714-89cb-c2f58b5a8597}</Project>
+      <Name>PlayCat.ApiModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayCat.DataModel\PlayCat.DataModel.csproj">
       <Project>{79c2ee50-34c9-4e5e-bdb1-93df90d658f5}</Project>
       <Name>PlayCat.DataModel</Name>

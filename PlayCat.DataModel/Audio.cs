@@ -1,13 +1,12 @@
-﻿using PlayCat.DataModel.Validation;
+﻿
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlayCat.DataModel
 {
-    public class Audio : IValidationAudio
+    public class Audio
     {
-        //validation block - should be sync with ApiModel.Audio
         [MaxLength(100)]
         [Required(AllowEmptyStrings = false)]
         public string Artist { get; set; }
@@ -15,7 +14,6 @@ namespace PlayCat.DataModel
         [MaxLength(100)]
         [Required(AllowEmptyStrings = false)]        
         public string Song { get; set; }
-        //end of validation block
 
         [Key]
         public Guid Id { get; set; }

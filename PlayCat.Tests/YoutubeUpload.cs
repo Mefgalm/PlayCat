@@ -22,7 +22,7 @@ namespace PlayCat.Tests
         [Fact]
         public void IsErrorOnNull()
         {
-            var audioService = _server.Host.Services.GetService(typeof(AudioService)) as AudioService;
+            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
 
             string youtubeUrl = null;
 
@@ -40,7 +40,7 @@ namespace PlayCat.Tests
         [InlineData("https://youtu.be/MI4g6vri2OA?t=34")]
         public void IsErrorOnInvalidUrl(string youtubeUrl)
         {            
-            var audioService = _server.Host.Services.GetService(typeof(AudioService)) as AudioService;
+            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
 
             UploadAudioResult result = audioService.UploadAudio(youtubeUrl);
 
@@ -53,7 +53,7 @@ namespace PlayCat.Tests
         [Fact]
         public void IsErrorOnLongVideoUrl()
         {
-            var audioService = _server.Host.Services.GetService(typeof(AudioService)) as AudioService;
+            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
 
             string youtubeUrl = "https://www.youtube.com/watch?v=wM_ys62SJFw";
 
@@ -68,7 +68,7 @@ namespace PlayCat.Tests
         [Fact]
         public void IsValidFullUrl()
         {
-            var audioService = _server.Host.Services.GetService(typeof(AudioService)) as AudioService;
+            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
 
             string youtubeUrl = "https://www.youtube.com/watch?v=ekEYX_yo_wE";
 
@@ -123,7 +123,7 @@ namespace PlayCat.Tests
         [Fact]
         public void IsValidFullUrlAlreadyExists()
         {
-            var audioService = _server.Host.Services.GetService(typeof(AudioService)) as AudioService;
+            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
 
             string youtubeUrl = "https://www.youtube.com/watch?v=xkFZn4oPMqE";
 

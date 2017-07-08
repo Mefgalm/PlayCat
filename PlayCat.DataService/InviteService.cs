@@ -3,7 +3,7 @@ using System.IO;
 
 namespace PlayCat.DataService
 {
-    public class InviteService
+    public class InviteService : IInviteService
     {
         private const int DaysExpired = 180;
         private const string Filename = "Code.txt";
@@ -34,6 +34,7 @@ namespace PlayCat.DataService
             {
                 secretPhase = _code
             };
+            validation.Key = key;
 
             return validation.IsValid;
         }

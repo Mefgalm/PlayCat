@@ -9,7 +9,7 @@ using YoutubeExtractor;
 
 namespace PlayCat.DataService
 {
-    public class AudioService : BaseService
+    public class AudioService : BaseService, IAudioService
     {        
         private readonly IOptions<VideoRestrictsOptions> _videoRestrictsOptions;
         private readonly IAudioExtractor<VideoInfo, string, VideoFileOnFS, AudioFileOnFS, UploadFile> _audioExtractor;
@@ -21,11 +21,6 @@ namespace PlayCat.DataService
         {
             _videoRestrictsOptions = videoRestrictsOptions;
             _audioExtractor = audioExtractor;
-        }
-
-        public void SetDbContext(PlayCatDbContext dbContext)
-        {
-            _dbContext = dbContext;
         }
 
         public UploadAudioResult UploadAudio(string youtubeLink) 

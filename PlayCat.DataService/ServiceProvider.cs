@@ -15,9 +15,10 @@ namespace PlayCat.DataService
             service.AddScoped<IFFmpeg<VideoFileOnFS, AudioFileOnFS>, FFmpegExtractAudio>();
             service.AddScoped<IUploadAudio<AudioFileOnFS, UploadFile>, UploadAudio>();
             service.AddScoped<IFolderPathService, FolderPathService>();
-            service.AddScoped<InviteService>();
+            service.AddScoped<IInviteService, InviteService >();
+            service.AddScoped<IAuthService, AuthService>();
 
-            service.AddScoped<AudioService>();
+            service.AddScoped<IAudioService, AudioService>();
         }
     }
 }

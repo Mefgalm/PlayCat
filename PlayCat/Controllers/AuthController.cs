@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlayCat.DataService;
+using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
 
 namespace PlayCat.Controllers
@@ -8,15 +9,17 @@ namespace PlayCat.Controllers
     [Route("api/[controller]")]
     public class AuthController : Controller
     {
-        public AuthController(AudioService audioService)
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
         {
-            
+            _authService = authService;
         }
 
-        [HttpGet("uploadAudio")]
-        public UploadAudioResult UploadAudio(string youtubeUrl)
+        [HttpPost("signUp")]
+        public SignUpResult SignUp(SignUpRequest request)
         {
-            return null;
+            return _authService.SignUp(request);
         }
     }
 }

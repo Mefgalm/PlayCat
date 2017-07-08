@@ -1,21 +1,14 @@
-﻿using PlayCat.DataModel.Validation;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlayCat.DataModel
 {
-    public class Playlist : IValidationPlaylist
+    public class Playlist
     {
-        //validation block - should be sync with ApiModel.Playlist
         [MaxLength(100)]
         [Required(AllowEmptyStrings = false)]        
         public string Title { get; set; }
-        //end of validation block
 
         [Key]
         public Guid Id { get; set; }        

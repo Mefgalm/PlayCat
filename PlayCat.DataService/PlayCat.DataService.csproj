@@ -122,6 +122,9 @@
       <HintPath>..\packages\System.Text.Encodings.Web.4.3.0\lib\netstandard1.0\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Helpers.Crypto, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Web.Helpers.Crypto.3.2.3\lib\net40\System.Web.Helpers.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -134,7 +137,14 @@
     <Compile Include="AuthService.cs" />
     <Compile Include="BaseService.cs" />
     <Compile Include="Helpers\HttpRequester.cs" />
+    <Compile Include="Helpers\ModelValidationResult.cs" />
+    <Compile Include="Helpers\ModelValidator.cs" />
+    <Compile Include="IAudioService.cs" />
+    <Compile Include="IAuthService.cs" />
+    <Compile Include="IInviteService.cs" />
     <Compile Include="InviteService.cs" />
+    <Compile Include="Mappers\AuthTokenMapper.cs" />
+    <Compile Include="Mappers\UserMapper.cs" />
     <Compile Include="Migrations\20170622203500_initcreate.cs" />
     <Compile Include="Migrations\20170622203500_initcreate.designer.cs">
       <DependentUpon>20170622203500_initcreate.cs</DependentUpon>
@@ -167,6 +177,10 @@
     <Compile Include="Migrations\20170702164305_add-auth-token.designer.cs">
       <DependentUpon>20170702164305_add-auth-token.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20170708142828_auth-token.cs" />
+    <Compile Include="Migrations\20170708142828_auth-token.designer.cs">
+      <DependentUpon>20170708142828_auth-token.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\PlayCatDbContextModelSnapshot.cs" />
     <Compile Include="PlayCatDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -175,6 +189,7 @@
     <Compile Include="Response\Factory\ResponeImp.cs" />
     <Compile Include="Response\Factory\ResponseFactory.cs" />
     <Compile Include="Response\BaseResult.cs" />
+    <Compile Include="Response\SignUpResult.cs" />
     <Compile Include="Response\UploadAudioResult.cs" />
     <Compile Include="ServiceProvider.cs" />
   </ItemGroup>
@@ -183,6 +198,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlayCat.ApiModel\PlayCat.ApiModel.csproj">
+      <Project>{ca9f5a10-38e6-4714-89cb-c2f58b5a8597}</Project>
+      <Name>PlayCat.ApiModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayCat.DataModel\PlayCat.DataModel.csproj">
       <Project>{79c2ee50-34c9-4e5e-bdb1-93df90d658f5}</Project>
       <Name>PlayCat.DataModel</Name>

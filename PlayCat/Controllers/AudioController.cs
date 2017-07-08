@@ -8,9 +8,9 @@ namespace PlayCat.Controllers
     [Route("api/[controller]")]
     public class AudioController : Controller
     {
-        private readonly AudioService _audioService;
+        private readonly IAudioService _audioService;
 
-        public AudioController(AudioService audioService)
+        public AudioController(IAudioService audioService)
         {
             _audioService = audioService;
         }
