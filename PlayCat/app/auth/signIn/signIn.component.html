@@ -1,16 +1,22 @@
-﻿Sign In
-<div class="login-page">
+﻿<div class="login-page">
     <div class="login">
-        <button class="submit" id="submit">Login with Google</button>
-        <p>or</p>
-        <div class="login-form">
-            <input type="e-mail" class="input" id="e-mail" placeholder="e-mail" />
-            <input type="password" class="input" id="password" placeholder="password" />
-        </div>
-        <button class="submit" id="submit">Login</button>
-        <div class="down-form">
-            <a href="/signUp">sign up</a>
-            <a href="">forgot password?</a>
-        </div>
+        <div class="background"></div>
+        <div class="login-inside">
+            <div class="login-row"><button class="submit login-google" id="submit">Login with Google</button></div>
+            <div class="login-row"><p style="text-align:center;">or</p></div>
+            <div class="login-row">
+                <input type="e-mail" class="input" id="e-mail" placeholder="e-mail" />
+                <div class="error login-error"></div>
+            </div>
+            <div class="login-row">
+                <input type="password" class="input" id="password" placeholder="password" />
+                <div class="error login-error"></div>
+            </div>
+            <div class="login-row"><button class="submit login-button" id="submit">Login</button></div>
+            <div class="login-row down-form">
+                    <a href="/signUp">sign up</a>
+                    <a href="">forgot password?</a>
+            </div>
+         </div>
     </div>
 </div>
