@@ -1,4 +1,5 @@
 ﻿import { Component } from '@angular/core';
+import { AuthService } from '../auth.service';
 
 @Component({
     selector: 'signUp',
@@ -7,5 +8,11 @@
 })
 
 export class SignUpComponent {
+    constructor(private _authService: AuthService) {
+        this._authService.signUp().then(x => console.log(x));
+    }
 
+    public OnSubmit() {
+        this._authService.signUp().then(x => console.log(x));
+    }
 }

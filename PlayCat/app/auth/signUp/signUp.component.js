@@ -5,11 +5,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var auth_service_1 = require("../auth.service");
 var SignUpComponent = (function () {
-    function SignUpComponent() {
+    function SignUpComponent(_authService) {
+        this._authService = _authService;
+        this._authService.signUp().then(function (x) { return console.log(x); });
     }
+    SignUpComponent.prototype.OnSubmit = function () {
+        this._authService.signUp().then(function (x) { return console.log(x); });
+    };
     return SignUpComponent;
 }());
 SignUpComponent = __decorate([
@@ -17,7 +26,8 @@ SignUpComponent = __decorate([
         selector: 'signUp',
         templateUrl: './app/auth/signUp/signUp.component.html',
         styleUrls: ['./app/auth/signUp/signUp.component.css'],
-    })
+    }),
+    __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], SignUpComponent);
 exports.SignUpComponent = SignUpComponent;
 //# sourceMappingURL=signUp.component.js.map

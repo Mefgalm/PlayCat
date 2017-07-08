@@ -9,7 +9,7 @@ namespace PlayCat.DataService.Helpers
         public static ModelValidationResult Validate(object obj)
         {
             var errorList = new List<ValidationResult>();
-            if(!Validator.TryValidateObject(obj, new ValidationContext(obj), errorList))
+            if(!Validator.TryValidateObject(obj, new ValidationContext(obj), errorList, true))
             {
                 return new ModelValidationResult()
                 {

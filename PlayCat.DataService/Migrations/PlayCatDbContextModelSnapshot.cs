@@ -119,7 +119,7 @@ namespace PlayCat.DataService.Migrations
                     b.Property<string>("FirstName")
                         .HasMaxLength(100);
 
-                    b.Property<bool>("IsUploading");
+                    b.Property<bool>("IsUploadingAudio");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(100);

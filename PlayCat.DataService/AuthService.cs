@@ -40,7 +40,7 @@ namespace PlayCat.DataService
             var dataUser = Mappers.UserMapper.ToData.Get(request, (user) =>
             {
                 user.Id = Guid.NewGuid();
-                user.IsUploading = false;
+                user.IsUploadingAudio = false;
                 user.PasswordHash = passwordHah;
                 user.PasswordSald = salt;
                 user.RegisterDate = DateTime.Now;

@@ -31,7 +31,7 @@ namespace PlayCat.DataModel
         [Required(AllowEmptyStrings = false)]
         public string VerificationCode { get; set; }
 
-        public bool IsUploading { get; set; }  
+        public bool IsUploadingAudio { get; set; }  
         
         public virtual AuthToken AuthToken { get; set; }
     }

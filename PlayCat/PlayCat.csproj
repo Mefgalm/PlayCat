@@ -33,5 +33,8 @@
     <ProjectReference Include="..\PlayCat.DataService\PlayCat.DataService.csproj" />
     <ProjectReference Include="..\PlayCat.Music\PlayCat.Music.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app\data\response\" />
+  </ItemGroup>
 
 </Project>

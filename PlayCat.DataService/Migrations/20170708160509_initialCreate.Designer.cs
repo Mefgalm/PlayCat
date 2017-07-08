@@ -8,8 +8,8 @@ using PlayCat.DataService;
 namespace PlayCat.DataService.Migrations
 {
     [DbContext(typeof(PlayCatDbContext))]
-    [Migration("20170708142828_auth-token")]
-    partial class authtoken
+    [Migration("20170708160509_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,7 +120,7 @@ namespace PlayCat.DataService.Migrations
                     b.Property<string>("FirstName")
                         .HasMaxLength(100);
 
-                    b.Property<bool>("IsUploading");
+                    b.Property<bool>("IsUploadingAudio");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(100);

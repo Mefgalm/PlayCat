@@ -17,7 +17,7 @@ namespace PlayCat.Controllers
         }
 
         [HttpPost("signUp")]
-        public SignUpResult SignUp(SignUpRequest request)
+        public SignUpResult SignUp([FromBody] SignUpRequest request)
         {
             return _authService.SignUp(request);
         }
