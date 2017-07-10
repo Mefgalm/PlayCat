@@ -1,36 +1,51 @@
 ﻿<div class="signup-page">
     <div class="signup">
-        <!--<div class="background"></div>-->
+        <!--<div class="background"></div>-->        
         <div class="signup-inside">
+            <div class="error" [hidden]="!globalError">{{globalError}}</div>
             <div class="signup-row first-last-name">
                 <div class="first-name">
-                    <input type="text" class="input" id="name-input" placeholder="first name" />
-                    <div class="error signup-error"></div>
+                    <input type="text" class="input name-input" [(ngModel)]="firstName" placeholder="first name" />
+                    <div *ngIf="errors && errors['firstName']" class="error signup-error">
+                        {{errors['firstName'][0]}}
+                    </div>
                 </div>
                 <div class="last-name">
-                    <input type="text" class="input" id="name-input" placeholder="last name" />
-                    <div class="error signup-error"></div>
+                    <input type="text" class="input name-input" [(ngModel)]="lastName" placeholder="last name" />
+                    <div *ngIf="errors && errors['lastName']" class="error signup-error">
+                        {{errors['lastName'][0]}}
+                    </div>
                 </div>
             </div>
             <div class="signup-row">
-                <input type="e-mail" class="input" id="e-mail" placeholder="e-mail" />
-                <div class="error signup-error"></div>
+                <input type="e-mail" class="input e-mail" [(ngModel)]="email" placeholder="e-mail" />
+                <div *ngIf="errors && errors['email']" class="error signup-error">
+                    {{errors['email'][0]}}
+                </div>
             </div>
             <div class="signup-row passwords">
                 <div class="password">
-                    <input type="password" class="input" id="password" placeholder="password" />
-                    <div class="error signup-error"></div>
+                    <input type="password" class="input password-input" [(ngModel)]="password" placeholder="password" />
+                    <div *ngIf="errors && errors['password']" class="error signup-error">
+                        {{errors['password'][0]}}
+                    </div>
                 </div>
                 <div class="password-ver">
-                    <input type="password" class="input" id="password" placeholder="password (again)" />
-                    <div class="error signup-error"></div>
+                    <input type="password" class="input password-input" [(ngModel)]="confirmPassword" placeholder="password (again)" />
+                    <div *ngIf="errors && errors['confirmPassword']" class="error signup-error">
+                        {{errors['confirmPassword'][0]}}
+                    </div>
                 </div>
             </div>
             <div class="signup-row">
-                <input type="text" class="input" id="verification-code" placeholder="verification code" />
-                <div class="error signup-error"></div>
+                <input type="text" class="input verification-code" [(ngModel)]="verificationCode" placeholder="verification code" />
+                <div *ngIf="errors && errors['verificationCode']" class="error signup-error">
+                    {{errors['verificationCode'][0]}}
+                </div>
             </div>
-            <div class="signup-row"><button class="submit signup-button" id="submit">Sign up</button></div>
+            <div class="signup-row">
+                <button class="submit signup-button" (click)="OnSubmit()">Sign up</button>
+            </div>
             <div class="signup-row down-form">
                 <a href="">login with Google</a>
                 <a href="/signIn">already have an Account?</a>

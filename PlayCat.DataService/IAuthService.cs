@@ -3,11 +3,9 @@ using PlayCat.DataService.Response;
 
 namespace PlayCat.DataService
 {
-    public interface IAuthService
+    public interface IAuthService : ISetDbContext
     {
-        void SignIn();
-        SignUpResult SignUp(SignUpRequest request);
-
-        void SetDbContext(PlayCatDbContext dbContext);
+        SignUpInResult SignIn(SignInRequest request);
+        SignUpInResult SignUp(SignUpRequest request);
     }
 }

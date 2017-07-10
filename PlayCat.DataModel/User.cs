@@ -24,7 +24,7 @@ namespace PlayCat.DataModel
         public string PasswordHash { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        public string PasswordSald { get; set; }
+        public string PasswordSalt { get; set; }
 
         public DateTime RegisterDate { get; set; }
 

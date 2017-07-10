@@ -1,6 +1,7 @@
 ﻿import { Injectable, Inject } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
 import { SignUpRequest } from '../data/request/signUpRequest';
+import { SignUpInResult } from '../data/response/signUpInResult';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -14,15 +15,12 @@ export class AuthService {
         this.headers.append('Content-Type', 'application/json');
     }
 
-    signUp(): Promise<any> {
-        var object = JSON.stringify(new SignUpRequest('vlad', 'kuz', 'mef@gmail.com', '234234gdfgf', '234234gdfgf', 'LMATJ-BQZBE-FBRZY-USVBJ'));
+    signUp(request: SignUpRequest): Promise<SignUpInResult> {
+
+        var object = JSON.stringify(request);
 
         return this._http.post(this._signUpUrl, object, { headers: this.headers })
-        .toPromise()
-        .then(this.extractData);
-    }
-
-    private extractData(res: Response): any {
-        return res.json(); // body || {};
+            .toPromise()
+            .then(x => Object.assign(new SignUpInResult(), x.json()));
     }
 }

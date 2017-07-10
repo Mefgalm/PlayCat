@@ -6,6 +6,6 @@ namespace PlayCat.DataService.Helpers
     {
         public bool Ok { get; set; }
 
-        public IDictionary<string, string> Errors { get; set; }
+        public IDictionary<string, IEnumerable<string>> Errors { get; set; }
     }
 }

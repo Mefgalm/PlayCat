@@ -87,9 +87,8 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.1.1.0\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
@@ -133,31 +132,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\FieldResult.cs" />
+    <Compile Include="Attributes\RegexValidation\RegexValidationAttribute.cs" />
+    <Compile Include="Attributes\ValidateResult.cs" />
+    <Compile Include="Attributes\ValidationAttribute.cs" />
+    <Compile Include="Helpers\Validator.cs" />
     <Compile Include="AudioService.cs" />
     <Compile Include="AuthService.cs" />
     <Compile Include="BaseService.cs" />
     <Compile Include="Helpers\HttpRequester.cs" />
     <Compile Include="Helpers\ModelValidationResult.cs" />
     <Compile Include="Helpers\ModelValidator.cs" />
+    <Compile Include="Helpers\TrimStrings.cs" />
     <Compile Include="IAudioService.cs" />
     <Compile Include="IAuthService.cs" />
     <Compile Include="IInviteService.cs" />
     <Compile Include="InviteService.cs" />
+    <Compile Include="ISetDbContext.cs" />
     <Compile Include="Mappers\AuthTokenMapper.cs" />
     <Compile Include="Mappers\UserMapper.cs" />
     <Compile Include="Migrations\20170708160509_initialCreate.cs" />
     <Compile Include="Migrations\20170708160509_initialCreate.designer.cs">
       <DependentUpon>20170708160509_initialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20170710222835_rename-fields.cs" />
+    <Compile Include="Migrations\20170710222835_rename-fields.designer.cs">
+      <DependentUpon>20170710222835_rename-fields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\PlayCatDbContextModelSnapshot.cs" />
     <Compile Include="PlayCatDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Request\SignInRequest.cs" />
     <Compile Include="Request\SignUpRequest.cs" />
     <Compile Include="Response\Factory\IResponse.cs" />
     <Compile Include="Response\Factory\ResponeImp.cs" />
     <Compile Include="Response\Factory\ResponseFactory.cs" />
     <Compile Include="Response\BaseResult.cs" />
-    <Compile Include="Response\SignUpResult.cs" />
+    <Compile Include="Response\SignUpInResult.cs" />
     <Compile Include="Response\UploadAudioResult.cs" />
     <Compile Include="ServiceProvider.cs" />
   </ItemGroup>
@@ -186,6 +197,9 @@
       <Project>{ecdc127f-8def-4f99-8300-72c13597339d}</Project>
       <Name>YoutubeExtractor</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Attributes\PropertyCompare\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

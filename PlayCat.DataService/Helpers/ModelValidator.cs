@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using PlayCat.DataService.Attributes;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PlayCat.DataService.Helpers
@@ -8,18 +8,14 @@ namespace PlayCat.DataService.Helpers
     {
         public static ModelValidationResult Validate(object obj)
         {
-            var errorList = new List<ValidationResult>();
-            if(!Validator.TryValidateObject(obj, new ValidationContext(obj), errorList, true))
-            {
-                return new ModelValidationResult()
-                {
-                    Ok = false,
-                    Errors = errorList.ToDictionary(x => x.MemberNames.FirstOrDefault(), y => y.ErrorMessage),
-                };                
-            }
+            IEnumerable<ValidateResult> validationResults = Validator.Validate(obj);
+            IEnumerable<ValidateResult> invalidResults = validationResults.Where(x => !x.Ok);
             return new ModelValidationResult()
             {
-                Ok = true,                
+                Ok = validationResults.All(x => x.Ok),
+                Errors = invalidResults.Any() 
+                    ? invalidResults.ToDictionary(x => x.FieldResult.FieldName, y => y.FieldResult.ErrorMessages)
+                    : null,
             };
         }
     }

@@ -23,6 +23,7 @@ AppModule = __decorate([
         imports: [
             platform_browser_1.BrowserModule,
             auth_module_1.AuthModule,
+            //FormsModule,
             router_1.RouterModule.forRoot([
                 {
                     path: '',

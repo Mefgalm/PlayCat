@@ -85,6 +85,7 @@ namespace PlayCat
                     await next();
                 }
             });
+
             app.UseMvcWithDefaultRoute();
             app.UseDefaultFiles();
             app.UseStaticFiles();

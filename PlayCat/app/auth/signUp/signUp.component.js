@@ -11,13 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var auth_service_1 = require("../auth.service");
+var signUpRequest_1 = require("../../data/request/signUpRequest");
 var SignUpComponent = (function () {
     function SignUpComponent(_authService) {
         this._authService = _authService;
-        this._authService.signUp().then(function (x) { return console.log(x); });
+        this.globalError = null;
+        this.errors = new Map();
     }
     SignUpComponent.prototype.OnSubmit = function () {
-        this._authService.signUp().then(function (x) { return console.log(x); });
+        var _this = this;
+        var request = new signUpRequest_1.SignUpRequest(this.firstName, this.lastName, this.email, this.password, this.confirmPassword, this.verificationCode);
+        this._authService
+            .signUp(request)
+            .then(function (signUpInResult) {
+            _this.errors = signUpInResult.errors;
+            if (!signUpInResult.ok) {
+                _this.globalError = signUpInResult.info;
+            }
+        });
     };
     return SignUpComponent;
 }());

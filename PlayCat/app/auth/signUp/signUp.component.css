@@ -94,13 +94,19 @@ input {
     width: 100%;
 }
 
-.first-name, .password {
+.first-name {
     margin-right: 5%;
 }
 
-#name-input, #password {
+.name-input {
     width: 90%;
     padding-left: 10%;
+}
+
+.password-input {
+    width: 90%;
+    padding-left: 10%;
+    margin-right: 5%;
 } 
 
 .passwords {
@@ -109,6 +115,16 @@ input {
     flex-direction: row;
     justify-content: flex-start;
     align-items: stretch;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+}
+
+
+.signup-row.passwords .password {
+    margin-right: 5%;
 }
 
 .signup-button {
@@ -133,4 +149,8 @@ a {
     font-family: Lato, sans-serif;
     font-size: 20px;
     color: #18121e;
+}
+
+.submit:hover {
+    cursor: pointer;
 }

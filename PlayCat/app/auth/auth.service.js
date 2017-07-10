@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-var signUpRequest_1 = require("../data/request/signUpRequest");
+var signUpInResult_1 = require("../data/response/signUpInResult");
 require("rxjs/add/operator/toPromise");
 var AuthService = (function () {
     function AuthService(_http) {
@@ -20,14 +20,11 @@ var AuthService = (function () {
         this.headers = new http_1.Headers();
         this.headers.append('Content-Type', 'application/json');
     }
-    AuthService.prototype.signUp = function () {
-        var object = JSON.stringify(new signUpRequest_1.SignUpRequest('vlad', 'kuz', 'mef@gmail.com', '234234gdfgf', '234234gdfgf', 'LMATJ-BQZBE-FBRZY-USVBJ'));
+    AuthService.prototype.signUp = function (request) {
+        var object = JSON.stringify(request);
         return this._http.post(this._signUpUrl, object, { headers: this.headers })
             .toPromise()
-            .then(this.extractData);
-    };
-    AuthService.prototype.extractData = function (res) {
-        return res.json(); // body || {};
+            .then(function (x) { return Object.assign(new signUpInResult_1.SignUpInResult(), x.json()); });
     };
     return AuthService;
 }());

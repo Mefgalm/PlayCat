@@ -5,11 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PlayCat.DataService;
 using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace PlayCat.Tests
@@ -23,8 +19,10 @@ namespace PlayCat.Tests
             _server = new TestServer(new WebHostBuilder().UseStartup<StartupTest>());
         }
 
+        #region Sign Up
+
         [Fact]
-        public void IsEmptyModel()
+        public void IsEmptyModelSignUp()
         {
             var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
 
@@ -49,7 +47,7 @@ namespace PlayCat.Tests
                 {
                     authService.SetDbContext(context);
 
-                    SignUpResult result = authService.SignUp(new SignUpRequest() { });
+                    SignUpInResult result = authService.SignUp(new SignUpRequest() { });
                     
                     Assert.NotNull(result);
                     Assert.False(result.Ok);
@@ -67,7 +65,7 @@ namespace PlayCat.Tests
         }
 
         [Fact]
-        public void IsNotValidKeyModel()
+        public void IsNotValidKeySignUp()
         {
             var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
             var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
@@ -93,7 +91,7 @@ namespace PlayCat.Tests
                 {
                     authService.SetDbContext(context);
 
-                    SignUpResult result = authService.SignUp(new SignUpRequest()
+                    SignUpInResult result = authService.SignUp(new SignUpRequest()
                     {
                         FirstName = "vlad",
                         LastName = "Kuz",
@@ -118,7 +116,7 @@ namespace PlayCat.Tests
         }
 
         [Fact]
-        public void IsValidKeyModel()
+        public void IsValidModelSignUp()
         {
             var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
             var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
@@ -144,7 +142,7 @@ namespace PlayCat.Tests
                 {
                     authService.SetDbContext(context);                    
 
-                    SignUpResult result = authService.SignUp(new SignUpRequest()
+                    SignUpInResult result = authService.SignUp(new SignUpRequest()
                     {
                         FirstName = "vlad",
                         LastName = "Kuz",
@@ -169,7 +167,7 @@ namespace PlayCat.Tests
         }
 
         [Fact]
-        public void IsAlreadyKeyModel()
+        public void IsUsedEmailSignUp()
         {
             var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
             var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
@@ -197,7 +195,7 @@ namespace PlayCat.Tests
 
                     string invite = inviteService.GenerateInvite();
 
-                    SignUpResult result = authService.SignUp(new SignUpRequest()
+                    SignUpInResult result = authService.SignUp(new SignUpRequest()
                     {
                         FirstName = "vlad",
                         LastName = "Kuz",
@@ -207,7 +205,7 @@ namespace PlayCat.Tests
                         VerificationCode = invite
                     });
 
-                    SignUpResult result2 = authService.SignUp(new SignUpRequest()
+                    SignUpInResult result2 = authService.SignUp(new SignUpRequest()
                     {
                         FirstName = "vlad",
                         LastName = "Kuz",
@@ -232,7 +230,7 @@ namespace PlayCat.Tests
         }
 
         [Fact]
-        public void IsAlreadyUsedInvite()
+        public void IsUsedInviteSignUp()
         {
             var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
             var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
@@ -260,7 +258,7 @@ namespace PlayCat.Tests
 
                     string invite = inviteService.GenerateInvite();
 
-                    SignUpResult result = authService.SignUp(new SignUpRequest()
+                    SignUpInResult result = authService.SignUp(new SignUpRequest()
                     {
                         FirstName = "vlad",
                         LastName = "Kuz",
@@ -270,7 +268,7 @@ namespace PlayCat.Tests
                         VerificationCode = invite
                     });
 
-                    SignUpResult result2 = authService.SignUp(new SignUpRequest()
+                    SignUpInResult result2 = authService.SignUp(new SignUpRequest()
                     {
                         FirstName = "vlad",
                         LastName = "Kuz",
@@ -293,5 +291,242 @@ namespace PlayCat.Tests
                 connection.Close();
             }
         }
+
+        #endregion
+
+        #region Sign In
+
+        [Fact]
+        public void IsValidModelSignIn()
+        {
+            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
+
+            // In-memory database only exists while the connection is open
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+
+            try
+            {
+                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
+                    .UseSqlite(connection)
+                    .Options;
+
+                // Create the schema in the database
+                using (var context = new PlayCatDbContext(options))
+                {
+                    context.Database.EnsureCreated();
+                }
+
+                // Run the test against one instance of the context
+                using (var context = new PlayCatDbContext(options))
+                {
+                    authService.SetDbContext(context);
+
+                    SignUpInResult result = authService.SignUp(new SignUpRequest()
+                    {
+                        FirstName = "vlad",
+                        LastName = "Kuz",
+                        Password = "123456abc",
+                        ConfirmPassword = "123456abc",
+                        Email = "mefgalm@gmail.com",
+                        VerificationCode = inviteService.GenerateInvite(),
+                    });
+
+                    Assert.NotNull(result);
+                    Assert.True(result.Ok);
+                    Assert.NotNull(result.User);
+                    Assert.NotNull(result.AuthToken);
+                    Assert.Null(result.Errors);
+                    Assert.Null(result.Info);
+
+                    SignUpInResult resultSignIn = authService.SignIn(new SignInRequest()
+                    {
+                        Email = "mefgalm@gmail.com",
+                        Password = "123456abc",
+                    });
+
+                    Assert.NotNull(resultSignIn);
+                    Assert.True(resultSignIn.Ok);
+                    Assert.NotNull(resultSignIn.User);
+                    Assert.NotNull(resultSignIn.AuthToken);
+                    Assert.Null(resultSignIn.Errors);
+                    Assert.Null(resultSignIn.Info);
+                }
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        [Fact]
+        public void IsUserNotFoundSignIn()
+        {
+            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
+
+            // In-memory database only exists while the connection is open
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+
+            try
+            {
+                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
+                    .UseSqlite(connection)
+                    .Options;
+
+                // Create the schema in the database
+                using (var context = new PlayCatDbContext(options))
+                {
+                    context.Database.EnsureCreated();
+                }
+
+                // Run the test against one instance of the context
+                using (var context = new PlayCatDbContext(options))
+                {
+                    authService.SetDbContext(context);
+                    SignUpInResult resultSignIn = authService.SignIn(new SignInRequest()
+                    {
+                        Email = "mefgalm@gmail.com",
+                        Password = "123456abc",
+                    });
+
+                    Assert.NotNull(resultSignIn);
+                    Assert.False(resultSignIn.Ok);
+                    Assert.Null(resultSignIn.User);
+                    Assert.Null(resultSignIn.AuthToken);
+                    Assert.Null(resultSignIn.Errors);
+                    Assert.Equal("Email or password is incorrect", resultSignIn.Info);
+                }
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        [Fact]
+        public void IsUserFoundButWrongPasswordSignIn()
+        {
+            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
+
+            // In-memory database only exists while the connection is open
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+
+            try
+            {
+                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
+                    .UseSqlite(connection)
+                    .Options;
+
+                // Create the schema in the database
+                using (var context = new PlayCatDbContext(options))
+                {
+                    context.Database.EnsureCreated();
+                }
+
+                // Run the test against one instance of the context
+                using (var context = new PlayCatDbContext(options))
+                {
+                    authService.SetDbContext(context);
+
+                    SignUpInResult result = authService.SignUp(new SignUpRequest()
+                    {
+                        FirstName = "vlad",
+                        LastName = "Kuz",
+                        Password = "123456abc",
+                        ConfirmPassword = "123456abc",
+                        Email = "mefgalm@gmail.com",
+                        VerificationCode = inviteService.GenerateInvite(),
+                    });
+
+                    Assert.NotNull(result);
+                    Assert.True(result.Ok);
+                    Assert.NotNull(result.User);
+                    Assert.NotNull(result.AuthToken);
+                    Assert.Null(result.Errors);
+                    Assert.Null(result.Info);
+
+                    SignUpInResult resultSignIn = authService.SignIn(new SignInRequest()
+                    {
+                        Email = "mefgalm@gmail.com",
+                        Password = "wrongPass1234",
+                    });
+
+                    Assert.NotNull(resultSignIn);
+                    Assert.False(resultSignIn.Ok);
+                    Assert.Null(resultSignIn.User);
+                    Assert.Null(resultSignIn.AuthToken);
+                    Assert.Null(resultSignIn.Errors);
+                    Assert.Equal("Email or password is incorrect", resultSignIn.Info);
+                }
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData(null, "12345abc")]
+        [InlineData("mefgalm@gmail.com", null)]
+        [InlineData("mefgalm@gmail.com", "12")]
+        [InlineData("mefgalm@gmail", "123456abc")]
+        [InlineData("mefgalm@gmail.com", "12345678")]
+        [InlineData("mefgalm@gmail.com", "123456789ABCDEFGH")]
+        [InlineData("mefgalm@gmail.com", "abcdertyuiop")]
+        public void IsInvalidModelSignIn(string email, string password)
+        {
+            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
+
+            // In-memory database only exists while the connection is open
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+
+            try
+            {
+                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
+                    .UseSqlite(connection)
+                    .Options;
+
+                // Create the schema in the database
+                using (var context = new PlayCatDbContext(options))
+                {
+                    context.Database.EnsureCreated();
+                }
+
+                // Run the test against one instance of the context
+                using (var context = new PlayCatDbContext(options))
+                {
+                    authService.SetDbContext(context);
+
+                    SignUpInResult resultSignIn = authService.SignIn(new SignInRequest()
+                    {
+                        Email = email,
+                        Password = password,
+                    });
+
+                    Assert.NotNull(resultSignIn);
+                    Assert.False(resultSignIn.Ok);
+                    Assert.Null(resultSignIn.User);
+                    Assert.Null(resultSignIn.AuthToken);
+                    Assert.NotNull(resultSignIn.Errors);
+                    Assert.NotEmpty(resultSignIn.Errors);
+                    Assert.Equal("Model is not valid", resultSignIn.Info);
+                }
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        #endregion
     }
 }

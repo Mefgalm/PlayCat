@@ -13,6 +13,8 @@ namespace PlayCat.DataModel
     
         public Guid UserId { get; set; }
 
+        public bool IsActive { get; set; }
+
         [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; }
     }

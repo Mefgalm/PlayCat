@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlayCat.DataService;
+using PlayCat.DataService.Helpers;
 using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
 
@@ -17,8 +18,8 @@ namespace PlayCat.Controllers
         }
 
         [HttpPost("signUp")]
-        public SignUpResult SignUp([FromBody] SignUpRequest request)
-        {
+        public SignUpInResult SignUp([FromBody] SignUpRequest request)
+        {            
             return _authService.SignUp(request);
         }
     }

@@ -2,10 +2,8 @@
 
 namespace PlayCat.DataService
 {
-    public interface IAudioService
+    public interface IAudioService : ISetDbContext
     {
         UploadAudioResult UploadAudio(string youtubeLink);
-
-        void SetDbContext(PlayCatDbContext dbContext);
     }
 }

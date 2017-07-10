@@ -10,6 +10,7 @@ var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
 var platform_browser_1 = require("@angular/platform-browser");
 var auth_service_1 = require("../auth/auth.service");
+var forms_1 = require("@angular/forms");
 var signIn_component_1 = require("./signIn/signIn.component");
 var signUp_component_1 = require("./signUp/signUp.component");
 var AuthModule = (function () {
@@ -22,7 +23,8 @@ AuthModule = __decorate([
         imports: [
             platform_browser_1.BrowserModule,
             http_1.HttpModule,
-            http_1.JsonpModule
+            http_1.JsonpModule,
+            forms_1.FormsModule
         ],
         declarations: [
             signIn_component_1.SignInComponent,
