@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using PlayCat.DataService.Attributes.RegexValidation;
 using System.ComponentModel.DataAnnotations;
 
 namespace PlayCat.DataService.Request
