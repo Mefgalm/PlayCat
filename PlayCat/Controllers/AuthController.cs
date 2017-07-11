@@ -22,5 +22,11 @@ namespace PlayCat.Controllers
         {            
             return _authService.SignUp(request);
         }
+
+        [HttpPost("signIn")]
+        public SignUpInResult SignIn([FromBody] SignInRequest request)
+        {
+            return _authService.SignIn(request);
+        }
     }
 }

@@ -11,24 +11,57 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var auth_service_1 = require("../auth.service");
+var forms_1 = require("@angular/forms");
 var signUpRequest_1 = require("../../data/request/signUpRequest");
 var SignUpComponent = (function () {
-    function SignUpComponent(_authService) {
+    function SignUpComponent(_fb, _authService) {
+        this._fb = _fb;
         this._authService = _authService;
         this.globalError = null;
         this.errors = new Map();
     }
-    SignUpComponent.prototype.OnSubmit = function () {
-        var _this = this;
-        var request = new signUpRequest_1.SignUpRequest(this.firstName, this.lastName, this.email, this.password, this.confirmPassword, this.verificationCode);
-        this._authService
-            .signUp(request)
-            .then(function (signUpInResult) {
-            _this.errors = signUpInResult.errors;
-            if (!signUpInResult.ok) {
-                _this.globalError = signUpInResult.info;
-            }
+    SignUpComponent.prototype.ngOnInit = function () {
+        this.signUpForm = this._fb.group({
+            firstName: [null, forms_1.Validators.required],
+            lastName: [null, forms_1.Validators.required],
+            email: [null, forms_1.Validators.required],
+            password: [null, forms_1.Validators.required],
+            confirmPassword: [null, forms_1.Validators.required],
+            verificationCode: [null, forms_1.Validators.required],
         });
+    };
+    //public OnSubmit() {
+    //    var request = new SignUpRequest(
+    //        this.firstName,
+    //        this.lastName,
+    //        this.email,
+    //        this.password,
+    //        this.confirmPassword,
+    //        this.verificationCode);
+    //    this._authService
+    //        .signUp(request)
+    //        .then(signUpInResult => {
+    //            this.errors = signUpInResult.errors;
+    //            if (!signUpInResult.ok) {
+    //                this.globalError = signUpInResult.info;
+    //            }
+    //        });
+    //}
+    SignUpComponent.prototype.save = function (_a) {
+        var _this = this;
+        var value = _a.value, valid = _a.valid;
+        console.log(value);
+        if (valid) {
+            var request = new signUpRequest_1.SignUpRequest(value.firstName, value.lastName, value.email, value.password, value.confirmPassword, value.verificationCode);
+            this._authService
+                .signUp(request)
+                .then(function (signUpInResult) {
+                _this.errors = signUpInResult.errors;
+                if (!signUpInResult.ok) {
+                    _this.globalError = signUpInResult.info;
+                }
+            });
+        }
     };
     return SignUpComponent;
 }());
@@ -38,7 +71,7 @@ SignUpComponent = __decorate([
         templateUrl: './app/auth/signUp/signUp.component.html',
         styleUrls: ['./app/auth/signUp/signUp.component.css'],
     }),
-    __metadata("design:paramtypes", [auth_service_1.AuthService])
+    __metadata("design:paramtypes", [forms_1.FormBuilder, auth_service_1.AuthService])
 ], SignUpComponent);
 exports.SignUpComponent = SignUpComponent;
 //# sourceMappingURL=signUp.component.js.map
