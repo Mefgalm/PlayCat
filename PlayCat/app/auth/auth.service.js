@@ -16,6 +16,7 @@ require("rxjs/add/operator/toPromise");
 var AuthService = (function () {
     function AuthService(_http) {
         this._http = _http;
+        this._signInUrl = 'api/auth/signIn';
         this._signUpUrl = 'api/auth/signUp';
         this.headers = new http_1.Headers();
         this.headers.append('Content-Type', 'application/json');
@@ -23,6 +24,12 @@ var AuthService = (function () {
     AuthService.prototype.signUp = function (request) {
         var object = JSON.stringify(request);
         return this._http.post(this._signUpUrl, object, { headers: this.headers })
+            .toPromise()
+            .then(function (x) { return Object.assign(new signUpInResult_1.SignUpInResult(), x.json()); });
+    };
+    AuthService.prototype.signIn = function (request) {
+        var object = JSON.stringify(request);
+        return this._http.post(this._signInUrl, object, { headers: this.headers })
             .toPromise()
             .then(function (x) { return Object.assign(new signUpInResult_1.SignUpInResult(), x.json()); });
     };

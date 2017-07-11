@@ -24,7 +24,8 @@ AuthModule = __decorate([
             platform_browser_1.BrowserModule,
             http_1.HttpModule,
             http_1.JsonpModule,
-            forms_1.ReactiveFormsModule
+            forms_1.ReactiveFormsModule,
+            forms_1.FormsModule
         ],
         declarations: [
             signIn_component_1.SignInComponent,

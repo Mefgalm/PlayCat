@@ -2,7 +2,7 @@
 import { HttpModule, JsonpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthService } from '../auth/auth.service';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { SignInComponent } from './signIn/signIn.component';
 import { SignUpComponent } from './signUp/signUp.component';
@@ -12,7 +12,8 @@ import { SignUpComponent } from './signUp/signUp.component';
         BrowserModule,
         HttpModule,
         JsonpModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormsModule
     ],
     declarations: [
         SignInComponent,

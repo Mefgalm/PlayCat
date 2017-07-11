@@ -5,11 +5,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var auth_service_1 = require("../auth.service");
+var signInRequest_1 = require("../../data/request/signInRequest");
 var SignInComponent = (function () {
-    function SignInComponent() {
+    function SignInComponent(_authService) {
+        this._authService = _authService;
+        this.globalError = null;
+        this.errors = new Map();
     }
+    SignInComponent.prototype.OnSubmit = function () {
+        var _this = this;
+        var request = new signInRequest_1.SignInRequest(this.email, this.password);
+        this._authService
+            .signIn(request)
+            .then(function (signUpInResult) {
+            console.log(signUpInResult);
+            _this.errors = signUpInResult.errors;
+            if (!signUpInResult.ok) {
+                _this.globalError = signUpInResult.info;
+            }
+        });
+    };
     return SignInComponent;
 }());
 SignInComponent = __decorate([
@@ -17,7 +38,8 @@ SignInComponent = __decorate([
         selector: 'signIn',
         templateUrl: './app/auth/signIn/signIn.component.html',
         styleUrls: ['./app/auth/signIn/signIn.component.css'],
-    })
+    }),
+    __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], SignInComponent);
 exports.SignInComponent = SignInComponent;
 //# sourceMappingURL=signIn.component.js.map

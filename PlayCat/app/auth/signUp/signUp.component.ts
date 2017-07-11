@@ -75,6 +75,7 @@ export class SignUpComponent {
             this._authService
                 .signUp(request)
                 .then(signUpInResult => {
+                    console.log(signUpInResult);
                     this.errors = signUpInResult.errors;
                     if (!signUpInResult.ok) {
                         this.globalError = signUpInResult.info;

@@ -56,6 +56,7 @@ var SignUpComponent = (function () {
             this._authService
                 .signUp(request)
                 .then(function (signUpInResult) {
+                console.log(signUpInResult);
                 _this.errors = signUpInResult.errors;
                 if (!signUpInResult.ok) {
                     _this.globalError = signUpInResult.info;
