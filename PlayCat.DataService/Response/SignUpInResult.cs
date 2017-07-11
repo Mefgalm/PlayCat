@@ -9,6 +9,6 @@ namespace PlayCat.DataService.Response
 
         public AuthToken AuthToken { get; set; }
 
-        public IDictionary<string, IEnumerable<string>> Errors { get; set; }
+        public IDictionary<string, string> Errors { get; set; }
     }
 }

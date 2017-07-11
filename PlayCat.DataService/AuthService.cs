@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlayCat.DataService.Helpers;
+using PlayCat.DataService.Mappers;
 using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
 using System;
@@ -42,7 +43,7 @@ namespace PlayCat.DataService
             string salt = Crypto.GenerateSalt();
             string passwordHah = Crypto.HashPassword(request.Password + salt);
 
-            var dataUser = Mappers.UserMapper.ToData.Get(request, (user) =>
+            var dataUser = UserMapper.ToData.Get(request, (user) =>
             {
                 user.Id = Guid.NewGuid();
                 user.IsUploadingAudio = false;
@@ -65,8 +66,8 @@ namespace PlayCat.DataService
 
             return ResponseFactory.With(new SignUpInResult()
             {
-                User = Mappers.UserMapper.ToApi.Get(dataUser),
-                AuthToken = Mappers.AuthTokenMapper.ToApi.Get(dataAuthToken),
+                User = UserMapper.ToApi.Get(dataUser),
+                AuthToken = AuthTokenMapper.ToApi.Get(dataAuthToken),
             }).Success();
         }
 
@@ -96,8 +97,8 @@ namespace PlayCat.DataService
 
             return ResponseFactory.With(new SignUpInResult()
             {
-                User = Mappers.UserMapper.ToApi.Get(dataUser),
-                AuthToken = Mappers.AuthTokenMapper.ToApi.Get(dataUser.AuthToken),
+                User = UserMapper.ToApi.Get(dataUser),
+                AuthToken = AuthTokenMapper.ToApi.Get(dataUser.AuthToken),
             }).Success();
         }
     }

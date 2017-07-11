@@ -132,11 +132,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\FieldResult.cs" />
-    <Compile Include="Attributes\RegexValidation\RegexValidationAttribute.cs" />
-    <Compile Include="Attributes\ValidateResult.cs" />
-    <Compile Include="Attributes\ValidationAttribute.cs" />
-    <Compile Include="Helpers\Validator.cs" />
     <Compile Include="AudioService.cs" />
     <Compile Include="AuthService.cs" />
     <Compile Include="BaseService.cs" />
@@ -198,8 +193,6 @@
       <Name>YoutubeExtractor</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Attributes\PropertyCompare\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
