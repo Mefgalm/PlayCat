@@ -1,29 +1,31 @@
 ﻿<div class="login-page">
     <div class="login">
         <!--<div class="background"></div>-->
-        <div class="login-inside">
+        <form [formGroup]="signInForm" novalidate class="login-inside" (ngSubmit)="save(signInForm)">
             <div class="error" [hidden]="!globalError">{{globalError}}</div>
             <div class="login-row"><button class="submit login-google" id="submit">Login with Google</button></div>
             <div class="login-row"><p style="text-align:center;">or</p></div>
             <div class="login-row">
-                <input type="e-mail" class="input e-mail" [(ngModel)]="email" placeholder="e-mail" />
-                <div *ngIf="errors && errors['email']" class="error login-error">
-                    {{errors['email'][0]}}
-                </div>
+                <input type="e-mail" class="input e-mail" formControlName="email" placeholder="e-mail" />  
+                <error *ngIf="signInForm.get('email').dirty"
+                       [errorObject]="errorsValidation['email']" 
+                       [actualErrors]="signInForm.get('email').errors">
+                </error>
             </div>
             <div class="login-row">
-                <input type="password" class="input password-input" [(ngModel)]="password" placeholder="password" />
-                <div *ngIf="errors && errors['password']" class="error login-error">
-                    {{errors['password'][0]}}
-                </div>
+                <input type="password" class="input password-input" formControlName="password" placeholder="password" />
+                <error *ngIf="signInForm.get('password').dirty"
+                       [errorObject]="errorsValidation['password']"
+                       [actualErrors]="signInForm.get('password').errors">
+                </error>
             </div>
             <div class="login-row">
-                <button class="submit login-button" (click)="OnSubmit()">Login</button>
+                <button class="submit login-button" type="submit">Login</button>
             </div>
             <div class="login-row down-form">
                     <a href="/signUp">sign up</a>
                     <a href="">forgot password?</a>
             </div>
-         </div>
+         </form>
     </div>
 </div>

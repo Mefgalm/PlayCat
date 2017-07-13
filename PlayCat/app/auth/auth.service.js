@@ -10,34 +10,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
 var signUpInResult_1 = require("../data/response/signUpInResult");
+var http_service_1 = require("../shared/services/http.service");
 require("rxjs/add/operator/toPromise");
 var AuthService = (function () {
-    function AuthService(_http) {
-        this._http = _http;
+    function AuthService(_httpService) {
+        this._httpService = _httpService;
         this._signInUrl = 'api/auth/signIn';
         this._signUpUrl = 'api/auth/signUp';
-        this.headers = new http_1.Headers();
-        this.headers.append('Content-Type', 'application/json');
     }
     AuthService.prototype.signUp = function (request) {
-        var object = JSON.stringify(request);
-        return this._http.post(this._signUpUrl, object, { headers: this.headers })
-            .toPromise()
+        return this._httpService.post(this._signUpUrl, JSON.stringify(request))
             .then(function (x) { return Object.assign(new signUpInResult_1.SignUpInResult(), x.json()); });
     };
     AuthService.prototype.signIn = function (request) {
-        var object = JSON.stringify(request);
-        return this._http.post(this._signInUrl, object, { headers: this.headers })
-            .toPromise()
+        return this._httpService.post(this._signInUrl, JSON.stringify(request))
             .then(function (x) { return Object.assign(new signUpInResult_1.SignUpInResult(), x.json()); });
     };
     return AuthService;
 }());
 AuthService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
+    __metadata("design:paramtypes", [http_service_1.HttpService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

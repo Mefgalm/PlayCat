@@ -11,25 +11,49 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var auth_service_1 = require("../auth.service");
+var form_service_1 = require("../../shared/services/form.service");
+var forms_1 = require("@angular/forms");
 var signInRequest_1 = require("../../data/request/signInRequest");
 var SignInComponent = (function () {
-    function SignInComponent(_authService) {
+    function SignInComponent(_fb, _authService, _formService) {
+        this._fb = _fb;
         this._authService = _authService;
+        this._formService = _formService;
         this.globalError = null;
         this.errors = new Map();
+        this.errorsValidation = {};
+        this.errorsValidation['email'] = {
+            required: 'Field email is required',
+            pattern: 'Pattern is invalid'
+        };
+        this.errorsValidation['password'] = {
+            required: 'Field password is required',
+        };
     }
-    SignInComponent.prototype.OnSubmit = function () {
-        var _this = this;
-        var request = new signInRequest_1.SignInRequest(this.email, this.password);
-        this._authService
-            .signIn(request)
-            .then(function (signUpInResult) {
-            console.log(signUpInResult);
-            _this.errors = signUpInResult.errors;
-            if (!signUpInResult.ok) {
-                _this.globalError = signUpInResult.info;
-            }
+    SignInComponent.prototype.ngOnInit = function () {
+        this.signInForm = this._fb.group({
+            email: [null, forms_1.Validators.required],
+            password: [null, forms_1.Validators.required]
         });
+    };
+    SignInComponent.prototype.save = function (_a) {
+        var _this = this;
+        var value = _a.value, valid = _a.valid;
+        if (valid) {
+            var request = new signInRequest_1.SignInRequest(value.email, value.password);
+            this._authService
+                .signIn(request)
+                .then(function (signUpInResult) {
+                console.log(signUpInResult);
+                _this.errors = signUpInResult.errors;
+                if (!signUpInResult.ok) {
+                    _this.globalError = signUpInResult.info;
+                }
+            });
+        }
+        else {
+            this._formService.markControlsAsDirty(this.signInForm);
+        }
     };
     return SignInComponent;
 }());
@@ -39,7 +63,9 @@ SignInComponent = __decorate([
         templateUrl: './app/auth/signIn/signIn.component.html',
         styleUrls: ['./app/auth/signIn/signIn.component.css'],
     }),
-    __metadata("design:paramtypes", [auth_service_1.AuthService])
+    __metadata("design:paramtypes", [forms_1.FormBuilder,
+        auth_service_1.AuthService,
+        form_service_1.FormService])
 ], SignInComponent);
 exports.SignInComponent = SignInComponent;
 //# sourceMappingURL=signIn.component.js.map

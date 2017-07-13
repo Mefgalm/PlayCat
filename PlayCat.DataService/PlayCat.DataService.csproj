@@ -121,6 +121,9 @@
       <HintPath>..\packages\System.Text.Encodings.Web.4.3.0\lib\netstandard1.0\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Helpers.Crypto, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Web.Helpers.Crypto.3.2.3\lib\net40\System.Web.Helpers.Crypto.dll</HintPath>
     </Reference>
@@ -135,6 +138,7 @@
     <Compile Include="AudioService.cs" />
     <Compile Include="AuthService.cs" />
     <Compile Include="BaseService.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\HttpRequester.cs" />
     <Compile Include="Helpers\ModelValidationResult.cs" />
     <Compile Include="Helpers\ModelValidator.cs" />
@@ -142,6 +146,7 @@
     <Compile Include="IAudioService.cs" />
     <Compile Include="IAuthService.cs" />
     <Compile Include="IInviteService.cs" />
+    <Compile Include="IModelValidation.cs" />
     <Compile Include="InviteService.cs" />
     <Compile Include="ISetDbContext.cs" />
     <Compile Include="Mappers\AuthTokenMapper.cs" />
@@ -155,6 +160,7 @@
       <DependentUpon>20170710222835_rename-fields.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\PlayCatDbContextModelSnapshot.cs" />
+    <Compile Include="ModelValidationService.cs" />
     <Compile Include="PlayCatDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\SignInRequest.cs" />

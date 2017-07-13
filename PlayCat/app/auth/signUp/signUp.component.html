@@ -1,7 +1,7 @@
 ﻿<div class="signup-page">
     <div class="signup">
         <!--<div class="background"></div>-->        
-        <form [formGroup]="signUpForm" novalidate class="signup-inside" (ngSubmit)="save(signUpForm)">
+        <form [formGroup]="signUpForm" class="signup-inside" (ngSubmit)="save(signUpForm)">
             <div class="error" [hidden]="!globalError">{{globalError}}</div>
             <div class="signup-row first-last-name">
                 <div class="first-name">

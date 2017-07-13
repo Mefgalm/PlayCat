@@ -5,5 +5,5 @@ import { AuthToken } from '../authToken';
 export class SignUpInResult extends BaseResult {
     user: User;
     authToken: AuthToken;
-    errors: Map<string, string[]>;
+    errors: Map<string, string>;
 }

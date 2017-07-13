@@ -1,7 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-
+import { FormService } from '../../shared/services/form.service';
 
 import { SignUpRequest } from '../../data/request/signUpRequest';
 import { SignUpInResult } from '../../data/response/signUpInResult';
@@ -13,26 +13,23 @@ import { SignUpInResult } from '../../data/response/signUpInResult';
 })
 
 export class SignUpComponent {
-    //public firstName: string;
-    //public lastName: string;
-    //public email: string;
-    //public password: string;
-    //public confirmPassword: string;
-    //public verificationCode: string;
-
-    public errors: Map<string, string[]>;
+    public errors: Map<string, string>;
     public globalError: string;
 
     public signUpForm: FormGroup;
 
-    constructor(private _fb: FormBuilder, private _authService: AuthService) {
+    constructor(
+        private _fb: FormBuilder,
+        private _authService: AuthService,
+        private _formService: FormService) {
+
         this.globalError = null;
-        this.errors = new Map<string, string[]>();
+        this.errors = new Map<string, string>();
     }
 
     ngOnInit() {
         this.signUpForm = this._fb.group({
-            firstName: [null, Validators.required],
+            firstName: [null, Validators.compose([Validators.required, Validators.pattern('^vl')])],
             lastName: [null, Validators.required],
             email: [null, Validators.required],
             password: [null, Validators.required],
@@ -41,46 +38,25 @@ export class SignUpComponent {
         });
     }
 
-    //public OnSubmit() {
-    //    var request = new SignUpRequest(
-    //        this.firstName,
-    //        this.lastName,
-    //        this.email,
-    //        this.password,
-    //        this.confirmPassword,
-    //        this.verificationCode);
-
-    //    this._authService
-    //        .signUp(request)
-    //        .then(signUpInResult => {
-    //            this.errors = signUpInResult.errors;
-    //            if (!signUpInResult.ok) {
-    //                this.globalError = signUpInResult.info;
-    //            }
-    //        });
-    //}
-
     public save({ value, valid }: { value: any, valid: boolean }) {
-        console.log(value);
 
-        if (valid) {
-          var request = new SignUpRequest(
-              value.firstName,
-              value.lastName,
-              value.email,
-              value.password,
-              value.confirmPassword,
-              value.verificationCode);
 
-            this._authService
-                .signUp(request)
-                .then(signUpInResult => {
-                    console.log(signUpInResult);
-                    this.errors = signUpInResult.errors;
-                    if (!signUpInResult.ok) {
-                        this.globalError = signUpInResult.info;
-                    }
-                });
-        }
+        var request = new SignUpRequest(
+            value.firstName,
+            value.lastName,
+            value.email,
+            value.password,
+            value.confirmPassword,
+            value.verificationCode);
+
+        this._authService
+            .signUp(request)
+            .then(signUpInResult => {
+                console.log(signUpInResult);
+                this.errors = signUpInResult.errors;
+                if (!signUpInResult.ok) {
+                    this.globalError = signUpInResult.info;
+                }
+            });
     }
 }

@@ -19,7 +19,7 @@ namespace PlayCat.DataService.Helpers
             return new ModelValidationResult()
             {
                 Ok = false,
-                Errors = errors.ToDictionary(x => x.MemberNames.FirstOrDefault(), y => y.ErrorMessage),
+                Errors = errors.ToDictionary(x => x.MemberNames.FirstOrDefault() ?? "", y => y.ErrorMessage),
             };
         }
     }

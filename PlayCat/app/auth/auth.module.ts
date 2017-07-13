@@ -2,10 +2,14 @@
 import { HttpModule, JsonpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthService } from '../auth/auth.service';
+import { HttpService } from '../shared/services/http.service';
+import { FormService } from '../shared/services/form.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { SignInComponent } from './signIn/signIn.component';
 import { SignUpComponent } from './signUp/signUp.component';
+
+import { ErrorComponent } from '../shared/components/error.component';
 
 @NgModule({
     imports: [
@@ -17,10 +21,10 @@ import { SignUpComponent } from './signUp/signUp.component';
     ],
     declarations: [
         SignInComponent,
-        SignUpComponent
+        SignUpComponent,
+        ErrorComponent
     ],
-    exports: [SignInComponent, SignUpComponent],
-    providers: [AuthService],
+    providers: [AuthService, HttpService, FormService],
 })
 export class AuthModule {
 
