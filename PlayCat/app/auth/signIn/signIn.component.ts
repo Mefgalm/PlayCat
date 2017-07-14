@@ -2,6 +2,7 @@
 import { AuthService } from '../auth.service';
 import { FormService } from '../../shared/services/form.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { ValidationService } from '../../shared/services/validation.service';
 
 import { ErrorComponent } from '../../shared/components/error.component';
 

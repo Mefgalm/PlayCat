@@ -146,7 +146,7 @@
     <Compile Include="IAudioService.cs" />
     <Compile Include="IAuthService.cs" />
     <Compile Include="IInviteService.cs" />
-    <Compile Include="IModelValidation.cs" />
+    <Compile Include="IModelValidationService.cs" />
     <Compile Include="InviteService.cs" />
     <Compile Include="ISetDbContext.cs" />
     <Compile Include="Mappers\AuthTokenMapper.cs" />
@@ -172,6 +172,8 @@
     <Compile Include="Response\SignUpInResult.cs" />
     <Compile Include="Response\UploadAudioResult.cs" />
     <Compile Include="ServiceProvider.cs" />
+    <Compile Include="Test\EmptyClass.cs" />
+    <Compile Include="Test\TestClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

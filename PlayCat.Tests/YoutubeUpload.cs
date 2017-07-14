@@ -1,7 +1,5 @@
 ﻿using PlayCat.DataService;
 using Xunit;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.AspNetCore.Hosting;
 using PlayCat.DataService.Response;
 using PlayCat.Music.Youtube;
 using Microsoft.Data.Sqlite;
@@ -10,15 +8,8 @@ using System.IO;
 
 namespace PlayCat.Tests
 {
-    public class YoutubeUpload
+    public class YoutubeUpload : BaseTest
     {
-        private readonly TestServer _server;
-
-        public YoutubeUpload()
-        {
-            _server = new TestServer(new WebHostBuilder().UseStartup<StartupTest>());
-        }
-
         [Fact]
         public void IsErrorOnNull()
         {

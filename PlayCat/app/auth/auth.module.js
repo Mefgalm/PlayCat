@@ -12,6 +12,7 @@ var platform_browser_1 = require("@angular/platform-browser");
 var auth_service_1 = require("../auth/auth.service");
 var http_service_1 = require("../shared/services/http.service");
 var form_service_1 = require("../shared/services/form.service");
+var validation_service_1 = require("../shared/services/validation.service");
 var forms_1 = require("@angular/forms");
 var signIn_component_1 = require("./signIn/signIn.component");
 var signUp_component_1 = require("./signUp/signUp.component");
@@ -35,7 +36,12 @@ AuthModule = __decorate([
             signUp_component_1.SignUpComponent,
             error_component_1.ErrorComponent
         ],
-        providers: [auth_service_1.AuthService, http_service_1.HttpService, form_service_1.FormService],
+        providers: [
+            auth_service_1.AuthService,
+            http_service_1.HttpService,
+            form_service_1.FormService,
+            validation_service_1.ValidationService
+        ]
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

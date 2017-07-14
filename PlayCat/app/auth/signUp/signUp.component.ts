@@ -2,6 +2,7 @@
 import { AuthService } from '../auth.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FormService } from '../../shared/services/form.service';
+import { ValidationService } from '../../shared/services/validation.service';
 
 import { SignUpRequest } from '../../data/request/signUpRequest';
 import { SignUpInResult } from '../../data/response/signUpInResult';
@@ -21,7 +22,9 @@ export class SignUpComponent {
     constructor(
         private _fb: FormBuilder,
         private _authService: AuthService,
-        private _formService: FormService) {
+        private _formService: FormService,
+        private _validationService: ValidationService
+    ) {
 
         this.globalError = null;
         this.errors = new Map<string, string>();

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using PlayCat.DataService;
 using PlayCat.DataService.Request;
@@ -10,15 +8,8 @@ using Xunit;
 
 namespace PlayCat.Tests
 {
-    public class Auth
+    public class Auth : BaseTest
     {
-        private readonly TestServer _server;
-
-        public Auth()
-        {
-            _server = new TestServer(new WebHostBuilder().UseStartup<StartupTest>());
-        }
-
         #region Sign Up
 
         [Fact]

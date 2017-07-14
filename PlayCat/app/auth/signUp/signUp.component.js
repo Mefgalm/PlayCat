@@ -13,12 +13,14 @@ var core_1 = require("@angular/core");
 var auth_service_1 = require("../auth.service");
 var forms_1 = require("@angular/forms");
 var form_service_1 = require("../../shared/services/form.service");
+var validation_service_1 = require("../../shared/services/validation.service");
 var signUpRequest_1 = require("../../data/request/signUpRequest");
 var SignUpComponent = (function () {
-    function SignUpComponent(_fb, _authService, _formService) {
+    function SignUpComponent(_fb, _authService, _formService, _validationService) {
         this._fb = _fb;
         this._authService = _authService;
         this._formService = _formService;
+        this._validationService = _validationService;
         this.globalError = null;
         this.errors = new Map();
     }
@@ -56,7 +58,8 @@ SignUpComponent = __decorate([
     }),
     __metadata("design:paramtypes", [forms_1.FormBuilder,
         auth_service_1.AuthService,
-        form_service_1.FormService])
+        form_service_1.FormService,
+        validation_service_1.ValidationService])
 ], SignUpComponent);
 exports.SignUpComponent = SignUpComponent;
 //# sourceMappingURL=signUp.component.js.map

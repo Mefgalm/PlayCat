@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AuthService } from '../auth/auth.service';
 import { HttpService } from '../shared/services/http.service';
 import { FormService } from '../shared/services/form.service';
+import { ValidationService } from '../shared/services/validation.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { SignInComponent } from './signIn/signIn.component';
@@ -24,7 +25,12 @@ import { ErrorComponent } from '../shared/components/error.component';
         SignUpComponent,
         ErrorComponent
     ],
-    providers: [AuthService, HttpService, FormService],
+    providers: [
+        AuthService,
+        HttpService,
+        FormService,
+        ValidationService
+    ]
 })
 export class AuthModule {
 
