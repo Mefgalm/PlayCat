@@ -312,46 +312,7 @@ namespace PlayCat.Tests
                     Assert.True(resultSignIn.ShowInfo);
                 }
             });
-        }
-
-
-        [Theory]
-        [InlineData(null, null)]
-        [InlineData(null, "12345abc")]
-        [InlineData("mefgalm@gmail.com", null)]
-        [InlineData("mefgalm@gmail.com", "12")]
-        [InlineData("mefgalm@gmail", "123456abc")]
-        [InlineData("mefgalm@gmail.com", "12345678")]
-        [InlineData("mefgalm@gmail.com", "123456789ABCDEFGH")]
-        [InlineData("mefgalm@gmail.com", "abcdertyuiop")]
-        public void IsInvalidModelSignIn(string email, string password)
-        {            
-            SqlLiteDatabaseTest(options =>
-            {
-                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
-                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
-
-                using (var context = new PlayCatDbContext(options))
-                {
-                    authService.SetDbContext(context);
-
-                    SignUpInResult resultSignIn = authService.SignIn(new SignInRequest()
-                    {
-                        Email = email,
-                        Password = password,
-                    });
-
-                    Assert.NotNull(resultSignIn);
-                    Assert.False(resultSignIn.Ok);
-                    Assert.Null(resultSignIn.User);
-                    Assert.Null(resultSignIn.AuthToken);
-                    Assert.NotNull(resultSignIn.Errors);
-                    Assert.NotEmpty(resultSignIn.Errors);
-                    Assert.Equal("Model is not valid", resultSignIn.Info);
-                    Assert.False(resultSignIn.ShowInfo);
-                }
-            });
-        }
+        }        
 
         #endregion
     }
