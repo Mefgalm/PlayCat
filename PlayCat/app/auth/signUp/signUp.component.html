@@ -6,48 +6,48 @@
             <div class="signup-row first-last-name">
                 <div class="first-name">
                     <input type="text" class="input name-input" formControlName="firstName" placeholder="first name" />
-                    <div *ngIf="signUpForm.get('firstName').errors && signUpForm.get('firstName').dirty"
-                         class="error signup-error">
-                        Error
-                    </div>
+                    <error *ngIf="signUpForm.get('firstName').dirty"
+                           [errorObject]="errorsValidation['firstName']"
+                           [actualErrors]="signUpForm.get('firstName').errors">
+                    </error>
                 </div>
                 <div class="last-name">
                     <input type="text" class="input name-input" formControlName="lastName" placeholder="last name" />
-                    <div *ngIf="signUpForm.get('lastName').errors && signUpForm.get('lastName').dirty"
-                         class="error signup-error">
-                        Error
-                    </div>
+                    <error *ngIf="signUpForm.get('lastName').dirty"
+                           [errorObject]="errorsValidation['lastName']"
+                           [actualErrors]="signUpForm.get('lastName').errors">
+                    </error>
                 </div>
             </div>
             <div class="signup-row">
                 <input type="e-mail" class="input e-mail" formControlName="email" placeholder="e-mail" />
-                <div *ngIf="signUpForm.get('email').errors && signUpForm.get('email').dirty"
-                     class="error signup-error">
-                    Error
-                </div>
+                <error *ngIf="signUpForm.get('email').dirty"
+                       [errorObject]="errorsValidation['email']"
+                       [actualErrors]="signUpForm.get('email').errors">
+                </error>
             </div>
             <div class="signup-row passwords">
                 <div class="password">
                     <input type="password" class="input password-input" formControlName="password" placeholder="password" />
-                    <div *ngIf="signUpForm.get('password').errors && signUpForm.get('password').dirty"
-                         class="error signup-error">
-                        Error
-                    </div>
+                    <error *ngIf="signUpForm.get('password').dirty"
+                           [errorObject]="errorsValidation['password']"
+                           [actualErrors]="signUpForm.get('password').errors">
+                    </error>
                 </div>
                 <div class="password-ver">
                     <input type="password" class="input password-input" formControlName="confirmPassword" placeholder="password (again)" />
-                    <div *ngIf="signUpForm.get('confirmPassword').errors && signUpForm.get('confirmPassword').dirty"
-                         class="error signup-error">
-                        Error
-                    </div>
+                    <error *ngIf="signUpForm.get('confirmPassword').dirty"
+                           [errorObject]="errorsValidation['confirmPassword']"
+                           [actualErrors]="signUpForm.get('confirmPassword').errors">
+                    </error>
                 </div>
             </div>
             <div class="signup-row">
                 <input type="text" class="input verification-code" formControlName="verificationCode" placeholder="verification code" />
-                <div *ngIf="signUpForm.get('verificationCode').errors && signUpForm.get('verificationCode').dirty"
-                     class="error signup-error">
-                    Error
-                </div>
+                <error *ngIf="signUpForm.get('verificationCode').dirty"
+                       [errorObject]="errorsValidation['verificationCode']"
+                       [actualErrors]="signUpForm.get('verificationCode').errors">
+                </error>
             </div>
             <div class="signup-row">
                 <button class="submit signup-button" type="submit">Sign up</button>

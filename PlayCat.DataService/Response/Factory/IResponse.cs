@@ -7,6 +7,8 @@ namespace PlayCat.DataService
     {
         T Source { get; }
         T Fail(string info);
+        IResponse<T> ShowInfo();
+        IResponse<T> HideInfo();
         T Success(string info = null);
     }
 }

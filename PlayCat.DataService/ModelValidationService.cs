@@ -10,15 +10,16 @@ namespace PlayCat.DataService
     {
         public const string Pattern = "pattern";
         public const string Required = "required";
+        public const string Compare = "compare";
 
-        public string AssemblyName { get; set;} = "PlayCat.DataService.Test.";
+        public string AssemblyName { get; set; } = "PlayCat.DataService.Request.";
 
-        public IDictionary<string, IDictionary<string, string>> GetModel(string typeName)
+        public IDictionary<string, IDictionary<string, ValidationModel>> GetModel(string typeName)
         {
             Assembly assembly = GetType().Assembly;
             BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance;
 
-            var modelValidationDictionary = new Dictionary<string, IDictionary<string, string>>();
+            var modelValidationDictionary = new Dictionary<string, IDictionary<string, ValidationModel>>();
             try
             {
                 Type type = assembly.GetType(AssemblyName + typeName);
@@ -40,37 +41,45 @@ namespace PlayCat.DataService
             }
         }
 
-        private IDictionary<string, string> GetMappedAttributes(string propName, IEnumerable<ValidationAttribute> validationAttributes)
+        private IDictionary<string, ValidationModel> GetMappedAttributes(string propName, IEnumerable<ValidationAttribute> validationAttributes)
         {
             if (validationAttributes is null)
                 throw new ArgumentNullException(nameof(validationAttributes));
 
-            var attrDictionary = new Dictionary<string, string>();
+            var attrDictionary = new Dictionary<string, ValidationModel>();
             foreach (var attr in validationAttributes)
             {
                 var pair = GetValidationKey(propName, attr);
                 if (pair.errorMessage != null && pair.validationRule != null)
                 {
-                    attrDictionary.Add(pair.validationRule, pair.errorMessage);
+                    attrDictionary.Add(pair.validationRule, new ValidationModel()
+                    {
+                        ErrorMessage = pair.errorMessage,
+                        ValidationValue = pair.validationValue,
+                    });
                 }
             }
 
             return attrDictionary;
         }
 
-        private (string validationRule, string errorMessage) GetValidationKey(string propName, ValidationAttribute validationAttribute)
+        private (string validationRule, string errorMessage, string validationValue) GetValidationKey(string propName, ValidationAttribute validationAttribute)
         {
             string errorMessage = validationAttribute.ErrorMessage ?? validationAttribute.FormatErrorMessage(propName);
-            if (validationAttribute is RegularExpressionAttribute)
+            if (validationAttribute is RegularExpressionAttribute reg)
             {
-                return (Pattern, errorMessage);
+                return (Pattern, errorMessage, reg.Pattern);
             }
             if (validationAttribute is RequiredAttribute)
             {
-                return (Required, errorMessage);
+                return (Required, errorMessage, null);
+            }
+            if(validationAttribute is CompareAttribute com)
+            {
+                return (Compare, errorMessage, com.OtherProperty.ToLowerFirstCharacter());
             }
 
-            return (null, null);
+            return (null, null, null);
         }
     }
 }   

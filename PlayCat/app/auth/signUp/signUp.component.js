@@ -15,38 +15,55 @@ var forms_1 = require("@angular/forms");
 var form_service_1 = require("../../shared/services/form.service");
 var validation_service_1 = require("../../shared/services/validation.service");
 var signUpRequest_1 = require("../../data/request/signUpRequest");
+var router_1 = require("@angular/router");
 var SignUpComponent = (function () {
-    function SignUpComponent(_fb, _authService, _formService, _validationService) {
+    function SignUpComponent(_fb, _router, _authService, _formService, _validationService) {
         this._fb = _fb;
+        this._router = _router;
         this._authService = _authService;
         this._formService = _formService;
         this._validationService = _validationService;
+        this.modelName = 'SignUpRequest';
         this.globalError = null;
         this.errors = new Map();
+        this.signUpForm = this._fb.group({
+            firstName: [null],
+            lastName: [null],
+            email: [null],
+            password: [null],
+            confirmPassword: [null],
+            verificationCode: [null],
+        });
     }
     SignUpComponent.prototype.ngOnInit = function () {
-        this.signUpForm = this._fb.group({
-            firstName: [null, forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern('^vl')])],
-            lastName: [null, forms_1.Validators.required],
-            email: [null, forms_1.Validators.required],
-            password: [null, forms_1.Validators.required],
-            confirmPassword: [null, forms_1.Validators.required],
-            verificationCode: [null, forms_1.Validators.required],
+        var _this = this;
+        this._validationService
+            .get(this.modelName)
+            .then(function (res) {
+            _this.errorsValidation = res;
+            _this.signUpForm = _this._formService.buildFormGroup(res);
         });
     };
     SignUpComponent.prototype.save = function (_a) {
         var _this = this;
         var value = _a.value, valid = _a.valid;
-        var request = new signUpRequest_1.SignUpRequest(value.firstName, value.lastName, value.email, value.password, value.confirmPassword, value.verificationCode);
-        this._authService
-            .signUp(request)
-            .then(function (signUpInResult) {
-            console.log(signUpInResult);
-            _this.errors = signUpInResult.errors;
-            if (!signUpInResult.ok) {
-                _this.globalError = signUpInResult.info;
-            }
-        });
+        if (valid) {
+            var request = new signUpRequest_1.SignUpRequest(value.firstName, value.lastName, value.email, value.password, value.confirmPassword, value.verificationCode);
+            this._authService
+                .signUp(request)
+                .then(function (signUpInResult) {
+                _this.errors = signUpInResult.errors;
+                if (signUpInResult.ok) {
+                    _this._router.navigate(['/signIn']);
+                }
+                else if (signUpInResult.showInfo) {
+                    _this.globalError = signUpInResult.info;
+                }
+            });
+        }
+        else {
+            this._formService.markControlsAsDirty(this.signUpForm);
+        }
     };
     return SignUpComponent;
 }());
@@ -57,6 +74,7 @@ SignUpComponent = __decorate([
         styleUrls: ['./app/auth/signUp/signUp.component.css'],
     }),
     __metadata("design:paramtypes", [forms_1.FormBuilder,
+        router_1.Router,
         auth_service_1.AuthService,
         form_service_1.FormService,
         validation_service_1.ValidationService])

@@ -2,8 +2,6 @@
 using Xunit;
 using PlayCat.DataService.Response;
 using PlayCat.Music.Youtube;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using System.IO;
 
 namespace PlayCat.Tests
@@ -58,28 +56,13 @@ namespace PlayCat.Tests
 
         [Fact]
         public void IsValidFullUrl()
-        {
-            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
-
-            string youtubeUrl = "https://www.youtube.com/watch?v=ekEYX_yo_wE";
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+        {            
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
 
-                // Create the schema in the database
-                using (var context = new PlayCatDbContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
+                string youtubeUrl = "https://www.youtube.com/watch?v=ekEYX_yo_wE";
 
-                // Run the test against one instance of the context
                 using (var context = new PlayCatDbContext(options))
                 {
                     audioService.SetDbContext(context);
@@ -104,37 +87,18 @@ namespace PlayCat.Tests
                     string videoUrl = result.UploadFile.PhysicUrl.Replace("Audio", "Video").Replace("mp3", "mp4");
                     Assert.False(File.Exists(videoUrl));
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });            
         }
 
         [Fact]
         public void IsValidFullUrlAlreadyExists()
         {
-            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
-
-            string youtubeUrl = "https://www.youtube.com/watch?v=xkFZn4oPMqE";
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
 
-                // Create the schema in the database
-                using (var context = new PlayCatDbContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
+                string youtubeUrl = "https://www.youtube.com/watch?v=xkFZn4oPMqE";
 
-                // Run the test against one instance of the context
                 using (var context = new PlayCatDbContext(options))
                 {
                     audioService.SetDbContext(context);
@@ -165,11 +129,7 @@ namespace PlayCat.Tests
                     Assert.Null(result2.UploadFile);
                     Assert.Equal("Video already uploaded", result2.Info);
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });                        
         }
 
         [Fact]
@@ -196,7 +156,7 @@ namespace PlayCat.Tests
             Assert.Equal("https://www.youtube.com/watch?v=FkMdirdJo2g", result);
         }
 
-        [Fact()]        
+        [Fact]        
         public void IsRemoveParametersForShortLink()
         {
             var youtubeVideoGetter = new YoutubeVideoGetter();

@@ -16,7 +16,7 @@ namespace PlayCat.Controllers
         }
 
         [HttpGet("validateRules/{typeName}")]
-        public IDictionary<string, IDictionary<string, string>> ValidateRules(string typeName)
+        public IDictionary<string, IDictionary<string, ValidationModel>> ValidateRules(string typeName)
         {
             return _modelValidationService.GetModel(typeName);
         }

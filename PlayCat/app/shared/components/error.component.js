@@ -21,7 +21,7 @@ var ErrorComponent = (function () {
                 for (var _b = 0, _c = Object.keys(this.actualErrors); _b < _c.length; _b++) {
                     var ae = _c[_b];
                     if (prop == ae) {
-                        this.errorMessage += this.errorObject[prop];
+                        this.errorMessage += this.errorObject[prop].errorMessage;
                     }
                 }
             }
@@ -31,7 +31,7 @@ var ErrorComponent = (function () {
 }());
 __decorate([
     core_1.Input(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Map)
 ], ErrorComponent.prototype, "errorObject", void 0);
 __decorate([
     core_1.Input(),

@@ -15,32 +15,30 @@ var form_service_1 = require("../../shared/services/form.service");
 var forms_1 = require("@angular/forms");
 var validation_service_1 = require("../../shared/services/validation.service");
 var signInRequest_1 = require("../../data/request/signInRequest");
+var router_1 = require("@angular/router");
 var SignInComponent = (function () {
-    function SignInComponent(_fb, _authService, _formService, _validationService) {
+    function SignInComponent(_fb, _router, _authService, _formService, _validationService) {
         this._fb = _fb;
+        this._router = _router;
         this._authService = _authService;
         this._formService = _formService;
         this._validationService = _validationService;
-        this.modelName = 'signUpRequest';
+        this.modelName = 'SignInRequest';
         this.globalError = null;
         this.errors = new Map();
         this.errorsValidation = new Map();
-        this.errorsValidation['email'] = {
-            required: 'Field email is required',
-            pattern: 'Pattern is invalid'
-        };
-        this.errorsValidation['password'] = {
-            required: 'Field password is required',
-        };
+        this.signInForm = this._fb.group({
+            email: [null],
+            password: [null],
+        });
     }
     SignInComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._validationService
             .get(this.modelName)
-            .then(function (res) { return _this.errorsValidation = res; });
-        this.signInForm = this._fb.group({
-            email: [null, forms_1.Validators.required],
-            password: [null, forms_1.Validators.required]
+            .then(function (res) {
+            _this.errorsValidation = res;
+            _this.signInForm = _this._formService.buildFormGroup(res);
         });
     };
     SignInComponent.prototype.save = function (_a) {
@@ -51,9 +49,11 @@ var SignInComponent = (function () {
             this._authService
                 .signIn(request)
                 .then(function (signUpInResult) {
-                console.log(signUpInResult);
                 _this.errors = signUpInResult.errors;
-                if (!signUpInResult.ok) {
+                if (signUpInResult.ok) {
+                    _this._router.navigate(['/playlist']);
+                }
+                else if (signUpInResult.showInfo) {
                     _this.globalError = signUpInResult.info;
                 }
             });
@@ -71,6 +71,7 @@ SignInComponent = __decorate([
         styleUrls: ['./app/auth/signIn/signIn.component.css'],
     }),
     __metadata("design:paramtypes", [forms_1.FormBuilder,
+        router_1.Router,
         auth_service_1.AuthService,
         form_service_1.FormService,
         validation_service_1.ValidationService])

@@ -14,70 +14,36 @@ namespace PlayCat.Tests
 
         [Fact]
         public void IsEmptyModelSignUp()
-        {
-            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+        {            
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
-
-                // Create the schema in the database
-                using (var context = new PlayCatDbContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
-
-                // Run the test against one instance of the context
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
                 using (var context = new PlayCatDbContext(options))
                 {
                     authService.SetDbContext(context);
 
                     SignUpInResult result = authService.SignUp(new SignUpRequest() { });
-                    
+
                     Assert.NotNull(result);
                     Assert.False(result.Ok);
                     Assert.Equal("Model is not valid", result.Info);
+                    Assert.False(result.ShowInfo);
                     Assert.Null(result.User);
                     Assert.Null(result.AuthToken);
                     Assert.NotNull(result.Errors);
                     Assert.True(result.Errors.Any());
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });
         }
 
         [Fact]
         public void IsNotValidKeySignUp()
-        {
-            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
-            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+        {           
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
 
-                // Create the schema in the database
-                using (var context = new PlayCatDbContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
-
-                // Run the test against one instance of the context
                 using (var context = new PlayCatDbContext(options))
                 {
                     authService.SetDbContext(context);
@@ -90,7 +56,7 @@ namespace PlayCat.Tests
                         ConfirmPassword = "123456abc",
                         Email = "mefgalm@gmail.com",
                         VerificationCode = "123"
-                    });                    
+                    });
 
                     Assert.NotNull(result);
                     Assert.False(result.Ok);
@@ -98,40 +64,22 @@ namespace PlayCat.Tests
                     Assert.Null(result.AuthToken);
                     Assert.Null(result.Errors);
                     Assert.Equal("Verification code is wrong", result.Info);
+                    Assert.True(result.ShowInfo);
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });
         }
 
         [Fact]
         public void IsValidModelSignUp()
         {
-            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
-            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
 
-                // Create the schema in the database
                 using (var context = new PlayCatDbContext(options))
                 {
-                    context.Database.EnsureCreated();
-                }
-
-                // Run the test against one instance of the context
-                using (var context = new PlayCatDbContext(options))
-                {
-                    authService.SetDbContext(context);                    
+                    authService.SetDbContext(context);
 
                     SignUpInResult result = authService.SignUp(new SignUpRequest()
                     {
@@ -150,36 +98,17 @@ namespace PlayCat.Tests
                     Assert.Null(result.Errors);
                     Assert.Null(result.Info);
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });                        
         }
 
         [Fact]
         public void IsUsedEmailSignUp()
-        {
-            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
-            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+        {            
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
 
-                // Create the schema in the database
-                using (var context = new PlayCatDbContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
-
-                // Run the test against one instance of the context
                 using (var context = new PlayCatDbContext(options))
                 {
                     authService.SetDbContext(context);
@@ -212,37 +141,19 @@ namespace PlayCat.Tests
                     Assert.Null(result2.AuthToken);
                     Assert.Null(result2.Errors);
                     Assert.Equal("User with this email already registered", result2.Info);
+                    Assert.True(result2.ShowInfo);
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });            
         }
 
         [Fact]
         public void IsUsedInviteSignUp()
         {
-            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
-            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
 
-                // Create the schema in the database
-                using (var context = new PlayCatDbContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
-
-                // Run the test against one instance of the context
                 using (var context = new PlayCatDbContext(options))
                 {
                     authService.SetDbContext(context);
@@ -275,12 +186,9 @@ namespace PlayCat.Tests
                     Assert.Null(result2.AuthToken);
                     Assert.Null(result2.Errors);
                     Assert.Equal("This invite already used", result2.Info);
+                    Assert.True(result2.ShowInfo);
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });            
         }
 
         #endregion
@@ -289,27 +197,12 @@ namespace PlayCat.Tests
 
         [Fact]
         public void IsValidModelSignIn()
-        {
-            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
-            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+        {           
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
 
-                // Create the schema in the database
-                using (var context = new PlayCatDbContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
-
-                // Run the test against one instance of the context
                 using (var context = new PlayCatDbContext(options))
                 {
                     authService.SetDbContext(context);
@@ -344,36 +237,17 @@ namespace PlayCat.Tests
                     Assert.Null(resultSignIn.Errors);
                     Assert.Null(resultSignIn.Info);
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });
         }
 
         [Fact]
         public void IsUserNotFoundSignIn()
-        {
-            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
-            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+        {            
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
 
-                // Create the schema in the database
-                using (var context = new PlayCatDbContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
-
-                // Run the test against one instance of the context
                 using (var context = new PlayCatDbContext(options))
                 {
                     authService.SetDbContext(context);
@@ -389,37 +263,19 @@ namespace PlayCat.Tests
                     Assert.Null(resultSignIn.AuthToken);
                     Assert.Null(resultSignIn.Errors);
                     Assert.Equal("Email or password is incorrect", resultSignIn.Info);
+                    Assert.True(resultSignIn.ShowInfo);
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });            
         }
 
         [Fact]
         public void IsUserFoundButWrongPasswordSignIn()
-        {
-            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
-            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+        {            
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
 
-                // Create the schema in the database
-                using (var context = new PlayCatDbContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
-
-                // Run the test against one instance of the context
                 using (var context = new PlayCatDbContext(options))
                 {
                     authService.SetDbContext(context);
@@ -453,12 +309,9 @@ namespace PlayCat.Tests
                     Assert.Null(resultSignIn.AuthToken);
                     Assert.Null(resultSignIn.Errors);
                     Assert.Equal("Email or password is incorrect", resultSignIn.Info);
+                    Assert.True(resultSignIn.ShowInfo);
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });
         }
 
 
@@ -472,27 +325,12 @@ namespace PlayCat.Tests
         [InlineData("mefgalm@gmail.com", "123456789ABCDEFGH")]
         [InlineData("mefgalm@gmail.com", "abcdertyuiop")]
         public void IsInvalidModelSignIn(string email, string password)
-        {
-            var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
-            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
-
-            // In-memory database only exists while the connection is open
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
-            try
+        {            
+            SqlLiteDatabaseTest(options =>
             {
-                var options = new DbContextOptionsBuilder<PlayCatDbContext>()
-                    .UseSqlite(connection)
-                    .Options;
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
 
-                // Create the schema in the database
-                using (var context = new PlayCatDbContext(options))
-                {
-                    context.Database.EnsureCreated();
-                }
-
-                // Run the test against one instance of the context
                 using (var context = new PlayCatDbContext(options))
                 {
                     authService.SetDbContext(context);
@@ -510,12 +348,9 @@ namespace PlayCat.Tests
                     Assert.NotNull(resultSignIn.Errors);
                     Assert.NotEmpty(resultSignIn.Errors);
                     Assert.Equal("Model is not valid", resultSignIn.Info);
+                    Assert.False(resultSignIn.ShowInfo);
                 }
-            }
-            finally
-            {
-                connection.Close();
-            }
+            });
         }
 
         #endregion

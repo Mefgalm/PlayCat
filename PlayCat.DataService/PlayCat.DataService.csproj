@@ -174,6 +174,7 @@
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="Test\EmptyClass.cs" />
     <Compile Include="Test\TestClass.cs" />
+    <Compile Include="ValidationModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

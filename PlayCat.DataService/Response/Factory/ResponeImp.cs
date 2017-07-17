@@ -10,6 +10,18 @@ namespace PlayCat.DataService
             Source = obj;
         }
 
+        public IResponse<T> ShowInfo()
+        {
+            Source.ShowInfo = true;
+            return this;
+        }
+
+        public IResponse<T> HideInfo()
+        {
+            Source.ShowInfo = false;
+            return this;
+        }
+
         public T Source { get; private set; }
 
         public T Fail(string info)

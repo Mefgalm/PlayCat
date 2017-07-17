@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { SignInComponent } from './auth/signIn/signIn.component';
 import { SignUpComponent } from './auth/signUp/signUp.component';
 
+import { PlaylistComponent } from './music/playlist.component';
+
 import { AuthModule } from './auth/auth.module';
 
 @NgModule({
@@ -21,6 +23,10 @@ import { AuthModule } from './auth/auth.module';
                 pathMatch: 'full',
             },
             {
+                path: 'playlist',
+                component: PlaylistComponent,
+            },
+            {
                 path: 'signIn',
                 component: SignInComponent,
             },
@@ -30,7 +36,7 @@ import { AuthModule } from './auth/auth.module';
             }
         ]),
     ],
-    declarations: [AppComponent],
+    declarations: [AppComponent, PlaylistComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

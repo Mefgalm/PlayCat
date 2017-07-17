@@ -29,7 +29,9 @@ namespace PlayCat.DataService
                 return ResponseFactory.With(new SignUpInResult()
                 {
                     Errors = modelValidationResult.Errors
-                }).Fail("Model is not valid");
+                })
+                .HideInfo()
+                .Fail("Model is not valid");
 
             if (!_inviteService.IsInviteValid(request.VerificationCode))
                 return ResponseFactory.With<SignUpInResult>().Fail("Verification code is wrong");
@@ -80,7 +82,9 @@ namespace PlayCat.DataService
                 return ResponseFactory.With(new SignUpInResult()
                 {
                     Errors = modelValidationResult.Errors
-                }).Fail("Model is not valid");
+                })
+                .HideInfo()
+                .Fail("Model is not valid");
 
             DataModel.User dataUser = _dbContext.Users
                 .Include(x => x.AuthToken)

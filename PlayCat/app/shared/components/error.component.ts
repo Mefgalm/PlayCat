@@ -1,4 +1,5 @@
 ﻿import { Component, Input } from '@angular/core';
+import { ValidationModel } from '../../data/validationModel';
 
 @Component({
     selector: 'error',
@@ -7,8 +8,8 @@
 })
 
 export class ErrorComponent {
-    @Input() errorObject;
-    @Input() actualErrors;
+    @Input() errorObject: Map<string, ValidationModel>;
+    @Input() actualErrors: any;
 
     public errorMessage: string;
 
@@ -22,7 +23,7 @@ export class ErrorComponent {
             for (let prop of Object.keys(this.errorObject)) {
                 for (let ae of Object.keys(this.actualErrors)) {
                     if (prop == ae) {
-                        this.errorMessage += this.errorObject[prop];
+                        this.errorMessage += this.errorObject[prop].errorMessage;
                     }
                 }
             }
