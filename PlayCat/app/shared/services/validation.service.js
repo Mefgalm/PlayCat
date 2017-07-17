@@ -14,10 +14,10 @@ var http_service_1 = require("../services/http.service");
 var ValidationService = (function () {
     function ValidationService(_httpService) {
         this._httpService = _httpService;
-        this._signInUrl = 'api/validation/validateRules/';
+        this._validationRulesUrl = 'api/validation/validateRules/';
     }
     ValidationService.prototype.get = function (modelType) {
-        return this._httpService.get(this._signInUrl + modelType)
+        return this._httpService.get(this._validationRulesUrl + modelType)
             .then(function (x) { return x.json(); });
     };
     return ValidationService;

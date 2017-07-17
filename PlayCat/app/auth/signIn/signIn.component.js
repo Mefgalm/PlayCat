@@ -13,15 +13,18 @@ var core_1 = require("@angular/core");
 var auth_service_1 = require("../auth.service");
 var form_service_1 = require("../../shared/services/form.service");
 var forms_1 = require("@angular/forms");
+var validation_service_1 = require("../../shared/services/validation.service");
 var signInRequest_1 = require("../../data/request/signInRequest");
 var SignInComponent = (function () {
-    function SignInComponent(_fb, _authService, _formService) {
+    function SignInComponent(_fb, _authService, _formService, _validationService) {
         this._fb = _fb;
         this._authService = _authService;
         this._formService = _formService;
+        this._validationService = _validationService;
+        this.modelName = 'signUpRequest';
         this.globalError = null;
         this.errors = new Map();
-        this.errorsValidation = {};
+        this.errorsValidation = new Map();
         this.errorsValidation['email'] = {
             required: 'Field email is required',
             pattern: 'Pattern is invalid'
@@ -31,6 +34,10 @@ var SignInComponent = (function () {
         };
     }
     SignInComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._validationService
+            .get(this.modelName)
+            .then(function (res) { return _this.errorsValidation = res; });
         this.signInForm = this._fb.group({
             email: [null, forms_1.Validators.required],
             password: [null, forms_1.Validators.required]
@@ -65,7 +72,8 @@ SignInComponent = __decorate([
     }),
     __metadata("design:paramtypes", [forms_1.FormBuilder,
         auth_service_1.AuthService,
-        form_service_1.FormService])
+        form_service_1.FormService,
+        validation_service_1.ValidationService])
 ], SignInComponent);
 exports.SignInComponent = SignInComponent;
 //# sourceMappingURL=signIn.component.js.map

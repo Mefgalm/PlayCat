@@ -11,8 +11,8 @@ namespace PlayCat.DataService
         public const string Pattern = "pattern";
         public const string Required = "required";
 
-        private const string AssemblyNamespace = "PlayCat.DataService.Test.";
-    
+        public string AssemblyName { get; set;} = "PlayCat.DataService.Test.";
+
         public IDictionary<string, IDictionary<string, string>> GetModel(string typeName)
         {
             Assembly assembly = GetType().Assembly;
@@ -21,7 +21,7 @@ namespace PlayCat.DataService
             var modelValidationDictionary = new Dictionary<string, IDictionary<string, string>>();
             try
             {
-                Type type = assembly.GetType(AssemblyNamespace + typeName);
+                Type type = assembly.GetType(AssemblyName + typeName);
 
                 if (type is null)
                     return null;

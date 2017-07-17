@@ -10,10 +10,13 @@ namespace PlayCat.Tests
         private const string Required = "required";
         private const string Pattern = "pattern";
 
+        private const string TestAsseblyName = "PlayCat.DataService.Test.";
+
         [Fact]
         public void ValidModel()
         {
             var modelValidationService = _server.Host.Services.GetService(typeof(IModelValidationService)) as IModelValidationService;
+            modelValidationService.AssemblyName = TestAsseblyName;
 
             IDictionary<string, IDictionary<string, string>> model = modelValidationService.GetModel("TestClass");
             Assert.NotNull(model);
@@ -39,6 +42,7 @@ namespace PlayCat.Tests
         public void EmptyModel()
         {
             var modelValidationService = _server.Host.Services.GetService(typeof(IModelValidationService)) as IModelValidationService;
+            modelValidationService.AssemblyName = TestAsseblyName;
 
             IDictionary<string, IDictionary<string, string>> model = modelValidationService.GetModel("EmptyClass");
 
@@ -50,6 +54,7 @@ namespace PlayCat.Tests
         public void NotFoundModel()
         {
             var modelValidationService = _server.Host.Services.GetService(typeof(IModelValidationService)) as IModelValidationService;
+            modelValidationService.AssemblyName = TestAsseblyName;
 
             IDictionary<string, IDictionary<string, string>> model = modelValidationService.GetModel("123");
 

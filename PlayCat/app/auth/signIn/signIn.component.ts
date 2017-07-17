@@ -16,25 +16,27 @@ import { SignUpInResult } from '../../data/response/signUpInResult';
 })
 
 export class SignInComponent {
+    private modelName = 'signUpRequest';
+
     public email: string;
     public password: string;
 
     public errors: Map<string, string>;
     public globalError: string;
 
-    public errorsValidation: { [key: string]: any };
+    public errorsValidation: Map<string, any>;
 
     public signInForm: FormGroup;
 
     constructor(
         private _fb: FormBuilder, 
         private _authService: AuthService,
-        private _formService: FormService) {
-
+        private _formService: FormService,
+        private _validationService: ValidationService
+    ) {
         this.globalError = null;
         this.errors = new Map<string, string>();
-
-        this.errorsValidation = {};
+        this.errorsValidation = new Map<string, any>();
 
         this.errorsValidation['email'] = {
             required: 'Field email is required',
@@ -47,6 +49,10 @@ export class SignInComponent {
     }
 
     ngOnInit() {
+        this._validationService
+            .get(this.modelName)
+            .then(res => this.errorsValidation = res);
+
         this.signInForm = this._fb.group({
             email: [null, Validators.required],
             password: [null, Validators.required]
