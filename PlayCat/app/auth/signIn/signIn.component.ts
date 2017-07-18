@@ -60,7 +60,7 @@ export class SignInComponent {
                 .then(signUpInResult => {
                     this.errors = signUpInResult.errors;
                     if (signUpInResult.ok) {
-                        this._router.navigate(['/playlist']);
+                        //this._router.navigate(['/playlist']);
                     } else if (signUpInResult.showInfo) {
                         this.globalError = signUpInResult.info;
                     }

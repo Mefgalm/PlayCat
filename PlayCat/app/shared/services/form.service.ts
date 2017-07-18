@@ -10,6 +10,7 @@ export class FormService {
     private DefaultValidations = new Array<string>(this.Required, this.Pattern);
 
     private Compare = 'compare';
+    private Validator = 'validator';
 
     constructor(private _fb: FormBuilder) {
     }
@@ -24,10 +25,10 @@ export class FormService {
     }
 
     private getValidation(key: string, value: ValidationModel ): any {
-        if (key === 'required') {
+        if (key === this.Required) {
             return Validators.required;
         }
-        if (key === 'pattern') {
+        if (key === this.Pattern) {
             return Validators.pattern(value.validationValue);
         }
         return null;
@@ -68,11 +69,11 @@ export class FormService {
                     if (this.isDefaultValidation(propKey)) {
                         validationArray.push(this.getValidation(propKey, value[propKey]));
                     } else {
-                        additionalGroupValidation['validator'] = this.matchingPasswords(value[propKey].validationValue, key);                   
+                        additionalGroupValidation[this.Validator] = this.matchingPasswords(value[propKey].validationValue, key);                   
                     }                    
                 }
 
-                if (validationArray.length > 0) {
+                if (validationArray.length > 1) {
                     formGroup[key] = [null, Validators.compose(validationArray)];
                 } else {
                     formGroup[key] = [null, validationArray[0]];

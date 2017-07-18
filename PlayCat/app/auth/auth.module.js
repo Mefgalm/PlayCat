@@ -14,6 +14,7 @@ var http_service_1 = require("../shared/services/http.service");
 var form_service_1 = require("../shared/services/form.service");
 var validation_service_1 = require("../shared/services/validation.service");
 var forms_1 = require("@angular/forms");
+var router_1 = require("@angular/router");
 var signIn_component_1 = require("./signIn/signIn.component");
 var signUp_component_1 = require("./signUp/signUp.component");
 var error_component_1 = require("../shared/components/error.component");
@@ -29,7 +30,16 @@ AuthModule = __decorate([
             http_1.HttpModule,
             http_1.JsonpModule,
             forms_1.ReactiveFormsModule,
-            forms_1.FormsModule
+            router_1.RouterModule.forRoot([
+                {
+                    path: 'signIn',
+                    component: signIn_component_1.SignInComponent,
+                },
+                {
+                    path: 'signUp',
+                    component: signUp_component_1.SignUpComponent,
+                }
+            ]),
         ],
         declarations: [
             signIn_component_1.SignInComponent,

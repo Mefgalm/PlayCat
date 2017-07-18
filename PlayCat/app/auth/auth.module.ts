@@ -5,7 +5,8 @@ import { AuthService } from '../auth/auth.service';
 import { HttpService } from '../shared/services/http.service';
 import { FormService } from '../shared/services/form.service';
 import { ValidationService } from '../shared/services/validation.service';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { SignInComponent } from './signIn/signIn.component';
 import { SignUpComponent } from './signUp/signUp.component';
@@ -18,7 +19,16 @@ import { ErrorComponent } from '../shared/components/error.component';
         HttpModule,
         JsonpModule,
         ReactiveFormsModule,
-        FormsModule
+        RouterModule.forRoot([
+            {
+                path: 'signIn',
+                component: SignInComponent,
+            },
+            {
+                path: 'signUp',
+                component: SignUpComponent,
+            }
+        ]),
     ],
     declarations: [
         SignInComponent,

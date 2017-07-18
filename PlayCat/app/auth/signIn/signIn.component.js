@@ -51,7 +51,7 @@ var SignInComponent = (function () {
                 .then(function (signUpInResult) {
                 _this.errors = signUpInResult.errors;
                 if (signUpInResult.ok) {
-                    _this._router.navigate(['/playlist']);
+                    //this._router.navigate(['/playlist']);
                 }
                 else if (signUpInResult.showInfo) {
                     _this.globalError = signUpInResult.info;

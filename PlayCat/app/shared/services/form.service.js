@@ -18,6 +18,7 @@ var FormService = (function () {
         this.Pattern = 'pattern';
         this.DefaultValidations = new Array(this.Required, this.Pattern);
         this.Compare = 'compare';
+        this.Validator = 'validator';
     }
     FormService.prototype.markControlsAsDirty = function (formGroup) {
         for (var _i = 0, _a = Object.keys(formGroup.controls); _i < _a.length; _i++) {
@@ -29,10 +30,10 @@ var FormService = (function () {
         }
     };
     FormService.prototype.getValidation = function (key, value) {
-        if (key === 'required') {
+        if (key === this.Required) {
             return forms_1.Validators.required;
         }
-        if (key === 'pattern') {
+        if (key === this.Pattern) {
             return forms_1.Validators.pattern(value.validationValue);
         }
         return null;
@@ -69,10 +70,10 @@ var FormService = (function () {
                         validationArray.push(this.getValidation(propKey, value[propKey]));
                     }
                     else {
-                        additionalGroupValidation['validator'] = this.matchingPasswords(value[propKey].validationValue, key);
+                        additionalGroupValidation[this.Validator] = this.matchingPasswords(value[propKey].validationValue, key);
                     }
                 }
-                if (validationArray.length > 0) {
+                if (validationArray.length > 1) {
                     formGroup[key] = [null, forms_1.Validators.compose(validationArray)];
                 }
                 else {
