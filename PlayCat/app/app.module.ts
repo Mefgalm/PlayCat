@@ -5,11 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { UserAuthService } from './shared/services/userAuth.service';
 import { AuthModule } from './auth/auth.module';
+import { WorkspaceModule } from './workspace/workspace.module';
 
 @NgModule({
     imports: [
         BrowserModule,
         AuthModule,
+        WorkspaceModule,
         RouterModule.forRoot([
             {
                 path: '',
@@ -20,7 +22,7 @@ import { AuthModule } from './auth/auth.module';
     ],
     providers: [UserAuthService],
     declarations: [AppComponent],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],    
 })
 export class AppModule {
 }

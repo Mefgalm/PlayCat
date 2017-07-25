@@ -12,6 +12,7 @@ var router_1 = require("@angular/router");
 var app_component_1 = require("./app.component");
 var userAuth_service_1 = require("./shared/services/userAuth.service");
 var auth_module_1 = require("./auth/auth.module");
+var workspace_module_1 = require("./workspace/workspace.module");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -22,6 +23,7 @@ AppModule = __decorate([
         imports: [
             platform_browser_1.BrowserModule,
             auth_module_1.AuthModule,
+            workspace_module_1.WorkspaceModule,
             router_1.RouterModule.forRoot([
                 {
                     path: '',
@@ -32,7 +34,7 @@ AppModule = __decorate([
         ],
         providers: [userAuth_service_1.UserAuthService],
         declarations: [app_component_1.AppComponent],
-        bootstrap: [app_component_1.AppComponent]
+        bootstrap: [app_component_1.AppComponent],
     })
 ], AppModule);
 exports.AppModule = AppModule;

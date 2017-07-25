@@ -30,7 +30,7 @@ AuthModule = __decorate([
             http_1.HttpModule,
             http_1.JsonpModule,
             forms_1.ReactiveFormsModule,
-            router_1.RouterModule.forRoot([
+            router_1.RouterModule.forChild([
                 {
                     path: 'signIn',
                     component: signIn_component_1.SignInComponent,

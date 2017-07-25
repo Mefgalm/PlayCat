@@ -19,7 +19,7 @@ import { ErrorComponent } from '../shared/components/error.component';
         HttpModule,
         JsonpModule,
         ReactiveFormsModule,
-        RouterModule.forRoot([
+        RouterModule.forChild([
             {
                 path: 'signIn',
                 component: SignInComponent,
