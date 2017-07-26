@@ -7,17 +7,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var WorkspaceComponent = (function () {
-    function WorkspaceComponent() {
+var menu_component_1 = require("./menu.component");
+var router_1 = require("@angular/router");
+var MenuModule = (function () {
+    function MenuModule() {
     }
-    return WorkspaceComponent;
+    return MenuModule;
 }());
-WorkspaceComponent = __decorate([
-    core_1.Component({
-        selector: 'workspace',
-        templateUrl: './app/workspace/workspace.component.html',
-        styleUrls: ['./app/workspace/workspace.component.css'],
+MenuModule = __decorate([
+    core_1.NgModule({
+        imports: [
+            router_1.RouterModule
+        ],
+        declarations: [
+            menu_component_1.MenuComponent,
+        ],
+        exports: [
+            menu_component_1.MenuComponent,
+        ],
     })
-], WorkspaceComponent);
-exports.WorkspaceComponent = WorkspaceComponent;
-//# sourceMappingURL=workspace.component.js.map
+], MenuModule);
+exports.MenuModule = MenuModule;
+//# sourceMappingURL=menu.module.js.map

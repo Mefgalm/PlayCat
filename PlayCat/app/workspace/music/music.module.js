@@ -10,6 +10,8 @@ var core_1 = require("@angular/core");
 var audios_component_1 = require("./audios/audios.component");
 var playlist_component_1 = require("./playlist/playlist.component");
 var upload_component_1 = require("./upload/upload.component");
+var router_1 = require("@angular/router");
+var menu_module_1 = require("../menu/menu.module");
 var MusicModule = (function () {
     function MusicModule() {
     }
@@ -17,7 +19,28 @@ var MusicModule = (function () {
 }());
 MusicModule = __decorate([
     core_1.NgModule({
-        declarations: [audios_component_1.AudiosComponent, playlist_component_1.PlaylistComponent, upload_component_1.UploadComponent],
+        imports: [
+            menu_module_1.MenuModule,
+            router_1.RouterModule.forChild([
+                {
+                    path: 'audios',
+                    component: audios_component_1.AudiosComponent,
+                },
+                {
+                    path: 'playlist',
+                    component: playlist_component_1.PlaylistComponent
+                },
+                {
+                    path: 'upload',
+                    component: upload_component_1.UploadComponent,
+                }
+            ]),
+        ],
+        declarations: [
+            audios_component_1.AudiosComponent,
+            playlist_component_1.PlaylistComponent,
+            upload_component_1.UploadComponent,
+        ],
     })
 ], MusicModule);
 exports.MusicModule = MusicModule;

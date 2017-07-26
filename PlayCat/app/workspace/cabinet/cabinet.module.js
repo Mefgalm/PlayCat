@@ -9,6 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var profile_component_1 = require("./profile/profile.component");
 var updateProfile_component_1 = require("./updateProfile/updateProfile.component");
+var menu_module_1 = require("../menu/menu.module");
+var router_1 = require("@angular/router");
 var CabinetModule = (function () {
     function CabinetModule() {
     }
@@ -16,9 +18,22 @@ var CabinetModule = (function () {
 }());
 CabinetModule = __decorate([
     core_1.NgModule({
+        imports: [
+            menu_module_1.MenuModule,
+            router_1.RouterModule.forChild([
+                {
+                    path: 'profile',
+                    component: profile_component_1.ProfileComponent,
+                },
+                {
+                    path: 'updateProfile',
+                    component: updateProfile_component_1.UpdateProfileComponent
+                },
+            ]),
+        ],
         declarations: [
             profile_component_1.ProfileComponent,
-            updateProfile_component_1.UpdateProfileComponent
+            updateProfile_component_1.UpdateProfileComponent,
         ]
     })
 ], CabinetModule);

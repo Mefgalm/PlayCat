@@ -7,20 +7,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var cabinet_module_1 = require("./cabinet/cabinet.module");
-var music_module_1 = require("./music/music.module");
-var WorkspaceModule = (function () {
-    function WorkspaceModule() {
+var MenuComponent = (function () {
+    function MenuComponent() {
     }
-    return WorkspaceModule;
+    return MenuComponent;
 }());
-WorkspaceModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            cabinet_module_1.CabinetModule,
-            music_module_1.MusicModule,
-        ],
+MenuComponent = __decorate([
+    core_1.Component({
+        selector: 'site-menu',
+        templateUrl: './app/workspace/menu/menu.component.html',
+        styleUrls: ['./app/workspace/menu/menu.component.css'],
     })
-], WorkspaceModule);
-exports.WorkspaceModule = WorkspaceModule;
-//# sourceMappingURL=workspace.module.js.map
+], MenuComponent);
+exports.MenuComponent = MenuComponent;
+//# sourceMappingURL=menu.component.js.map
