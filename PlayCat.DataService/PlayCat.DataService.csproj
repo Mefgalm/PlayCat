@@ -162,6 +162,7 @@
     <Compile Include="Request\SignUpRequest.cs" />
     <Compile Include="Request\UploadAudioRequest.cs" />
     <Compile Include="Request\UrlRequest.cs" />
+    <Compile Include="ResponseCode.cs" />
     <Compile Include="Response\Factory\IResponse.cs" />
     <Compile Include="Response\Factory\ResponeImp.cs" />
     <Compile Include="Response\Factory\ResponseFactory.cs" />

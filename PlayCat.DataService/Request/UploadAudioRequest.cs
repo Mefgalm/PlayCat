@@ -5,11 +5,11 @@ namespace PlayCat.DataService.Request
     public class UploadAudioRequest
     {
         [Required]
-        [RegularExpression("^[a-zA-Z0-9!@#$%^&*()_]{1,50}$")]
+        [RegularExpression(@"^[ '""\.\w0-9!@#$%^&*()_]{1,50}$")]
         public string Artist { get; set; }
 
         [Required]
-        [RegularExpression("^[a-zA-Z0-9!@#$%^&*()_]{1,50}$")]
+        [RegularExpression(@"^[ '""\.\w0-9!@#$%^&*()_]{1,50}$")]
         public string Song { get; set; }
 
         [Required]

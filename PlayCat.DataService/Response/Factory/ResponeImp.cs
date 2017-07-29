@@ -26,18 +26,20 @@ namespace PlayCat.DataService
 
         public T Source { get; private set; }
 
-        public T Fail(string info)
+        public T Fail(string info, ResponseCode code = ResponseCode.None)
         {
             Source.Ok = false;
             Source.Info = info;
+            Source.Code = code;
             return Source;
         }
 
-        public T Fail(string info, IDictionary<string, string> errors)
+        public T Fail(string info, IDictionary<string, string> errors, ResponseCode code = ResponseCode.None)
         {
             Source.Ok = false;
             Source.Info = info;
             Source.Errors = errors;
+            Source.Code = code;
             return Source;
         }
 

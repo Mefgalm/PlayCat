@@ -32,30 +32,6 @@ namespace PlayCat.DataService
             _uploadAudio = uploadAudio;
         }        
 
-        private TReturn RequestTemplate<TReturn, TRequest>(TRequest request, Func<TRequest, TReturn> func)
-            where TReturn : BaseResult, new()
-        {
-            try
-            {
-                TrimStrings.Trim(request);
-
-                ModelValidationResult modelValidationResult = ModelValidator.Validate(request);
-                if (!modelValidationResult.Ok)
-                    return ResponseFactory.With(new TReturn()
-                    {
-                        Errors = modelValidationResult.Errors
-                    })
-                    .HideInfo()
-                    .Fail("Model is not valid");
-
-                return func(request);
-            }
-            catch (Exception ex)
-            {
-                return ResponseFactory.With<TReturn>().Fail(ex.Message);
-            }
-        }
-
         public GetInfoResult GetInfo(UrlRequest request)
         {
             return RequestTemplate(request, (req) =>
@@ -107,6 +83,8 @@ namespace PlayCat.DataService
                     UniqueIdentifier = videoId,
                     //UploaderId
                 });
+
+                _dbContext.SaveChanges();
 
                 return ResponseFactory.With<BaseResult>().Success();
             });

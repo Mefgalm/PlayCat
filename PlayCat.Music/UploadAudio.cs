@@ -18,7 +18,7 @@ namespace PlayCat.Music
             switch(storageType)
             {
                 case StorageType.FileSystem:
-                    return $"/music/{audioFile.Filename.AddExtension(audioFile.Extension)}/storageType/fileSytem";
+                    return $"/music/{audioFile.Filename + audioFile.Extension}/storageType/fileSytem";
 
                 //example
                 //case StorageType.Blob:

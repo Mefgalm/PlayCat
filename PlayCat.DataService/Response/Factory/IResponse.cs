@@ -7,8 +7,8 @@ namespace PlayCat.DataService
         where T : BaseResult
     {
         T Source { get; }
-        T Fail(string info);
-        T Fail(string info, IDictionary<string, string> errors);
+        T Fail(string info, ResponseCode code = ResponseCode.None);
+        T Fail(string info, IDictionary<string, string> errors, ResponseCode code = ResponseCode.None);
         IResponse<T> ShowInfo();
         IResponse<T> HideInfo();
         T Success(string info = null);

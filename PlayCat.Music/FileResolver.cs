@@ -22,7 +22,7 @@ namespace PlayCat.Music
             switch(storageType)
             {
                 case StorageType.FileSystem:
-                    return Path.Combine(_folderOptions.Value.VideoFolderPath, filename.AddExtension(extension));
+                    return Path.Combine(_folderOptions.Value.VideoFolderPath, filename + extension);
             }
 
             throw new MissingStorageTypeException();
@@ -36,7 +36,7 @@ namespace PlayCat.Music
             switch (storageType)
             {
                 case StorageType.FileSystem:
-                    return Path.Combine(_folderOptions.Value.VideoFolderPath, filename.AddExtension(extension));
+                    return Path.Combine(_folderOptions.Value.VideoFolderPath, filename + extension);
             }
 
             throw new MissingStorageTypeException();

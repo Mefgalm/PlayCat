@@ -17,7 +17,6 @@ namespace PlayCat.Music
         //The last param is the name of the output file.
 
         private const string FFMpegFormat = "-i \"{0}\" -f {1} -ab {2} -vn \"{3}\"";
-        private const long BitRate = 320000;
 
         private readonly IOptions<AudioOptions> _audioOptions;
         private readonly IFileResolver _fileResolver;
@@ -40,10 +39,13 @@ namespace PlayCat.Music
             //get full path for audio
             string audioFullpath = Path.Combine(
                 _fileResolver.GetAudioFolderPath(StorageType.FileSystem),
-                videoFile.Filename.AddExtension(videoFile.Extension));
+                videoFile.Filename + "." + _audioOptions.Value.DefaultFormat);
 
             //get video
             string videofilePath = _fileResolver.VideoFilePath(videoFile.Filename, videoFile.Extension, StorageType.FileSystem);
+
+            if (File.Exists(audioFullpath))
+                File.Delete(audioFullpath);
 
             //extract audio from video
             var ffMpeg = new FFMpegConverter();
@@ -51,7 +53,7 @@ namespace PlayCat.Music
                 string.Format(@FFMpegFormat,
                                     videofilePath,
                                     _audioOptions.Value.DefaultFormat,
-                                    BitRate,
+                                    _audioOptions.Value.BitRate,
                                     audioFullpath));
 
             //delete video
@@ -62,7 +64,7 @@ namespace PlayCat.Music
             return new PCFile()
             {                
                 Filename = videoFile.Filename,    
-                Extension = _audioOptions.Value.DefaultFormat,
+                Extension = "." + _audioOptions.Value.DefaultFormat,
                 StorageType = StorageType.FileSystem,
             };
         }                

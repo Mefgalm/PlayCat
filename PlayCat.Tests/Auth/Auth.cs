@@ -4,7 +4,7 @@ using PlayCat.DataService.Response;
 using System.Linq;
 using Xunit;
 
-namespace PlayCat.Tests
+namespace PlayCat.Tests.Auth
 {
     public class Auth : BaseTest
     {
