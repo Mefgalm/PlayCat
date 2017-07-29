@@ -12,39 +12,6 @@ import { UpdateProfileComponent } from './cabinet/updateProfile/updateProfile.co
     imports: [
         CabinetModule,
         MusicModule,
-        //RouterModule.forChild([
-        //    {
-        //        path: 'cat',
-        //        redirectTo: '/cat/audios',
-        //        pathMatch: 'full',
-        //    },
-        //    {
-        //        path: 'cat',
-        //        component: WorkspaceComponent,
-        //        children: [
-        //            {
-        //                path: 'audios',
-        //                component: AudiosComponent
-        //            },
-        //            {
-        //                path: 'playlist',
-        //                component: PlaylistComponent
-        //            },
-        //            {
-        //                path: 'upload',
-        //                component: UploadComponent
-        //            },
-        //            {
-        //                path: 'profile',
-        //                component: ProfileComponent
-        //            },
-        //            {
-        //                path: 'updateProfile',
-        //                component: UpdateProfileComponent
-        //            }
-        //        ]
-        //    }
-        //])
     ],
 })
 export class WorkspaceModule {

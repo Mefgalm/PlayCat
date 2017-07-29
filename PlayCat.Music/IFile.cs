@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace PlayCat.Music
+﻿namespace PlayCat.Music
 {
     public interface IFile
     {
-        string FileName { get; set; }           
+        string Filename { get; set; }
         string Extension { get; set; }
-        DateTime DateCreated { get; set; }
+        StorageType StorageType { get; set; }
     }
 }

@@ -83,32 +83,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioExtractor.cs" />
-    <Compile Include="AudioFileOnFS.cs" />
     <Compile Include="AudioOptions.cs" />
+    <Compile Include="FileResolver.cs" />
     <Compile Include="FolderOptions.cs" />
-    <Compile Include="FolderPathService.cs" />
-    <Compile Include="IAudioExtractor.cs" />
-    <Compile Include="IAudioFile.cs" />
     <Compile Include="IExtractAudio.cs" />
     <Compile Include="IFile.cs" />
-    <Compile Include="IFolderPathService.cs" />
-    <Compile Include="IUploadAudio.cs" />
-    <Compile Include="IFileOnFS.cs" />
-    <Compile Include="IUploadFile.cs" />
-    <Compile Include="IVideoFile.cs" />
-    <Compile Include="IVideoGetter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IFileResolver.cs" />
     <Compile Include="ISaveVideo.cs" />
+    <Compile Include="IUploadAudio.cs" />
+    <Compile Include="IVideoInfoGetter.cs" />
+    <Compile Include="MissingStorageTypeException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IUrlInfo.cs" />
+    <Compile Include="StorageType.cs" />
+    <Compile Include="UrlInfo.cs" />
     <Compile Include="VideoConverter.cs" />
-    <Compile Include="VideoFileOnFS.cs" />
-    <Compile Include="UploadFile.cs" />
     <Compile Include="VideoRestrictsOptions.cs" />
-    <Compile Include="Youtube\YoutubeAudioExtractor.cs" />
+    <Compile Include="YoutubeVideoInfo.cs" />
     <Compile Include="FFmpegExtractAudio.cs" />
+    <Compile Include="Youtube\YoutubeVideoInfoGetter.cs" />
     <Compile Include="Youtube\YoutubeSaveVideo.cs" />
     <Compile Include="UploadAudio.cs" />
-    <Compile Include="Youtube\YoutubeVideoGetter.cs" />
+    <Compile Include="PCFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

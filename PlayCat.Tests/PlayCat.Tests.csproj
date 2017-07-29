@@ -191,10 +191,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\VideoUpload.cs" />
     <Compile Include="Auth.cs" />
     <Compile Include="BaseTest.cs" />
     <Compile Include="ModelValidation.cs" />
-    <Compile Include="YoutubeUpload.cs" />
+    <Compile Include="Audio\VideoGet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

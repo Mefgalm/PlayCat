@@ -7,22 +7,19 @@ namespace PlayCat.DataModel
 {
     public class Audio
     {
-        [MaxLength(100)]
-        [Required(AllowEmptyStrings = false)]
-        public string Artist { get; set; }
-
-        [MaxLength(100)]
-        [Required(AllowEmptyStrings = false)]        
-        public string Song { get; set; }
-
         [Key]
         public Guid Id { get; set; }
 
+        [MaxLength(50)]
         [Required(AllowEmptyStrings = false)]
-        public string AccessUrl { get; set; }
+        public string Artist { get; set; }
+
+        [MaxLength(50)]
+        [Required(AllowEmptyStrings = false)]        
+        public string Song { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        public string PhysicUrl { get; set; }
+        public string AccessUrl { get; set; }        
 
         [Required(AllowEmptyStrings = false)]
         public string FileName { get; set; }

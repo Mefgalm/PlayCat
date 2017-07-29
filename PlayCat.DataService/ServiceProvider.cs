@@ -9,12 +9,11 @@ namespace PlayCat.DataService
     {
         public static void RegisterService(IServiceCollection service)
         {
-            service.AddScoped<IAudioExtractor<VideoInfo, string, VideoFileOnFS, AudioFileOnFS, UploadFile>, YoutubeAudioExtractor>();
-            service.AddScoped<IVideoGetter<VideoInfo, string>, YoutubeVideoGetter>();
-            service.AddScoped<ISaveVideo<VideoInfo, VideoFileOnFS>, YoutubeSaveVideo>();
-            service.AddScoped<IFFmpeg<VideoFileOnFS, AudioFileOnFS>, FFmpegExtractAudio>();
-            service.AddScoped<IUploadAudio<AudioFileOnFS, UploadFile>, UploadAudio>();
-            service.AddScoped<IFolderPathService, FolderPathService>();
+            service.AddScoped<ISaveVideo, YoutubeSaveVideo>();
+            service.AddScoped<IExtractAudio, FFmpegExtractAudio>();
+            service.AddScoped<IUploadAudio, UploadAudio>();
+            service.AddScoped<IVideoInfoGetter, YoutubeVideoInfoGetter>();
+            service.AddScoped<IFileResolver, FileResolver>();
             service.AddScoped<IInviteService, InviteService >();
             service.AddScoped<IAuthService, AuthService>();
             service.AddScoped<IModelValidationService, ModelValidationService>();

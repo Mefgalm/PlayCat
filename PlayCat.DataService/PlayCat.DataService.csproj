@@ -138,11 +138,6 @@
     <Compile Include="AudioService.cs" />
     <Compile Include="AuthService.cs" />
     <Compile Include="BaseService.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Helpers\HttpRequester.cs" />
-    <Compile Include="Helpers\ModelValidationResult.cs" />
-    <Compile Include="Helpers\ModelValidator.cs" />
-    <Compile Include="Helpers\TrimStrings.cs" />
     <Compile Include="IAudioService.cs" />
     <Compile Include="IAuthService.cs" />
     <Compile Include="IInviteService.cs" />
@@ -165,12 +160,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\SignInRequest.cs" />
     <Compile Include="Request\SignUpRequest.cs" />
+    <Compile Include="Request\UploadAudioRequest.cs" />
+    <Compile Include="Request\UrlRequest.cs" />
     <Compile Include="Response\Factory\IResponse.cs" />
     <Compile Include="Response\Factory\ResponeImp.cs" />
     <Compile Include="Response\Factory\ResponseFactory.cs" />
     <Compile Include="Response\BaseResult.cs" />
+    <Compile Include="Response\GetInfoResult.cs" />
     <Compile Include="Response\SignUpInResult.cs" />
-    <Compile Include="Response\UploadAudioResult.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="Test\EmptyClass.cs" />
     <Compile Include="Test\TestClass.cs" />

@@ -41,8 +41,7 @@ namespace PlayCat
             services.Configure<FolderOptions>(x =>
             {
                 IConfigurationSection section = Configuration.GetSection("FolderPaths");
-                x.RelativeAudioFolderPath = section.GetValue<string>("AudioFolderPath");
-                x.AudioFolderPath = HostingEnvironment.ContentRootPath + x.RelativeAudioFolderPath;
+                x.AudioFolderPath = HostingEnvironment.ContentRootPath + section.GetValue<string>("AudioFolderPath");
                 x.VideoFolderPath = HostingEnvironment.ContentRootPath + section.GetValue<string>("VideoFolderPath");
             });
             services.Configure<AudioOptions>(Configuration.GetSection("AudioInfo"));

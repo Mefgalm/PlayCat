@@ -1,4 +1,6 @@
-﻿using PlayCat.DataService.Response;
+﻿using System;
+using System.Collections.Generic;
+using PlayCat.DataService.Response;
 
 namespace PlayCat.DataService
 {
@@ -28,6 +30,14 @@ namespace PlayCat.DataService
         {
             Source.Ok = false;
             Source.Info = info;
+            return Source;
+        }
+
+        public T Fail(string info, IDictionary<string, string> errors)
+        {
+            Source.Ok = false;
+            Source.Info = info;
+            Source.Errors = errors;
             return Source;
         }
 

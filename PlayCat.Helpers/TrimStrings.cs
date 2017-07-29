@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace PlayCat.DataService.Helpers
+namespace PlayCat.Helpers
 {
     public static class TrimStrings
     {

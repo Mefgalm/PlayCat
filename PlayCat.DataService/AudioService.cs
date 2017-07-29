@@ -1,75 +1,115 @@
 ﻿using Microsoft.Extensions.Options;
-using PlayCat.DataService.Helpers;
+using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
+using PlayCat.Helpers;
+using System.Linq;
 using PlayCat.Music;
 using System;
-using System.Linq;
-using System.Net;
-using YoutubeExtractor;
 
-namespace PlayCat.DataService 
+namespace PlayCat.DataService
 {
     public class AudioService : BaseService, IAudioService
     {        
         private readonly IOptions<VideoRestrictsOptions> _videoRestrictsOptions;
-        private readonly IAudioExtractor<VideoInfo, string, VideoFileOnFS, AudioFileOnFS, UploadFile> _audioExtractor;
 
-        private const int DefaulBitrate = 320000;
+        private readonly IVideoInfoGetter _videoInfoGetter;
+        private readonly ISaveVideo _saveVideo;
+        private readonly IExtractAudio _extractAudio;
+        private readonly IUploadAudio _uploadAudio;
 
-        public AudioService(PlayCatDbContext dbContext, IOptions<VideoRestrictsOptions> videoRestrictsOptions, IAudioExtractor<VideoInfo, string, VideoFileOnFS, AudioFileOnFS, UploadFile> audioExtractor)
+        public AudioService(PlayCatDbContext dbContext, 
+            IOptions<VideoRestrictsOptions> videoRestrictsOptions,
+            IVideoInfoGetter videoInfoGetter,
+            ISaveVideo saveVideo,            
+            IExtractAudio extractAudio,
+            IUploadAudio uploadAudio)
             : base(dbContext)
         {
             _videoRestrictsOptions = videoRestrictsOptions;
-            _audioExtractor = audioExtractor;
-        }
+            _videoInfoGetter = videoInfoGetter;
+            _saveVideo = saveVideo;
+            _extractAudio = extractAudio;
+            _uploadAudio = uploadAudio;
+        }        
 
-        public UploadAudioResult UploadAudio(string youtubeLink) 
+        private TReturn RequestTemplate<TReturn, TRequest>(TRequest request, Func<TRequest, TReturn> func)
+            where TReturn : BaseResult, new()
         {
             try
             {
-                VideoInfo videoInfo = _audioExtractor.VideoGetter.GetVideoInfo(youtubeLink);
-                if (videoInfo is null)
-                    return ResponseFactory.With<UploadAudioResult>().Fail("Video can't be extracted");
+                TrimStrings.Trim(request);
 
-                Headers headers = HttpRequester.GetHeaders(videoInfo.DownloadUrl);
-                if (headers.ContentLenght > _videoRestrictsOptions.Value.AllowedSize)
-                    return ResponseFactory.With<UploadAudioResult>().Fail("Maximim size in 25 MB");
+                ModelValidationResult modelValidationResult = ModelValidator.Validate(request);
+                if (!modelValidationResult.Ok)
+                    return ResponseFactory.With(new TReturn()
+                    {
+                        Errors = modelValidationResult.Errors
+                    })
+                    .HideInfo()
+                    .Fail("Model is not valid");
 
-                string uniqueIdentifier = _audioExtractor.GetYoutubeUniqueIdentifierOfVideo(youtubeLink);
+                return func(request);
+            }
+            catch (Exception ex)
+            {
+                return ResponseFactory.With<TReturn>().Fail(ex.Message);
+            }
+        }
 
-                if (_dbContext.Audios.Any(x => x.UniqueIdentifier == uniqueIdentifier))
-                    return ResponseFactory.With<UploadAudioResult>().Fail("Video already uploaded");
+        public GetInfoResult GetInfo(UrlRequest request)
+        {
+            return RequestTemplate(request, (req) =>
+            {
+                IUrlInfo urlInfo = _videoInfoGetter.GetInfo(req.Url);
 
-                VideoFileOnFS videoFileOnFS = _audioExtractor.ExtractVideo.Save(videoInfo, uniqueIdentifier);
+                //urlInfo can't be null
+                if (urlInfo is null)
+                    throw new ArgumentNullException(nameof(urlInfo));
+                
+                if(urlInfo.ContentLenght > _videoRestrictsOptions.Value.AllowedSize)
+                    return ResponseFactory.With<GetInfoResult>().Fail("Maximim video size is 25 MB");
 
-                AudioFileOnFS audioFileonFs = _audioExtractor.ExtractAudio.ExtractAudio(videoFileOnFS, DefaulBitrate);
+                return ResponseFactory.With(new GetInfoResult()
+                {
+                    UrlInfo = urlInfo,
+                }).Success();
+            });              
+        }
 
-                UploadFile uploadFile = _audioExtractor.UploadAudio.Upload(audioFileonFs);
+        public BaseResult UploadAudio(UploadAudioRequest request)
+        {
+            return RequestTemplate(request, (req) =>
+            {
+                GetInfoResult result = GetInfo(new UrlRequest() { Url = req.Url });
+
+                if (!result.Ok)
+                    return ResponseFactory.With<BaseResult>().Fail(result.Info, result.Errors);
+
+                string videoId = UrlFormatter.GetYoutubeVideoIdentifier(req.Url);
+
+                if (_dbContext.Audios.Any(x => x.UniqueIdentifier == videoId))
+                    return ResponseFactory.With<BaseResult>().Fail("Video already uploaded");
+
+                IFile videoFile = _saveVideo.Save(req.Url);
+                IFile audioFile = _extractAudio.Extract(videoFile);
+
+                string accessUrl = _uploadAudio.Upload(audioFile, StorageType.FileSystem); //TODO create upload for FileSystem, Blob, etc...
 
                 _dbContext.Audios.Add(new DataModel.Audio()
                 {
                     Id = Guid.NewGuid(),
-                    DateCreated = uploadFile.DateCreated,
-                    Extension = uploadFile.Extension,
-                    FileName = uploadFile.FileName,
-                    AccessUrl = uploadFile.AccessUrl,
-                    PhysicUrl = uploadFile.PhysicUrl,
-                    UniqueIdentifier = uploadFile.VideoId,
-                    Artist = uploadFile.Artist,
-                    Song = uploadFile.Song,                    
+                    AccessUrl = accessUrl,
+                    DateCreated = DateTime.Now,
+                    Artist = req.Artist,
+                    Song = req.Song,
+                    Extension = audioFile.Extension,
+                    FileName = audioFile.Filename,
+                    UniqueIdentifier = videoId,
+                    //UploaderId
                 });
 
-                _dbContext.SaveChanges();
-
-                return ResponseFactory.With(new UploadAudioResult()
-                {
-                    UploadFile = uploadFile,
-                })
-                .Success();
-            } catch(Exception ex)
-            {
-                return ResponseFactory.With<UploadAudioResult>().Fail(ex.Message);
-            }
-        }
+                return ResponseFactory.With<BaseResult>().Success();
+            });
+        }        
     }
 }

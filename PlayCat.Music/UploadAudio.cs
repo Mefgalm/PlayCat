@@ -1,29 +1,33 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using PlayCat.Helpers;
 
-namespace PlayCat.Music.Youtube
+namespace PlayCat.Music
 {
-    public class UploadAudio : IUploadAudio<AudioFileOnFS, UploadFile>
+    public class UploadAudio : IUploadAudio
     {
-        private IFolderPathService _folderPathService;
+        private readonly IFileResolver _fileResolver;
 
-        public UploadAudio(IFolderPathService folderPathService)
+        public UploadAudio(IFileResolver fileResolver)
         {
-            _folderPathService = folderPathService;
+            _fileResolver = fileResolver;
         }
 
-        public UploadFile Upload(AudioFileOnFS audioInfo)
+        public string Upload(IFile audioFile, StorageType storageType)
         {
-            return new UploadFile()
+            switch(storageType)
             {
-                AccessUrl = _folderPathService.RelativeAudioFolderPath + "\\" + audioInfo.FileName + audioInfo.Extension,
-                DateCreated = audioInfo.DateCreated,
-                Extension = audioInfo.Extension,
-                FileName = audioInfo.FileName,
-                PhysicUrl = audioInfo.FullPath,
-                Artist = audioInfo.Artist,
-                Song = audioInfo.Song,
-                VideoId = audioInfo.VideoId,
-            };
+                case StorageType.FileSystem:
+                    return $"/music/{audioFile.Filename.AddExtension(audioFile.Extension)}/storageType/fileSytem";
+
+                //example
+                //case StorageType.Blob:
+                //    upload file to Blobl
+                //
+                //    return "/music/{id}/storageType/blob"
+            }
+
+            throw new MissingStorageTypeException();
         }
     }
 }

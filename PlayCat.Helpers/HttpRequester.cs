@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlayCat.DataService.Helpers
+namespace PlayCat.Helpers
 {
     public class Headers
     {

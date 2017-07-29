@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using PlayCat.DataService;
+using PlayCat.DataService.Response;
 using System;
+using Xunit;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +20,21 @@ namespace PlayCat.Tests
         public BaseTest()
         {
             _server = new TestServer(new WebHostBuilder().UseStartup<StartupTest>());
+        }
+
+        public void CheckIfSuccess(BaseResult result)
+        {
+            Assert.NotNull(result);
+            Assert.True(result.Ok);
+            Assert.Null(result.Errors);
+        }
+
+        public void CheckIfFail(BaseResult result)
+        {
+            Assert.NotNull(result);
+            Assert.False(result.Ok);
+            Assert.NotNull(result.Info);
+            Assert.True(result.Info.Length > 0);
         }
 
         public void SqlLiteDatabaseTest(Action<DbContextOptions<PlayCatDbContext>> action)

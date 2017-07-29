@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using PlayCat.DataService.Extensions;
+using PlayCat.Helpers;
 
 namespace PlayCat.DataService
 {

@@ -1,7 +1,7 @@
 ﻿namespace PlayCat.Music
 {
-    public interface IFFmpeg<T, K>
+    public interface IExtractAudio
     {
-        K ExtractAudio(T videoInfo, int bitRate);
+        IFile Extract(IFile videoFile);
     }
 }

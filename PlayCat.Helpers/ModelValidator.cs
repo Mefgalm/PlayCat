@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace PlayCat.DataService.Helpers
+namespace PlayCat.Helpers
 {
     public class ModelValidator
     {
@@ -19,7 +19,7 @@ namespace PlayCat.DataService.Helpers
             return new ModelValidationResult()
             {
                 Ok = false,
-                Errors = errors.ToDictionary(x => x.MemberNames.FirstOrDefault() ?? "", y => y.ErrorMessage),
+                Errors = errors.ToDictionary(x => x.MemberNames.FirstOrDefault() ?? string.Empty, y => y.ErrorMessage),
             };
         }
     }

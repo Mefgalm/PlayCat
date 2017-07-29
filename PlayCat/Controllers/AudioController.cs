@@ -15,10 +15,6 @@ namespace PlayCat.Controllers
             _audioService = audioService;
         }
 
-        [HttpGet("uploadAudio")]
-        public UploadAudioResult UploadAudio(string youtubeUrl)
-        {
-            return _audioService.UploadAudio(youtubeUrl);
-        }
+        
     }
 }

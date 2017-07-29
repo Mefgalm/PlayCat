@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PlayCat.DataService.Helpers
+namespace PlayCat.Helpers
 {
     public class ModelValidationResult
     {

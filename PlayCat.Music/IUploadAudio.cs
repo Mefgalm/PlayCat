@@ -1,7 +1,7 @@
 ﻿namespace PlayCat.Music
 {
-    public interface IUploadAudio<T, K>
+    public interface IUploadAudio
     {
-        K Upload(T audioInfo);
+        string Upload(IFile audioFile, StorageType storageType);
     }
 }
