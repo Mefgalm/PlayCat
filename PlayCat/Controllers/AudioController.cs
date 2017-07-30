@@ -21,14 +21,22 @@ namespace PlayCat.Controllers
         }
 
         [HttpPost("videoInfo")]
-        public GetInfoResult GetUrlInfo(UrlRequest request)
+        public GetInfoResult GetUrlInfo([FromBody] UrlRequest request)
         {
+            BaseResult checkTokenResult = _authService.CheckToken(HttpContext.Request.Headers[AccessToken]);
+            if (!checkTokenResult.Ok)
+                return new GetInfoResult(checkTokenResult);
+
             return _audioService.GetInfo(request);
         }
 
         [HttpPost("uploadAudio")]
-        public BaseResult UploadAudio(UploadAudioRequest request)
+        public BaseResult UploadAudio([FromBody] UploadAudioRequest request)
         {
+            BaseResult checkTokenResult = _authService.CheckToken(HttpContext.Request.Headers[AccessToken]);
+            if (!checkTokenResult.Ok)
+                return checkTokenResult;
+
             return _audioService.UploadAudio(request);
         }
     }

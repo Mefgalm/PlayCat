@@ -23,14 +23,19 @@ namespace PlayCat.DataService
         {
             return RequestTemplate(request, (req) =>
             {
+                var responseBuilder =
+                    ResponseBuilder<SignUpInResult>
+                    .Create()
+                    .Fail();
+
                 if (!_inviteService.IsInviteValid(request.VerificationCode))
-                    return ResponseFactory.With<SignUpInResult>().Fail("Verification code is wrong");
+                    return responseBuilder.SetInfoAndBuild("Verification code is wrong");
 
                 if (_dbContext.Users.Any(x => x.Email == request.Email))
-                    return ResponseFactory.With<SignUpInResult>().Fail("User with this email already registered");
+                    return responseBuilder.SetInfoAndBuild("User with this email already registered");
 
                 if (_dbContext.Users.Any(x => x.VerificationCode == request.VerificationCode))
-                    return ResponseFactory.With<SignUpInResult>().Fail("This invite already used");
+                    return responseBuilder.SetInfoAndBuild("This invite already used");
 
                 string salt = Crypto.GenerateSalt();
                 string passwordHah = Crypto.HashPassword(request.Password + salt);
@@ -56,11 +61,11 @@ namespace PlayCat.DataService
                 _dbContext.Add(dataUser);
                 _dbContext.SaveChanges();
 
-                return ResponseFactory.With(new SignUpInResult()
+                return ResponseBuilder<SignUpInResult>.SuccessBuild(new SignUpInResult()
                 {
                     User = UserMapper.ToApi.Get(dataUser),
                     AuthToken = AuthTokenMapper.ToApi.Get(dataAuthToken),
-                }).Success();
+                });
             });            
         }
 
@@ -73,7 +78,7 @@ namespace PlayCat.DataService
                     .FirstOrDefault(x => x.Email == request.Email);
 
                 if (dataUser is null || !Crypto.VerifyHashedPassword(dataUser.PasswordHash, request.Password + dataUser.PasswordSalt))
-                    return ResponseFactory.With<SignUpInResult>().Fail("Email or password is incorrect");
+                    return ResponseBuilder<SignUpInResult>.Create().Fail().SetInfoAndBuild("Email or password is incorrect");
 
                 //update token
                 dataUser.AuthToken.DateExpired = DateTime.Now.AddDays(AuthTokenDaysExpired);
@@ -81,34 +86,41 @@ namespace PlayCat.DataService
 
                 _dbContext.SaveChanges();
 
-                return ResponseFactory.With(new SignUpInResult()
+                return ResponseBuilder<SignUpInResult>.SuccessBuild(new SignUpInResult()
                 {
                     User = UserMapper.ToApi.Get(dataUser),
                     AuthToken = AuthTokenMapper.ToApi.Get(dataUser.AuthToken),
-                }).Success();
+                });
             });
         }
 
         public BaseResult CheckToken(string token)
-        {                            
+        {
+            var responseBuilder =
+                ResponseBuilder<BaseResult>
+                .Create()
+                .IsShowInfo(false)
+                .SetCode(ResponseCode.InvalidToken)
+                .Fail();
+
             if (string.IsNullOrEmpty(token))
-                return ResponseFactory.With<BaseResult>().HideInfo().Fail("Token not found", ResponseCode.InvalidToken);
+                return responseBuilder.SetInfoAndBuild("Token not found in headers");
 
             if(!Guid.TryParse(token, out Guid tokenId))
-                return ResponseFactory.With<BaseResult>().HideInfo().Fail("Token wrong format", ResponseCode.InvalidToken);
+                return responseBuilder.SetInfoAndBuild("Token wrong format");
 
             DataModel.AuthToken authToken = _dbContext.AuthTokens.FirstOrDefault(x => x.Id == tokenId);
 
             if(authToken is null)
-                return ResponseFactory.With<BaseResult>().HideInfo().Fail("Token not found", ResponseCode.InvalidToken);
+                return responseBuilder.SetInfoAndBuild("Token not registered");
 
             if(authToken.DateExpired < DateTime.Now)
-                return ResponseFactory.With<BaseResult>().HideInfo().Fail("Token is expired", ResponseCode.InvalidToken);
+                return responseBuilder.SetInfoAndBuild("Token is expired");
 
             if(!authToken.IsActive)
-                return ResponseFactory.With<BaseResult>().HideInfo().Fail("Token is not active", ResponseCode.InvalidToken);
+                return responseBuilder.SetInfoAndBuild("Token is not active");
 
-            return ResponseFactory.With<BaseResult>().Success();
+            return ResponseBuilder<BaseResult>.SuccessBuild();
         }
     }
 }

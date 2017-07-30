@@ -4,6 +4,19 @@ namespace PlayCat.DataService.Response
 {
     public class BaseResult
     {
+        public BaseResult()
+        {
+        }
+
+        public BaseResult(BaseResult baseResult)
+        {
+            Ok = baseResult.Ok;
+            ShowInfo = baseResult.ShowInfo;
+            Info = baseResult.Info;
+            Errors = baseResult.Errors;
+            Code = baseResult.Code;
+        }
+
         public bool Ok { get; set; } = true;
         public bool ShowInfo { get; set; } = true;
         public string Info { get; set; }

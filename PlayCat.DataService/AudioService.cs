@@ -43,12 +43,12 @@ namespace PlayCat.DataService
                     throw new ArgumentNullException(nameof(urlInfo));
                 
                 if(urlInfo.ContentLenght > _videoRestrictsOptions.Value.AllowedSize)
-                    return ResponseFactory.With<GetInfoResult>().Fail("Maximim video size is 25 MB");
+                    return ResponseBuilder<GetInfoResult>.Create().Fail().SetInfoAndBuild("Maximim video size is 25 MB");
 
-                return ResponseFactory.With(new GetInfoResult()
+                return ResponseBuilder<GetInfoResult>.SuccessBuild(new GetInfoResult()
                 {
                     UrlInfo = urlInfo,
-                }).Success();
+                });
             });              
         }
 
@@ -56,15 +56,20 @@ namespace PlayCat.DataService
         {
             return RequestTemplate(request, (req) =>
             {
+                var responseBuilder =
+                    ResponseBuilder<BaseResult>
+                    .Create()
+                    .Fail();                    
+
                 GetInfoResult result = GetInfo(new UrlRequest() { Url = req.Url });
 
                 if (!result.Ok)
-                    return ResponseFactory.With<BaseResult>().Fail(result.Info, result.Errors);
+                    return responseBuilder.SetErrors(result.Errors).SetInfoAndBuild(result.Info);
 
                 string videoId = UrlFormatter.GetYoutubeVideoIdentifier(req.Url);
 
                 if (_dbContext.Audios.Any(x => x.UniqueIdentifier == videoId))
-                    return ResponseFactory.With<BaseResult>().Fail("Video already uploaded");
+                    return responseBuilder.SetInfoAndBuild("Video already uploaded");
 
                 IFile videoFile = _saveVideo.Save(req.Url);
                 IFile audioFile = _extractAudio.Extract(videoFile);
@@ -86,7 +91,7 @@ namespace PlayCat.DataService
 
                 _dbContext.SaveChanges();
 
-                return ResponseFactory.With<BaseResult>().Success();
+                return ResponseBuilder<BaseResult>.SuccessBuild();
             });
         }        
     }

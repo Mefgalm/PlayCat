@@ -27,18 +27,19 @@ namespace PlayCat.DataService
 
                 ModelValidationResult modelValidationResult = ModelValidator.Validate(request);
                 if (!modelValidationResult.Ok)
-                    return ResponseFactory.With(new TReturn()
-                    {
-                        Errors = modelValidationResult.Errors
-                    })
-                    .HideInfo()
-                    .Fail("Model is not valid");
+                    return ResponseBuilder<TReturn>
+                       .Create()
+                       .IsShowInfo(false)
+                       .SetErrors(modelValidationResult.Errors)
+                       .Fail()
+                       .SetInfo("Model is not valid")
+                       .Build();
 
                 return func(request);
             }
             catch (Exception ex)
             {
-                return ResponseFactory.With<TReturn>().Fail(ex.Message);
+                return ResponseBuilder<TReturn>.Create().Fail().SetInfoAndBuild(ex.Message);
             }
         }
     }

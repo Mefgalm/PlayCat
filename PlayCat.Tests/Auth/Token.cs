@@ -1,18 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
-using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.AspNetCore.Http.Features;
-using System.Security.Claims;
-using System.Threading;
-using System.IO;
 using PlayCat.DataService;
-using PlayCat.DataService.Request;
-using PlayCat.DataService.Response;
-using Microsoft.EntityFrameworkCore;
 
 namespace PlayCat.Tests.Auth
 {
@@ -26,7 +14,7 @@ namespace PlayCat.Tests.Auth
             var baseResult = authService.CheckToken(null);
 
             Assert.NotNull(baseResult);
-            Assert.Equal("Token not found", baseResult.Info);
+            Assert.Equal("Token not found in headers", baseResult.Info);
             Assert.False(baseResult.ShowInfo);
             Assert.False(baseResult.Ok);
             Assert.Null(baseResult.Errors);
@@ -63,7 +51,7 @@ namespace PlayCat.Tests.Auth
                     var baseResult = authService.CheckToken(Guid.Empty.ToString());
 
                     Assert.NotNull(baseResult);
-                    Assert.Equal("Token not found", baseResult.Info);
+                    Assert.Equal("Token not registered", baseResult.Info);
                     Assert.False(baseResult.ShowInfo);
                     Assert.False(baseResult.Ok);
                     Assert.Null(baseResult.Errors);
@@ -71,5 +59,98 @@ namespace PlayCat.Tests.Auth
                 }
             });
         }
+
+        [Fact]
+        public void IsExpiredToken()
+        {
+            SqlLiteDatabaseTest(options =>
+            {
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
+
+                using (var context = new PlayCatDbContext(options))
+                {
+                    authService.SetDbContext(context);
+
+                    var user = context.Users.Add(new DataModel.User()
+                    {
+                        Id = Guid.NewGuid(),
+                        Email = "test@gmail.com",
+                        FirstName = "test",
+                        LastName = "test",
+                        PasswordHash = "123123",
+                        PasswordSalt = "123",
+                        RegisterDate = DateTime.Now,
+                        VerificationCode = "123",                        
+                    });
+                    
+                    var authToken = context.AuthTokens.Add(new DataModel.AuthToken()
+                    {
+                        Id = Guid.NewGuid(),
+                        DateExpired = DateTime.Now.AddDays(-1),
+                        IsActive = true,
+                        UserId = user.Entity.Id,
+                    });
+
+                    context.SaveChanges();
+
+                    var baseResult = authService.CheckToken(authToken.Entity.Id.ToString());
+
+                    Assert.NotNull(baseResult);
+                    Assert.Equal("Token is expired", baseResult.Info);
+                    Assert.False(baseResult.ShowInfo);
+                    Assert.False(baseResult.Ok);
+                    Assert.Null(baseResult.Errors);
+                    Assert.Equal(ResponseCode.InvalidToken, baseResult.Code);
+                }
+            });
+        }
+
+        [Fact]
+        public void IsTokenIsInactive()
+        {
+            SqlLiteDatabaseTest(options =>
+            {
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
+
+                using (var context = new PlayCatDbContext(options))
+                {
+                    authService.SetDbContext(context);
+
+                    var user = context.Users.Add(new DataModel.User()
+                    {
+                        Id = Guid.NewGuid(),
+                        Email = "test@gmail.com",
+                        FirstName = "test",
+                        LastName = "test",
+                        PasswordHash = "123123",
+                        PasswordSalt = "123",
+                        RegisterDate = DateTime.Now,
+                        VerificationCode = "123",
+                    });
+
+                    var authToken = context.AuthTokens.Add(new DataModel.AuthToken()
+                    {
+                        Id = Guid.NewGuid(),
+                        DateExpired = DateTime.Now.AddDays(10),
+                        IsActive = false,
+                        UserId = user.Entity.Id,
+                    });
+
+                    context.SaveChanges();
+
+                    var baseResult = authService.CheckToken(authToken.Entity.Id.ToString());
+
+                    Assert.NotNull(baseResult);
+                    Assert.Equal("Token is not active", baseResult.Info);
+                    Assert.False(baseResult.ShowInfo);
+                    Assert.False(baseResult.Ok);
+                    Assert.Null(baseResult.Errors);
+                    Assert.Equal(ResponseCode.InvalidToken, baseResult.Code);
+                }
+            });
+        }
+
     }
 }
