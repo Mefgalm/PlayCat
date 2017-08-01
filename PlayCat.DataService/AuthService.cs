@@ -57,8 +57,16 @@ namespace PlayCat.DataService
                     IsActive = true,
                 };
 
+                var playlist = new DataModel.Playlist()
+                {
+                    Id = Guid.NewGuid(),
+                    IsGeneral = true,
+                    UserId = dataUser.Id,
+                };
+
                 _dbContext.AuthTokens.Add(dataAuthToken);
-                _dbContext.Add(dataUser);
+                _dbContext.Users.Add(dataUser);
+                _dbContext.Playlists.Add(playlist);
                 _dbContext.SaveChanges();
 
                 return ResponseBuilder<SignUpInResult>.SuccessBuild(new SignUpInResult()
@@ -80,9 +88,7 @@ namespace PlayCat.DataService
                 if (dataUser is null || !Crypto.VerifyHashedPassword(dataUser.PasswordHash, request.Password + dataUser.PasswordSalt))
                     return ResponseBuilder<SignUpInResult>.Create().Fail().SetInfoAndBuild("Email or password is incorrect");
 
-                //update token
-                dataUser.AuthToken.DateExpired = DateTime.Now.AddDays(AuthTokenDaysExpired);
-                dataUser.AuthToken.IsActive = true;
+                UpdateAuthToken(dataUser.AuthToken);
 
                 _dbContext.SaveChanges();
 
@@ -94,10 +100,10 @@ namespace PlayCat.DataService
             });
         }
 
-        public BaseResult CheckToken(string token)
+        public CheckTokenResult CheckToken(string token)
         {
             var responseBuilder =
-                ResponseBuilder<BaseResult>
+                ResponseBuilder<CheckTokenResult>
                 .Create()
                 .IsShowInfo(false)
                 .SetCode(ResponseCode.InvalidToken)
@@ -120,7 +126,16 @@ namespace PlayCat.DataService
             if(!authToken.IsActive)
                 return responseBuilder.SetInfoAndBuild("Token is not active");
 
-            return ResponseBuilder<BaseResult>.SuccessBuild();
+            return ResponseBuilder<CheckTokenResult>.SuccessBuild(new CheckTokenResult()
+            {
+                AuthToken = authToken,
+            });
+        }
+
+        private void UpdateAuthToken(DataModel.AuthToken token)
+        {
+            token.DateExpired = DateTime.Now.AddDays(AuthTokenDaysExpired);
+            token.IsActive = true;
         }
     }
 }

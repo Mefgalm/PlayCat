@@ -2,14 +2,58 @@
 using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
 using PlayCat.Music;
+using System;
 using System.IO;
 using System.Linq;
+using System.Web.Helpers;
 using Xunit;
 
 namespace PlayCat.Tests.AudioTests
 {
     public class VideoUpload : BaseTest
     {
+        private Guid GetUserId(PlayCatDbContext context)
+        {
+            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
+
+            string password = "123456abc";
+            string email = "test@gmail.com";
+
+            string salt = Crypto.GenerateSalt();
+            string passwordHah = Crypto.HashPassword(password + salt);
+
+            var user = context.Users.Add(new DataModel.User()
+            {
+                Id = Guid.NewGuid(),
+                Email = email,
+                FirstName = "test",
+                LastName = "test",
+                PasswordHash = passwordHah,
+                PasswordSalt = salt,
+                RegisterDate = DateTime.Now,
+                VerificationCode = inviteService.GenerateInvite(),
+            });
+
+            var generalPlaylist = context.Playlists.Add(new DataModel.Playlist()
+            {
+                Id = Guid.NewGuid(),
+                IsGeneral = true,
+                UserId = user.Entity.Id,
+            });
+
+            var authToken = context.AuthTokens.Add(new DataModel.AuthToken()
+            {
+                Id = Guid.NewGuid(),
+                DateExpired = DateTime.Now.AddDays(-1),
+                IsActive = false,
+                UserId = user.Entity.Id,
+            });
+
+            context.SaveChanges();
+
+            return user.Entity.Id;
+        }
+
         [Fact]
         public void IsInvalidModel()
         {
@@ -17,7 +61,7 @@ namespace PlayCat.Tests.AudioTests
 
             var uploadAudioRequest = new UploadAudioRequest();
 
-            BaseResult result = audioService.UploadAudio(uploadAudioRequest);
+            BaseResult result = audioService.UploadAudio(Guid.Empty, uploadAudioRequest);
 
             CheckIfFail(result);
 
@@ -46,8 +90,10 @@ namespace PlayCat.Tests.AudioTests
                         Url = "https://www.youtube.com/watch?v=80AlC3LaPqQ",
                     };
 
-                    var result = audioService.UploadAudio(uploadAudioRequest);
-                    var resultDownloaded = audioService.UploadAudio(uploadAudioRequest);
+                    Guid userId = GetUserId(context);
+
+                    var result = audioService.UploadAudio(userId, uploadAudioRequest);
+                    var resultDownloaded = audioService.UploadAudio(userId, uploadAudioRequest);
 
                     CheckIfFail(resultDownloaded);
 
@@ -83,17 +129,25 @@ namespace PlayCat.Tests.AudioTests
                         Url = "https://www.youtube.com/watch?v=80AlC3LaPqQ",
                     };
 
-                    var result = audioService.UploadAudio(uploadAudioRequest);
+                    Guid userId = GetUserId(context);
+                    var result = audioService.UploadAudio(userId, uploadAudioRequest);
 
                     CheckIfSuccess(result);
 
-                    var audios = context.Audios.ToList();
+                    var audio = context.Audios.Single();
 
-                    var audio = audios.First();
-                    Assert.Equal(audios.Count, 1);
                     Assert.Equal("Say It (feat. Tove Lo) (Illenium Remix)", audio.Song);
                     Assert.Equal("Flume", audio.Artist);
                     Assert.Equal("80AlC3LaPqQ", audio.UniqueIdentifier);
+
+                    var audioPlaylists = context.AudioPlaylists.Single();
+                    var generalPlaylist = context.Playlists.Single();
+
+                    Assert.True(generalPlaylist.IsGeneral);
+                    Assert.Equal(generalPlaylist.UserId, userId);
+
+                    Assert.Equal(audioPlaylists.AudioId, audio.Id);
+                    Assert.Equal(audioPlaylists.PlaylistId, generalPlaylist.Id);
 
                     string audioFilePath = fileResolver.GetAudioFolderPath(StorageType.FileSystem);
                     string videoFilePath = fileResolver.GetVideoFolderPath(StorageType.FileSystem);

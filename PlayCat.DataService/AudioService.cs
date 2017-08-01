@@ -52,7 +52,7 @@ namespace PlayCat.DataService
             });              
         }
 
-        public BaseResult UploadAudio(UploadAudioRequest request)
+        public BaseResult UploadAudio(Guid userId, UploadAudioRequest request)
         {
             return RequestTemplate(request, (req) =>
             {
@@ -74,9 +74,12 @@ namespace PlayCat.DataService
                 IFile videoFile = _saveVideo.Save(req.Url);
                 IFile audioFile = _extractAudio.Extract(videoFile);
 
-                string accessUrl = _uploadAudio.Upload(audioFile, StorageType.FileSystem); //TODO create upload for FileSystem, Blob, etc...
+                //TODO: create upload for FileSystem, Blob, etc...
+                string accessUrl = _uploadAudio.Upload(audioFile, StorageType.FileSystem);
 
-                _dbContext.Audios.Add(new DataModel.Audio()
+                var generalPlayList = _dbContext.Playlists.FirstOrDefault(x => x.UserId == userId && x.IsGeneral);
+
+                var audio = new DataModel.Audio()
                 {
                     Id = Guid.NewGuid(),
                     AccessUrl = accessUrl,
@@ -86,8 +89,18 @@ namespace PlayCat.DataService
                     Extension = audioFile.Extension,
                     FileName = audioFile.Filename,
                     UniqueIdentifier = videoId,
-                    //UploaderId
-                });
+                    UploaderId = userId,
+                };
+
+                var audioPlaylist = new DataModel.AudioPlaylist()
+                {
+                    AudioId = audio.Id,
+                    DateCreated = DateTime.Now,
+                    PlaylistId = generalPlayList.Id,
+                };
+
+                _dbContext.AudioPlaylists.Add(audioPlaylist);
+                _dbContext.Audios.Add(audio);
 
                 _dbContext.SaveChanges();
 

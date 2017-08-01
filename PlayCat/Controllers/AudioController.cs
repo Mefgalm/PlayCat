@@ -23,7 +23,7 @@ namespace PlayCat.Controllers
         [HttpPost("videoInfo")]
         public GetInfoResult GetUrlInfo([FromBody] UrlRequest request)
         {
-            BaseResult checkTokenResult = _authService.CheckToken(HttpContext.Request.Headers[AccessToken]);
+            CheckTokenResult checkTokenResult = _authService.CheckToken(HttpContext.Request.Headers[AccessToken]);
             if (!checkTokenResult.Ok)
                 return new GetInfoResult(checkTokenResult);
 
@@ -33,11 +33,11 @@ namespace PlayCat.Controllers
         [HttpPost("uploadAudio")]
         public BaseResult UploadAudio([FromBody] UploadAudioRequest request)
         {
-            BaseResult checkTokenResult = _authService.CheckToken(HttpContext.Request.Headers[AccessToken]);
+            CheckTokenResult checkTokenResult = _authService.CheckToken(HttpContext.Request.Headers[AccessToken]);
             if (!checkTokenResult.Ok)
                 return checkTokenResult;
 
-            return _audioService.UploadAudio(request);
+            return _audioService.UploadAudio(checkTokenResult.AuthToken.UserId, request);
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using PlayCat.DataService;
 using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
+using System;
 using System.Linq;
+using System.Web.Helpers;
 using Xunit;
 
 namespace PlayCat.Tests.Auth
@@ -310,7 +312,63 @@ namespace PlayCat.Tests.Auth
                     Assert.True(resultSignIn.ShowInfo);
                 }
             });
-        }        
+        }
+
+
+        [Fact]
+        public void IsUpdateTokenSignIn()
+        {
+            SqlLiteDatabaseTest(options =>
+            {
+                var authService = _server.Host.Services.GetService(typeof(IAuthService)) as IAuthService;
+                var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
+
+                using (var context = new PlayCatDbContext(options))
+                {
+                    authService.SetDbContext(context);
+
+                    string password = "123456abc";
+                    string email = "test@gmail.com";
+
+                    string salt = Crypto.GenerateSalt();
+                    string passwordHah = Crypto.HashPassword(password + salt);
+
+                    var user = context.Users.Add(new DataModel.User()
+                    {
+                        Id = Guid.NewGuid(),
+                        Email = email,
+                        FirstName = "test",
+                        LastName = "test",
+                        PasswordHash = passwordHah,
+                        PasswordSalt = salt,
+                        RegisterDate = DateTime.Now,
+                        VerificationCode = inviteService.GenerateInvite(),
+                    });
+
+                    var authToken = context.AuthTokens.Add(new DataModel.AuthToken()
+                    {
+                        Id = Guid.NewGuid(),
+                        DateExpired = DateTime.Now.AddDays(-1),
+                        IsActive = false,
+                        UserId = user.Entity.Id,
+                    });
+
+                    context.SaveChanges();
+
+                    SignUpInResult result = authService.SignIn(new SignInRequest()
+                    {
+                        Email = email,
+                        Password = password,
+                    });
+
+                    var updatedAuthToken = context.AuthTokens.FirstOrDefault();
+
+                    Assert.NotNull(updatedAuthToken);
+                    Assert.True(updatedAuthToken.DateExpired > DateTime.Now);
+                    Assert.True(updatedAuthToken.IsActive);
+                }
+            });
+        }
 
         #endregion
     }

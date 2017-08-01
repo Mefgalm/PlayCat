@@ -48,7 +48,6 @@ namespace PlayCat.Tests
                     .UseSqlite(connection)
                     .Options;
 
-                // Create the schema in the database
                 using (var context = new PlayCatDbContext(options))
                 {
                     context.Database.EnsureCreated();

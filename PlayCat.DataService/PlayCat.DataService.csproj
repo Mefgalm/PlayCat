@@ -158,6 +158,10 @@
     <Compile Include="Migrations\20170730165703_update-music-model.designer.cs">
       <DependentUpon>20170730165703_update-music-model.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20170801091634_playlist-general.cs" />
+    <Compile Include="Migrations\20170801091634_playlist-general.designer.cs">
+      <DependentUpon>20170801091634_playlist-general.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\PlayCatDbContextModelSnapshot.cs" />
     <Compile Include="ModelValidationService.cs" />
     <Compile Include="PlayCatDbContext.cs" />
@@ -169,6 +173,7 @@
     <Compile Include="ResponseBuilder.cs" />
     <Compile Include="ResponseCode.cs" />
     <Compile Include="Response\BaseResult.cs" />
+    <Compile Include="Response\CheckTokenResult.cs" />
     <Compile Include="Response\GetInfoResult.cs" />
     <Compile Include="Response\SignUpInResult.cs" />
     <Compile Include="ServiceProvider.cs" />

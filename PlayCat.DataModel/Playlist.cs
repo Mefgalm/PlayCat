@@ -7,8 +7,9 @@ namespace PlayCat.DataModel
     public class Playlist
     {
         [MaxLength(100)]
-        [Required(AllowEmptyStrings = false)]        
         public string Title { get; set; }
+
+        public bool IsGeneral { get; set; }
 
         [Key]
         public Guid Id { get; set; }        

@@ -6,7 +6,7 @@ namespace PlayCat.DataService
 {
     public interface IAuthService : ISetDbContext
     {
-        BaseResult CheckToken(string token);
+        CheckTokenResult CheckToken(string token);
         SignUpInResult SignIn(SignInRequest request);
         SignUpInResult SignUp(SignUpRequest request);
     }
