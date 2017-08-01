@@ -1,4 +1,5 @@
 ﻿using PlayCat.DataService.Request;
+using PlayCat.DataService.Request.AuthRequest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace PlayCat.DataService.Mappers
         {
             public static DataModel.User Get(ApiModel.User apiUser)
             {
-                return apiUser is null ? null : new DataModel.User()
+                return apiUser == null ? null : new DataModel.User()
                 {
                     Email = apiUser.Email,
                     FirstName = apiUser.FirstName,
@@ -27,7 +28,7 @@ namespace PlayCat.DataService.Mappers
 
             public static DataModel.User Get(SignUpRequest request, Action<DataModel.User> overrides = null)
             {
-                var dataUser = request is null ? null : new DataModel.User()
+                var dataUser = request == null ? null : new DataModel.User()
                 {
                     Email = request.Email,
                     FirstName = request.FirstName,
@@ -44,7 +45,7 @@ namespace PlayCat.DataService.Mappers
         {
             public static ApiModel.User Get(DataModel.User dataUser)
             {
-                return dataUser is null ? null : new ApiModel.User()
+                return dataUser == null ? null : new ApiModel.User()
                 {
                     Email = dataUser.Email,
                     FirstName = dataUser.FirstName,

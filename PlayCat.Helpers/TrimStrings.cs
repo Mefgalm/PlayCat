@@ -8,7 +8,7 @@ namespace PlayCat.Helpers
     {
         public static void Trim(object obj)
         {
-            if (obj is null)
+            if (obj == null)
                 return;
 
             IEnumerable<PropertyInfo> stringProperties = obj.GetType().GetProperties()

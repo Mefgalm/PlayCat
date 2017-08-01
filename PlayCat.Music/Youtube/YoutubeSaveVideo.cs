@@ -21,7 +21,7 @@ namespace PlayCat.Music.Youtube
 
         public IFile Save(string url)
         {
-            if (url is null)
+            if (url == null)
                 throw new ArgumentNullException(nameof(url));
 
             url = url.Trim();

@@ -6,7 +6,7 @@
         {
             public static ApiModel.AuthToken Get(DataModel.AuthToken dataToken)
             {
-                return dataToken is null ? null : new ApiModel.AuthToken()
+                return dataToken == null ? null : new ApiModel.AuthToken()
                 {
                     Id = dataToken.Id,
                     DateExpired = dataToken.DateExpired,                       

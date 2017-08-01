@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PlayCat.DataService.Request
+namespace PlayCat.DataService.Request.AudioRequest
 {
     public class UploadAudioRequest
     {

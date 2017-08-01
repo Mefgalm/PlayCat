@@ -13,7 +13,7 @@ namespace PlayCat.Music.Youtube
 
         public IUrlInfo GetInfo(string url)
         {
-            if (url is null)
+            if (url == null)
                 throw new ArgumentNullException(nameof(url));
 
             url = url.Trim();
@@ -39,7 +39,7 @@ namespace PlayCat.Music.Youtube
 
         private (string Artist, string Song) GetArtistAndSongName(string title)
         {
-            if (title is null)
+            if (title == null)
                 return (string.Empty, string.Empty);
 
             string[] artistAndSong = title.Split('-');

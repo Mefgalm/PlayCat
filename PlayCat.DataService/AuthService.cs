@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlayCat.DataService.Mappers;
 using PlayCat.DataService.Request;
+using PlayCat.DataService.Request.AuthRequest;
 using PlayCat.DataService.Response;
+using PlayCat.DataService.Response.AuthRequest;
 using System;
 using System.Linq;
 using System.Web.Helpers;
@@ -85,7 +87,7 @@ namespace PlayCat.DataService
                     .Include(x => x.AuthToken)
                     .FirstOrDefault(x => x.Email == request.Email);
 
-                if (dataUser is null || !Crypto.VerifyHashedPassword(dataUser.PasswordHash, request.Password + dataUser.PasswordSalt))
+                if (dataUser == null || !Crypto.VerifyHashedPassword(dataUser.PasswordHash, request.Password + dataUser.PasswordSalt))
                     return ResponseBuilder<SignUpInResult>.Create().Fail().SetInfoAndBuild("Email or password is incorrect");
 
                 UpdateAuthToken(dataUser.AuthToken);
@@ -117,7 +119,7 @@ namespace PlayCat.DataService
 
             DataModel.AuthToken authToken = _dbContext.AuthTokens.FirstOrDefault(x => x.Id == tokenId);
 
-            if(authToken is null)
+            if(authToken == null)
                 return responseBuilder.SetInfoAndBuild("Token not registered");
 
             if(authToken.DateExpired < DateTime.Now)

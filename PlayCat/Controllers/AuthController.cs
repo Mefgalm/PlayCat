@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlayCat.DataService;
 using PlayCat.DataService.Request;
+using PlayCat.DataService.Request.AuthRequest;
 using PlayCat.DataService.Response;
+using PlayCat.DataService.Response.AuthRequest;
 
 namespace PlayCat.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class AuthController : Controller
+    public class AuthController : BaseController
     {
         private readonly IAuthService _authService;
 

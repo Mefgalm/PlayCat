@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
-namespace PlayCat.DataService.Request
+namespace PlayCat.DataService.Request.AuthRequest
 {
     public class SignUpRequest
     {

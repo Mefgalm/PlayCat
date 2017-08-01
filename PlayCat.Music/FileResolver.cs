@@ -16,7 +16,7 @@ namespace PlayCat.Music
 
         public string AudioFilePath(string filename, string extension, StorageType storageType)
         {
-            if (filename is null)
+            if (filename == null)
                 throw new ArgumentNullException(nameof(filename));
 
             switch(storageType)
@@ -30,7 +30,7 @@ namespace PlayCat.Music
 
         public string VideoFilePath(string filename, string extension, StorageType storageType)
         {
-            if (filename is null)
+            if (filename == null)
                 throw new ArgumentNullException(nameof(filename));
 
             switch (storageType)

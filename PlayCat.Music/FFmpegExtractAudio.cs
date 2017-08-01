@@ -30,7 +30,7 @@ namespace PlayCat.Music
 
         public IFile Extract(IFile videoFile)
         {
-            if (videoFile is null)
+            if (videoFile == null)
                 throw new ArgumentNullException(nameof(videoFile));
 
             if (videoFile.StorageType != StorageType.FileSystem)

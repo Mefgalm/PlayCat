@@ -5,6 +5,8 @@ using PlayCat.Helpers;
 using System.Linq;
 using PlayCat.Music;
 using System;
+using PlayCat.DataService.Response.AudioRequest;
+using PlayCat.DataService.Request.AudioRequest;
 
 namespace PlayCat.DataService
 {
@@ -39,7 +41,7 @@ namespace PlayCat.DataService
                 IUrlInfo urlInfo = _videoInfoGetter.GetInfo(req.Url);
 
                 //urlInfo can't be null
-                if (urlInfo is null)
+                if (urlInfo == null)
                     throw new ArgumentNullException(nameof(urlInfo));
                 
                 if(urlInfo.ContentLenght > _videoRestrictsOptions.Value.AllowedSize)
@@ -106,6 +108,7 @@ namespace PlayCat.DataService
 
                 return ResponseBuilder<BaseResult>.SuccessBuild();
             });
-        }        
+        }
+
     }
 }

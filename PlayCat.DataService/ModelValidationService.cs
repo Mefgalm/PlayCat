@@ -24,7 +24,7 @@ namespace PlayCat.DataService
             {
                 Type type = assembly.GetType(AssemblyName + typeName);
 
-                if (type is null)
+                if (type == null)
                     return null;
 
                 foreach (var prop in type.GetProperties(bindingFlags))
@@ -43,7 +43,7 @@ namespace PlayCat.DataService
 
         private IDictionary<string, ValidationModel> GetMappedAttributes(string propName, IEnumerable<ValidationAttribute> validationAttributes)
         {
-            if (validationAttributes is null)
+            if (validationAttributes == null)
                 throw new ArgumentNullException(nameof(validationAttributes));
 
             var attrDictionary = new Dictionary<string, ValidationModel>();

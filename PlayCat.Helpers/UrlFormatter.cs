@@ -13,7 +13,7 @@ namespace PlayCat.Helpers
 
         public static string RemoveParametersFromUrl(string url)
         {
-            if (url is null)
+            if (url == null)
                 return null;
 
             var regexp = new Regex(ParemeterRegexp);
@@ -23,7 +23,7 @@ namespace PlayCat.Helpers
 
         public static string GetYoutubeVideoIdentifier(string url)
         {
-            if (url is null)
+            if (url == null)
                 throw new ArgumentNullException(nameof(url));
 
             int idIndex = url.LastIndexOf('=');

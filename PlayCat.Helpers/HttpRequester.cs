@@ -16,7 +16,7 @@ namespace PlayCat.Helpers
     {
         public static Headers GetHeaders(string url)
         {
-            if (url is null)
+            if (url == null)
                 throw new ArgumentNullException(nameof(url));
 
             var webRequest = (HttpWebRequest)WebRequest.Create(url);

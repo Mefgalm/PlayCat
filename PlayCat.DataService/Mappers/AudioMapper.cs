@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PlayCat.DataService.Mappers
+﻿namespace PlayCat.DataService.Mappers
 {
     public static class AudioMapper
     {
@@ -14,7 +8,12 @@ namespace PlayCat.DataService.Mappers
             {
                 return audio == null ? null : new ApiModel.Audio
                 {
-
+                    AccessUrl = audio.AccessUrl,
+                    Artist = audio.Artist,
+                    DateCreated = audio.DateCreated,
+                    Id = audio.Id,
+                    Song = audio.Song,
+                    Uploader = UserMapper.ToApi.Get(audio.Uploader),
                 };
             }
         }

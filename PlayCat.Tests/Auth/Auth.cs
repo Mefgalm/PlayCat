@@ -1,6 +1,8 @@
 ﻿using PlayCat.DataService;
 using PlayCat.DataService.Request;
+using PlayCat.DataService.Request.AuthRequest;
 using PlayCat.DataService.Response;
+using PlayCat.DataService.Response.AuthRequest;
 using System;
 using System.Linq;
 using System.Web.Helpers;

@@ -6,7 +6,7 @@ namespace PlayCat.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class ValidationController : Controller
+    public class ValidationController : BaseController
     {
         private readonly IModelValidationService _modelValidationService;
 

@@ -4,7 +4,7 @@
     {
         public static string ToLowerFirstCharacter(this string str)
         {
-            if (str is null)
+            if (str == null)
                 return null;
 
             if (str == string.Empty)
@@ -15,7 +15,7 @@
 
         //public static string AddExtension(this string str, string extension)
         //{
-        //    if (str is null)
+        //    if (str == null)
         //        return null;
 
         //    if (str == string.Empty)
