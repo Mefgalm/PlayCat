@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PlayCat.DataService.Mappers;
 using PlayCat.DataService.Request;
 using PlayCat.DataService.Request.AuthRequest;
@@ -16,14 +17,15 @@ namespace PlayCat.DataService
 
         private readonly IInviteService _inviteService;
 
-        public AuthService(PlayCatDbContext dbContext, IInviteService inviteService) : base(dbContext)
+        public AuthService(PlayCatDbContext dbContext, IInviteService inviteService, ILoggerFactory loggerFactory) 
+            : base(dbContext, loggerFactory.CreateLogger<AuthService>())
         {
             _inviteService = inviteService;
         }
 
         public SignUpInResult SignUp(SignUpRequest request)
         {
-            return RequestTemplate(request, (req) =>
+            return RequestTemplateCheckModel(request, () =>
             {
                 var responseBuilder =
                     ResponseBuilder<SignUpInResult>
@@ -42,7 +44,7 @@ namespace PlayCat.DataService
                 string salt = Crypto.GenerateSalt();
                 string passwordHah = Crypto.HashPassword(request.Password + salt);
 
-                var dataUser = UserMapper.ToData.Get(request, (user) =>
+                var dataUser = UserMapper.ToData.FromRequest(request, (user) =>
                 {
                     user.Id = Guid.NewGuid();
                     user.IsUploadingAudio = false;
@@ -63,7 +65,7 @@ namespace PlayCat.DataService
                 {
                     Id = Guid.NewGuid(),
                     IsGeneral = true,
-                    UserId = dataUser.Id,
+                    OwnerId = dataUser.Id,
                 };
 
                 _dbContext.AuthTokens.Add(dataAuthToken);
@@ -73,15 +75,15 @@ namespace PlayCat.DataService
 
                 return ResponseBuilder<SignUpInResult>.SuccessBuild(new SignUpInResult()
                 {
-                    User = UserMapper.ToApi.Get(dataUser),
-                    AuthToken = AuthTokenMapper.ToApi.Get(dataAuthToken),
+                    User = UserMapper.ToApi.FromData(dataUser),
+                    AuthToken = AuthTokenMapper.ToApi.FromData(dataAuthToken),
                 });
             });            
         }
 
         public SignUpInResult SignIn(SignInRequest request)
         {
-            return RequestTemplate(request, (req) =>
+            return RequestTemplateCheckModel(request, () =>
             {
                 DataModel.User dataUser = _dbContext.Users
                     .Include(x => x.AuthToken)
@@ -96,8 +98,8 @@ namespace PlayCat.DataService
 
                 return ResponseBuilder<SignUpInResult>.SuccessBuild(new SignUpInResult()
                 {
-                    User = UserMapper.ToApi.Get(dataUser),
-                    AuthToken = AuthTokenMapper.ToApi.Get(dataUser.AuthToken),
+                    User = UserMapper.ToApi.FromData(dataUser),
+                    AuthToken = AuthTokenMapper.ToApi.FromData(dataUser.AuthToken),
                 });
             });
         }

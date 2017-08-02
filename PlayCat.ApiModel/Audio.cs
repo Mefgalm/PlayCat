@@ -15,7 +15,7 @@ namespace PlayCat.ApiModel
 
         public string AccessUrl { get; set; }        
 
-        public DateTime DateCreated { get; set; }
+        public DateTime DateAdded { get; set; }
 
         public User Uploader { get; set; }
     }

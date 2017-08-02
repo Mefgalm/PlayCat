@@ -12,21 +12,7 @@ namespace PlayCat.DataService.Mappers
     {
         public static class ToData
         {
-            public static DataModel.User Get(ApiModel.User apiUser)
-            {
-                return apiUser == null ? null : new DataModel.User()
-                {
-                    Email = apiUser.Email,
-                    FirstName = apiUser.FirstName,
-                    LastName = apiUser.LastName,
-                    IsUploadingAudio = apiUser.IsUploading,
-                    Id = apiUser.Id,
-                    NickName = apiUser.NickName,
-                    RegisterDate = apiUser.RegisterDate,
-                };
-            }
-
-            public static DataModel.User Get(SignUpRequest request, Action<DataModel.User> overrides = null)
+            public static DataModel.User FromRequest(SignUpRequest request, Action<DataModel.User> overrides = null)
             {
                 var dataUser = request == null ? null : new DataModel.User()
                 {
@@ -43,7 +29,7 @@ namespace PlayCat.DataService.Mappers
 
         public static class ToApi
         {
-            public static ApiModel.User Get(DataModel.User dataUser)
+            public static ApiModel.User FromData(DataModel.User dataUser)
             {
                 return dataUser == null ? null : new ApiModel.User()
                 {

@@ -15,6 +15,8 @@ namespace PlayCat.Tests
 {
     public class BaseTest
     {
+        protected const string BaseAudioExtension = ".mp3";
+
         protected readonly TestServer _server;
 
         public BaseTest()

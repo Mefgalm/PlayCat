@@ -14,7 +14,5 @@ namespace PlayCat.DataService.Response.AudioRequest
         }
 
         public Playlist Playlist { get; set; }
-
-        public IEnumerable<Audio> Audios { get; set; }
     }
 }

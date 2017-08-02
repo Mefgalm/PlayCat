@@ -4,7 +4,7 @@
     {
         public static class ToApi
         {
-            public static ApiModel.AuthToken Get(DataModel.AuthToken dataToken)
+            public static ApiModel.AuthToken FromData(DataModel.AuthToken dataToken)
             {
                 return dataToken == null ? null : new ApiModel.AuthToken()
                 {

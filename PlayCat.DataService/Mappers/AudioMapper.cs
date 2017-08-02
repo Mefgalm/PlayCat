@@ -1,19 +1,22 @@
-﻿namespace PlayCat.DataService.Mappers
+﻿using PlayCat.DataService.DTO;
+using System;
+
+namespace PlayCat.DataService.Mappers
 {
     public static class AudioMapper
     {
         public static class ToApi
         {
-            public static ApiModel.Audio Get(DataModel.Audio audio)
+            public static ApiModel.Audio FromDTO(AudioDTO audioDTO)
             {
-                return audio == null ? null : new ApiModel.Audio
+                return audioDTO == null ? null : new ApiModel.Audio
                 {
-                    AccessUrl = audio.AccessUrl,
-                    Artist = audio.Artist,
-                    DateCreated = audio.DateCreated,
-                    Id = audio.Id,
-                    Song = audio.Song,
-                    Uploader = UserMapper.ToApi.Get(audio.Uploader),
+                    AccessUrl = audioDTO.AccessUrl,
+                    Artist = audioDTO.Artist,
+                    DateAdded = audioDTO.DateAdded,
+                    Id = audioDTO.Id,
+                    Song = audioDTO.Song,
+                    Uploader = UserMapper.ToApi.FromData(audioDTO.Uploader),                    
                 };
             }
         }

@@ -2,7 +2,7 @@
 using Xunit;
 using PlayCat.DataService;
 
-namespace PlayCat.Tests.Auth
+namespace PlayCat.Tests.AuthTests
 {
     public class Token : BaseTest
     {

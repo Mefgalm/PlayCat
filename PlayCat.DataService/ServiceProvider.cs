@@ -7,7 +7,7 @@ namespace PlayCat.DataService
 {
     public static class ServiceProvider
     {
-        public static void RegisterService(IServiceCollection service)
+        public static void RegisterServices(IServiceCollection service)
         {
             service.AddScoped<ISaveVideo, YoutubeSaveVideo>();
             service.AddScoped<IExtractAudio, FFmpegExtractAudio>();
@@ -19,6 +19,8 @@ namespace PlayCat.DataService
             service.AddScoped<IModelValidationService, ModelValidationService>();
 
             service.AddScoped<IAudioService, AudioService>();
+            service.AddScoped<IUploadService, UploadService>();
+            service.AddScoped<IPlaylistService, PlaylistService>();
         }
     }
 }

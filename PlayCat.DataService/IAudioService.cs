@@ -8,7 +8,6 @@ namespace PlayCat.DataService
 {
     public interface IAudioService : ISetDbContext
     {
-        GetInfoResult GetInfo(UrlRequest request);
-        BaseResult UploadAudio(Guid userId, UploadAudioRequest request);
+        AudioResult GetAudios(Guid playlistId, int skip, int take);
     }
 }

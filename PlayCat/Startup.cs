@@ -49,7 +49,7 @@ namespace PlayCat
 
             services.AddDbContext<PlayCatDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            ServiceProvider.RegisterService(services);
+            ServiceProvider.RegisterServices(services);
         }
 
         private void ServeFromDirectory(IApplicationBuilder app, IHostingEnvironment env, string path)

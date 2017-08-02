@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web.Helpers;
 using Xunit;
 
-namespace PlayCat.Tests.Auth
+namespace PlayCat.Tests.AuthTests
 {
     public class Auth : BaseTest
     {

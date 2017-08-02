@@ -18,17 +18,21 @@ namespace PlayCat.DataModel
         [Required(AllowEmptyStrings = false)]        
         public string Song { get; set; }
 
+        [MaxLength(150)]
         [Required(AllowEmptyStrings = false)]
-        public string AccessUrl { get; set; }        
+        public string AccessUrl { get; set; }
 
+        [MaxLength(50)]
         [Required(AllowEmptyStrings = false)]
         public string FileName { get; set; }
 
+        [MaxLength(10)]
         [Required(AllowEmptyStrings = false)]
         public string Extension { get; set; }
 
         public DateTime DateCreated { get; set; }
 
+        [MaxLength(50)]
         [Required(AllowEmptyStrings = false)]
         public string UniqueIdentifier { get; set; }
 

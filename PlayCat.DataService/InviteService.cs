@@ -8,13 +8,11 @@ namespace PlayCat.DataService
         private const int DaysExpired = 180;
         private const string Filename = "Code.txt";
 
-        private readonly IHostingEnvironment _env;
         private readonly string _code;
 
         public InviteService(IHostingEnvironment env)
         {
-            _env = env;
-            _code = File.ReadAllText(Path.Combine(_env.ContentRootPath, Filename));
+            _code = File.ReadAllText(Path.Combine(env.ContentRootPath, Filename));
         }
 
         public string GenerateInvite()

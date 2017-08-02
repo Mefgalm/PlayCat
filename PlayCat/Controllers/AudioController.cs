@@ -22,24 +22,14 @@ namespace PlayCat.Controllers
             _authService = authService;
         }
 
-        [HttpPost("videoInfo")]
-        public GetInfoResult GetUrlInfo([FromBody] UrlRequest request)
+        [HttpGet("audios")]
+        public AudioResult GetAudios(Guid playlistId, int skip, int take)
         {
             CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
             if (!checkTokenResult.Ok)
-                return new GetInfoResult(checkTokenResult);
+                return new AudioResult(checkTokenResult);
 
-            return _audioService.GetInfo(request);
-        }        
-
-        [HttpPost("uploadAudio")]
-        public BaseResult UploadAudio([FromBody] UploadAudioRequest request)
-        {
-            CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
-            if (!checkTokenResult.Ok)
-                return checkTokenResult;
-
-            return _audioService.UploadAudio(checkTokenResult.AuthToken.UserId, request);
+            return _audioService.GetAudios(playlistId, skip, take);
         }
     }
 }

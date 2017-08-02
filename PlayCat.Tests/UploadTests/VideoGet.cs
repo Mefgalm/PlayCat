@@ -8,7 +8,7 @@ using PlayCat.Music;
 using PlayCat.DataService.Request.AudioRequest;
 using PlayCat.DataService.Response.AudioRequest;
 
-namespace PlayCat.Tests.AudioTests
+namespace PlayCat.Tests.UploadTests
 {
     public class VideoGet : BaseTest
     {
@@ -23,14 +23,14 @@ namespace PlayCat.Tests.AudioTests
         [InlineData("https://youtu.be/Qa4u4D32x4U&param=2")]
         public void IsErrorOnInvalidUrl(string url)
         {
-            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
+            var uploadService = _server.Host.Services.GetService(typeof(IUploadService)) as IUploadService;
 
             var request = new UrlRequest()
             {
                 Url = url,
             };
 
-            GetInfoResult result = audioService.GetInfo(request);
+            GetInfoResult result = uploadService.GetInfo(request);
 
             CheckIfFail(result);
 
@@ -43,14 +43,14 @@ namespace PlayCat.Tests.AudioTests
         [Fact]
         public void IsWrongUrlId()
         {
-            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
+            var uploadService = _server.Host.Services.GetService(typeof(IUploadService)) as IUploadService;
 
             var request = new UrlRequest()
             {
                 Url = "https://www.youtube.com/watch?v=11111111",
             };
 
-            GetInfoResult result = audioService.GetInfo(request);
+            GetInfoResult result = uploadService.GetInfo(request);
 
             CheckIfFail(result);
 
@@ -61,14 +61,14 @@ namespace PlayCat.Tests.AudioTests
         [Fact]
         public void IsVideoSizeToLarge()
         {
-            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
+            var uploadService = _server.Host.Services.GetService(typeof(IUploadService)) as IUploadService;
 
             var request = new UrlRequest()
             {
                 Url = "https://www.youtube.com/watch?v=2mI0nEgdgsA",
             };
 
-            GetInfoResult result = audioService.GetInfo(request);
+            GetInfoResult result = uploadService.GetInfo(request);
 
             CheckIfFail(result);
 
@@ -89,14 +89,14 @@ namespace PlayCat.Tests.AudioTests
         [InlineData("http://youtu.be/80AlC3LaPqQ")]
         public void IsValidUrl(string url)
         {
-            var audioService = _server.Host.Services.GetService(typeof(IAudioService)) as IAudioService;
+            var uploadService = _server.Host.Services.GetService(typeof(IUploadService)) as IUploadService;
 
             var request = new UrlRequest()
             {
                 Url = url,
             };
 
-            GetInfoResult result = audioService.GetInfo(request);
+            GetInfoResult result = uploadService.GetInfo(request);
 
             CheckIfSuccess(result);
 

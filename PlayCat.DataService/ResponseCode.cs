@@ -3,6 +3,7 @@
     public enum ResponseCode
     {
         None,
-        InvalidToken
+        InvalidToken,
+        UnexpectedServerError,
     }
 }

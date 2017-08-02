@@ -14,9 +14,9 @@ namespace PlayCat.DataModel
         [Key]
         public Guid Id { get; set; }        
 
-        public Guid? UserId { get; set; }
+        public Guid? OwnerId { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public virtual User User { get; set; }
+        [ForeignKey(nameof(OwnerId))]
+        public virtual User Owner { get; set; }
     }
 }
