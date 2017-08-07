@@ -1,7 +1,7 @@
 ﻿using PlayCat.ApiModel;
 using System.Collections.Generic;
 
-namespace PlayCat.DataService.Response.AudioRequest
+namespace PlayCat.DataService.Response.PlaylistResponse
 {
     public class PlaylistResult : BaseResult
     {

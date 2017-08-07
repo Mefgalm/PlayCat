@@ -171,28 +171,40 @@
     <Compile Include="Migrations\20170802142340_rename.designer.cs">
       <DependentUpon>20170802142340_rename.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20170807091524_order-column.cs" />
+    <Compile Include="Migrations\20170807091524_order-column.designer.cs">
+      <DependentUpon>20170807091524_order-column.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20170807094429_fix-increment.cs" />
+    <Compile Include="Migrations\20170807094429_fix-increment.designer.cs">
+      <DependentUpon>20170807094429_fix-increment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\PlayCatDbContextModelSnapshot.cs" />
     <Compile Include="ModelValidationService.cs" />
     <Compile Include="PlayCatDbContext.cs" />
     <Compile Include="PlaylistService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Request\Auth\SignInRequest.cs" />
-    <Compile Include="Request\Auth\SignUpRequest.cs" />
+    <Compile Include="Request\AuthRequest\SignInRequest.cs" />
+    <Compile Include="Request\AuthRequest\SignUpRequest.cs" />
     <Compile Include="Request\AudioRequest\UploadAudioRequest.cs" />
     <Compile Include="Request\AudioRequest\UrlRequest.cs" />
+    <Compile Include="Request\PlaylistRequest\PlaylistRequest.cs" />
+    <Compile Include="Request\UserRequest\UpdateProfileRequest.cs" />
     <Compile Include="ResponseBuilder.cs" />
     <Compile Include="ResponseCode.cs" />
-    <Compile Include="Response\AudioRequest\AudioResult.cs" />
-    <Compile Include="Response\AudioRequest\UserPlaylistsResult.cs" />
+    <Compile Include="Response\AudioResponse\AudioResult.cs" />
+    <Compile Include="Response\PlaylistResponse\UserPlaylistsResult.cs" />
     <Compile Include="Response\BaseResult.cs" />
-    <Compile Include="Response\AuthRequest\CheckTokenResult.cs" />
-    <Compile Include="Response\AudioRequest\GetInfoResult.cs" />
-    <Compile Include="Response\AudioRequest\PlaylistResult.cs" />
-    <Compile Include="Response\AuthRequest\SignUpInResult.cs" />
+    <Compile Include="Response\AuthResponse\CheckTokenResult.cs" />
+    <Compile Include="Response\AudioResponse\GetInfoResult.cs" />
+    <Compile Include="Response\PlaylistResponse\PlaylistResult.cs" />
+    <Compile Include="Response\AuthResponse\SignUpInResult.cs" />
+    <Compile Include="Response\UserResponse\UpdateProfileResult.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="Test\EmptyClass.cs" />
     <Compile Include="Test\TestClass.cs" />
     <Compile Include="UploadService.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="ValidationModel.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -17,5 +17,7 @@ namespace PlayCat.DataModel
         public virtual Playlist Playlist { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        public int Order { get; set; }
     }
 }

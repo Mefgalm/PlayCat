@@ -1,6 +1,6 @@
 ﻿using PlayCat.DataModel;
 
-namespace PlayCat.DataService.Response.AuthRequest
+namespace PlayCat.DataService.Response.AuthResponse
 {
     public class CheckTokenResult : BaseResult
     {

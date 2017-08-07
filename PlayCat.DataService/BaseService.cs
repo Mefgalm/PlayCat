@@ -73,6 +73,6 @@ namespace PlayCat.DataService
                 WriteLog(ex.Message);
                 return GetUnexpectedServerError<TReturn>(ex.Message);
             }
-        }
+        }        
     }
 }

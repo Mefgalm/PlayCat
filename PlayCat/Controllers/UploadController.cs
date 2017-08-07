@@ -2,8 +2,8 @@
 using PlayCat.DataService;
 using PlayCat.DataService.Request.AudioRequest;
 using PlayCat.DataService.Response;
-using PlayCat.DataService.Response.AudioRequest;
-using PlayCat.DataService.Response.AuthRequest;
+using PlayCat.DataService.Response.AuthResponse;
+using PlayCat.DataService.Response.AudioResponse;
 using System;
 using System.Collections.Generic;
 using System.Linq;

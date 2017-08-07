@@ -8,9 +8,10 @@ using PlayCat.DataService;
 namespace PlayCat.DataService.Migrations
 {
     [DbContext(typeof(PlayCatDbContext))]
-    partial class PlayCatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170807091524_order-column")]
+    partial class ordercolumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -102,8 +103,6 @@ namespace PlayCat.DataService.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("IsGeneral");
-
-                    b.Property<int>("OrderValue");
 
                     b.Property<Guid?>("OwnerId");
 

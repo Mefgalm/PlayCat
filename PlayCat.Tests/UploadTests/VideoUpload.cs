@@ -7,6 +7,8 @@ using PlayCat.Tests.Extensions;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Helpers;
 using Xunit;
 
@@ -22,7 +24,7 @@ namespace PlayCat.Tests.UploadTests
             string email = "test@gmail.com";
 
             DataModel.User user = context.CreateUser(email, "test", "test", password, inviteService.GenerateInvite());
-            DataModel.Playlist playlist = context.CreatePlaylist(true, user.Id, "General");
+            DataModel.Playlist playlist = context.CreatePlaylist(true, user.Id, "General", 0);
             DataModel.AuthToken authToken = context.CreateToken(DateTime.Now.AddDays(-1), false, user.Id);
 
             context.SaveChanges();
@@ -87,6 +89,44 @@ namespace PlayCat.Tests.UploadTests
         }
 
         [Fact]
+        public void ShouldFailOnUploadInOneTime()
+        {
+            SqlLiteDatabaseTest(options =>
+            {
+                var uploadService = _server.Host.Services.GetService(typeof(IUploadService)) as IUploadService;
+                var fileResolver = _server.Host.Services.GetService(typeof(IFileResolver)) as IFileResolver;
+
+                using (var context = new PlayCatDbContext(options))
+                {
+                    uploadService.SetDbContext(context);
+
+                    var uploadAudioRequest = new UploadAudioRequest()
+                    {
+                        Artist = "Flume",
+                        Song = "Say It (feat. Tove Lo) (Illenium Remix)",
+                        Url = "https://www.youtube.com/watch?v=80AlC3LaPqQ",
+                    };
+
+                    Guid userId = GetUserId(context);
+
+                    Task.Run(() => {
+
+                        uploadService.UploadAudio(userId, uploadAudioRequest);
+
+                        string audioFilePath = fileResolver.GetAudioFolderPath(StorageType.FileSystem);
+
+                        File.Delete(Path.Combine(audioFilePath, "80AlC3LaPqQ.mp3"));
+                    });
+                    Thread.Sleep(500);
+                    var result = uploadService.UploadAudio(userId, uploadAudioRequest);                    
+
+                    CheckIfFail(result);
+                    Assert.Equal("User already uploading audio", result.Info);
+                }
+            });
+        }
+
+        [Fact]
         public void IsValidUrl()
         {
             SqlLiteDatabaseTest(options =>
@@ -121,6 +161,9 @@ namespace PlayCat.Tests.UploadTests
 
                     Assert.True(generalPlaylist.IsGeneral);
                     Assert.Equal(generalPlaylist.OwnerId, userId);
+
+                    Assert.Equal(generalPlaylist.OrderValue, 1);
+                    Assert.Equal(audioPlaylists.Order, 0);
 
                     Assert.Equal(audioPlaylists.AudioId, audio.Id);
                     Assert.Equal(audioPlaylists.PlaylistId, generalPlaylist.Id);

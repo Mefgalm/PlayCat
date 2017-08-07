@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PlayCat.DataService.Response.AudioRequest
+namespace PlayCat.DataService.Response.AudioResponse
 {
     public class AudioResult : BaseResult
     {

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using PlayCat.DataService.Request.AudioRequest;
 using PlayCat.DataService.Response;
-using PlayCat.DataService.Response.AudioRequest;
+using PlayCat.DataService.Response.AudioResponse;
 using PlayCat.Helpers;
 using PlayCat.Music;
 using System;
@@ -46,12 +46,22 @@ namespace PlayCat.DataService
             {
                 IUrlInfo urlInfo = _videoInfoGetter.GetInfo(request.Url);
 
+                var responseBuilder =
+                    ResponseBuilder<GetInfoResult>
+                    .Create()
+                    .Fail();
+
                 //urlInfo can't be null
                 if (urlInfo == null)
                     throw new ArgumentNullException(nameof(urlInfo));
 
                 if (urlInfo.ContentLenght > _videoRestrictsOptions.Value.AllowedSize)
                     return ResponseBuilder<GetInfoResult>.Create().Fail().SetInfoAndBuild("Maximim video size is 25 MB");
+
+                string videoId = UrlFormatter.GetYoutubeVideoIdentifier(request.Url);
+
+                if (_dbContext.Audios.Any(x => x.UniqueIdentifier == videoId))
+                    return responseBuilder.SetInfoAndBuild("Video already uploaded");
 
                 return ResponseBuilder<GetInfoResult>.SuccessBuild(new GetInfoResult()
                 {
@@ -64,55 +74,86 @@ namespace PlayCat.DataService
         {
             return RequestTemplateCheckModel(request, () =>
             {
+                DataModel.User user = _dbContext.Users.FirstOrDefault(x => x.Id == userId);
+                if (user == null)
+                    throw new Exception("User not found, but token does");
+
                 var responseBuilder =
                     ResponseBuilder<BaseResult>
-                    .Create()
-                    .Fail();
+                           .Create()
+                           .Fail();
 
-                GetInfoResult result = GetInfo(new UrlRequest() { Url = request.Url });
+                if (user.IsUploadingAudio)
+                    return responseBuilder.SetInfoAndBuild("User already uploading audio");
 
-                if (!result.Ok)
-                    return responseBuilder.SetErrors(result.Errors).SetInfoAndBuild(result.Info);
-
-                string videoId = UrlFormatter.GetYoutubeVideoIdentifier(request.Url);
-
-                if (_dbContext.Audios.Any(x => x.UniqueIdentifier == videoId))
-                    return responseBuilder.SetInfoAndBuild("Video already uploaded");
-
-                IFile videoFile = _saveVideo.Save(request.Url);
-                IFile audioFile = _extractAudio.Extract(videoFile);
-
-                //TODO: create upload for FileSystem, Blob, etc...
-                string accessUrl = _uploadAudio.Upload(audioFile, StorageType.FileSystem);
-
-                var generalPlayList = _dbContext.Playlists.FirstOrDefault(x => x.OwnerId == userId && x.IsGeneral);
-
-                var audio = new DataModel.Audio()
-                {
-                    Id = Guid.NewGuid(),
-                    AccessUrl = accessUrl,
-                    DateCreated = DateTime.Now,
-                    Artist = request.Artist,
-                    Song = request.Song,
-                    Extension = audioFile.Extension,
-                    FileName = audioFile.Filename,
-                    UniqueIdentifier = videoId,
-                    UploaderId = userId,
-                };
-
-                var audioPlaylist = new DataModel.AudioPlaylist()
-                {
-                    AudioId = audio.Id,
-                    DateCreated = DateTime.Now,
-                    PlaylistId = generalPlayList.Id,
-                };
-
-                _dbContext.AudioPlaylists.Add(audioPlaylist);
-                _dbContext.Audios.Add(audio);
-
+                user.IsUploadingAudio = true;
                 _dbContext.SaveChanges();
 
-                return ResponseBuilder<BaseResult>.SuccessBuild();
+                using (var transaction = _dbContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        GetInfoResult result = GetInfo(new UrlRequest() { Url = request.Url });
+
+                        if (!result.Ok)
+                            return responseBuilder
+                                   .SetErrors(result.Errors)
+                                   .SetInfoAndBuild(result.Info);
+
+                        string videoId = UrlFormatter.GetYoutubeVideoIdentifier(request.Url);
+
+                        IFile videoFile = _saveVideo.Save(request.Url);
+                        IFile audioFile = _extractAudio.Extract(videoFile);
+
+                        //TODO: create upload for FileSystem, Blob, etc...
+                        string accessUrl = _uploadAudio.Upload(audioFile, StorageType.FileSystem);
+
+                        var generalPlayList = _dbContext.Playlists.FirstOrDefault(x => x.OwnerId == userId && x.IsGeneral);
+
+                        if (generalPlayList == null)
+                            throw new Exception("Playlist not found");
+
+                        var audio = new DataModel.Audio()
+                        {
+                            Id = Guid.NewGuid(),
+                            AccessUrl = accessUrl,
+                            DateCreated = DateTime.Now,
+                            Artist = request.Artist,
+                            Song = request.Song,
+                            Extension = audioFile.Extension,
+                            FileName = audioFile.Filename,
+                            UniqueIdentifier = videoId,
+                            UploaderId = userId,
+                        };
+
+                        var audioPlaylist = new DataModel.AudioPlaylist()
+                        {
+                            AudioId = audio.Id,
+                            DateCreated = DateTime.Now,
+                            PlaylistId = generalPlayList.Id,
+                            Order = generalPlayList.OrderValue,
+                        };
+
+                        //skip upload process
+                        user.IsUploadingAudio = false;
+
+                        //update max index in playlist
+                        generalPlayList.OrderValue++;
+
+                        //add entities
+                        _dbContext.AudioPlaylists.Add(audioPlaylist);
+                        _dbContext.Audios.Add(audio);
+
+                        _dbContext.SaveChanges();
+
+                        transaction.Commit();
+                        return ResponseBuilder<BaseResult>.SuccessBuild();
+                    } catch(Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw ex;
+                    }
+                }
             });
         } 
     }

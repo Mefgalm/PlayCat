@@ -1,11 +1,8 @@
 ﻿using PlayCat.DataService;
-using PlayCat.DataService.Response.AudioRequest;
+using PlayCat.DataService.Response.AudioResponse;
 using PlayCat.Tests.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace PlayCat.Tests.AudioTests
@@ -34,7 +31,7 @@ namespace PlayCat.Tests.AudioTests
 
                     Guid userId = GetUserId(context);
 
-                    DataModel.Playlist playlist = context.CreatePlaylist(true, userId, null);
+                    DataModel.Playlist playlist = context.CreatePlaylist(true, userId, null, 0);
                     CreateAndAddAudio(context, playlist.Id, count);
                     context.SaveChanges();
 
@@ -60,7 +57,7 @@ namespace PlayCat.Tests.AudioTests
 
                     Guid userId = GetUserId(context);
 
-                    DataModel.Playlist playlist = context.CreatePlaylist(true, userId, null);
+                    DataModel.Playlist playlist = context.CreatePlaylist(true, userId, null, 0);
                     CreateAndAddAudio(context, playlist.Id, 10);
                     context.SaveChanges();
 
@@ -95,7 +92,7 @@ namespace PlayCat.Tests.AudioTests
             {
                 DataModel.Audio audio = context.CreateAudio(DateTime.Now.AddMinutes(i), "access" + i, "artist" + i, "song" + i, BaseAudioExtension, i.ToString(), i.ToString(), null);
 
-                DataModel.AudioPlaylist audioPlaylist = context.CreateAudioPlaylist(DateTime.Now.AddMinutes(i), audio.Id, playlistId);
+                DataModel.AudioPlaylist audioPlaylist = context.CreateAudioPlaylist(DateTime.Now.AddMinutes(i), audio.Id, playlistId, i);
             }
         }
     }

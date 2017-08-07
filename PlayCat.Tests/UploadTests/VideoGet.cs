@@ -6,7 +6,9 @@ using System.IO;
 using PlayCat.DataService.Request;
 using PlayCat.Music;
 using PlayCat.DataService.Request.AudioRequest;
-using PlayCat.DataService.Response.AudioRequest;
+using PlayCat.DataService.Response.AudioResponse;
+using System;
+using PlayCat.Tests.Extensions;
 
 namespace PlayCat.Tests.UploadTests
 {
@@ -77,6 +79,57 @@ namespace PlayCat.Tests.UploadTests
             Assert.Null(result.Errors);
         }
 
+        [Fact]
+        public void ShouldFailOnAlreadyUpload()
+        {
+            SqlLiteDatabaseTest(options =>
+            {
+                var uploadService = _server.Host.Services.GetService(typeof(IUploadService)) as IUploadService;
+                var fileResolver = _server.Host.Services.GetService(typeof(IFileResolver)) as IFileResolver;
+
+                using (var context = new PlayCatDbContext(options))
+                {
+                    uploadService.SetDbContext(context);
+
+                    string youtubeUrl = "https://www.youtube.com/watch?v=yPYZpwSpKmA";
+
+                    var request = new UrlRequest()
+                    {
+                        Url = youtubeUrl,
+                    };
+
+                    GetInfoResult result = uploadService.GetInfo(request);
+
+                    CheckIfSuccess(result);
+
+                    Guid userId = GetUserId(context);
+                    context.CreatePlaylist(true, userId, null, 0);
+                    context.SaveChanges();
+
+                    Assert.NotNull(result.UrlInfo);
+                    Assert.Equal("Rick Astley", result.UrlInfo.Artist);
+                    Assert.Equal("Together Forever", result.UrlInfo.Song);
+
+                    var uploadResult = uploadService.UploadAudio(userId, new UploadAudioRequest()
+                    {
+                        Artist = "Rick Astley",
+                        Song = "Together Forever",
+                        Url = youtubeUrl,
+                    });
+
+                    CheckIfSuccess(uploadResult);
+
+                    string audioFilePath = fileResolver.GetAudioFolderPath(StorageType.FileSystem);
+                    File.Delete(Path.Combine(audioFilePath, "yPYZpwSpKmA.mp3"));
+
+                    GetInfoResult checkAgainResult = uploadService.GetInfo(request);
+
+                    CheckIfFail(checkAgainResult);
+                    Assert.Equal("Video already uploaded", checkAgainResult.Info);
+                }
+            });
+        }
+
         [Theory]
         [InlineData("https://www.youtube.com/watch?v=80AlC3LaPqQ")]
         [InlineData("http://www.youtube.com/watch?v=80AlC3LaPqQ")]
@@ -89,22 +142,29 @@ namespace PlayCat.Tests.UploadTests
         [InlineData("http://youtu.be/80AlC3LaPqQ")]
         public void IsValidUrl(string url)
         {
-            var uploadService = _server.Host.Services.GetService(typeof(IUploadService)) as IUploadService;
-
-            var request = new UrlRequest()
+            SqlLiteDatabaseTest(options =>
             {
-                Url = url,
-            };
+                var uploadService = _server.Host.Services.GetService(typeof(IUploadService)) as IUploadService;
 
-            GetInfoResult result = uploadService.GetInfo(request);
+                using (var context = new PlayCatDbContext(options))
+                {
+                    uploadService.SetDbContext(context);
 
-            CheckIfSuccess(result);
+                    var request = new UrlRequest()
+                    {
+                        Url = url,
+                    };
 
-            Assert.NotNull(result.UrlInfo);
-            Assert.Equal("Flume", result.UrlInfo.Artist);
-            Assert.Equal("Say It (feat. Tove Lo) (Illenium Remix)", result.UrlInfo.Song);
-            Assert.Equal(8023661, result.UrlInfo.ContentLenght);
-        }
-        
+                    GetInfoResult result = uploadService.GetInfo(request);
+
+                    CheckIfSuccess(result);
+
+                    Assert.NotNull(result.UrlInfo);
+                    Assert.Equal("Flume", result.UrlInfo.Artist);
+                    Assert.Equal("Say It (feat. Tove Lo) (Illenium Remix)", result.UrlInfo.Song);
+                    Assert.Equal(8023661, result.UrlInfo.ContentLenght);
+                }
+            });            
+        }        
     }
 }

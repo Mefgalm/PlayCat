@@ -40,7 +40,7 @@ namespace PlayCat.Tests.Extensions
             }).Entity;
         }
 
-        public static Playlist CreatePlaylist(this PlayCatDbContext context, bool isGeneral, Guid ownerId, string title)
+        public static Playlist CreatePlaylist(this PlayCatDbContext context, bool isGeneral, Guid ownerId, string title, int orderValue)
         {
             return context.Playlists.Add(new DataModel.Playlist()
             {
@@ -48,6 +48,7 @@ namespace PlayCat.Tests.Extensions
                 IsGeneral = isGeneral,
                 OwnerId = ownerId,
                 Title = title,
+                OrderValue = orderValue,
             }).Entity;
         }
 
@@ -67,13 +68,14 @@ namespace PlayCat.Tests.Extensions
             }).Entity;
         }
 
-        public static AudioPlaylist CreateAudioPlaylist(this PlayCatDbContext context, DateTime dateAdded, Guid audioId, Guid playlistId)
+        public static AudioPlaylist CreateAudioPlaylist(this PlayCatDbContext context, DateTime dateAdded, Guid audioId, Guid playlistId, int order)
         {
             return context.AudioPlaylists.Add(new AudioPlaylist()
             {
                 AudioId = audioId,
                 DateCreated = dateAdded,
                 PlaylistId = playlistId,
+                Order = order,
             }).Entity;
         }
     }

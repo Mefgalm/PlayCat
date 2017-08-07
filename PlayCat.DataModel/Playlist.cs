@@ -18,5 +18,7 @@ namespace PlayCat.DataModel
 
         [ForeignKey(nameof(OwnerId))]
         public virtual User Owner { get; set; }
+
+        public int OrderValue { get; set; }
     }
 }

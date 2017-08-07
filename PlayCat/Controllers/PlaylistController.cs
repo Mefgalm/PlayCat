@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlayCat.DataService;
-using PlayCat.DataService.Response.AudioRequest;
-using PlayCat.DataService.Response.AuthRequest;
+using PlayCat.DataService.Request.PlaylistRequest;
+using PlayCat.DataService.Response;
+using PlayCat.DataService.Response.AudioResponse;
+using PlayCat.DataService.Response.AuthResponse;
+using PlayCat.DataService.Response.PlaylistResponse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +25,48 @@ namespace PlayCat.Controllers
             _authService = authService;
         }
 
+        [HttpDelete("delete")]
+        public BaseResult DeletePlaylist(Guid playlistId)
+        {
+            CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
+            if (!checkTokenResult.Ok)
+                return checkTokenResult;
+
+            return _playlistService.DeletePlaylist(checkTokenResult.AuthToken.UserId, playlistId);
+        }
+
+        [HttpPut("update")]
+        public PlaylistResult UpdatePlaylist([FromBody] Guid playlistId, [FromBody] PlaylistRequest request)
+        {
+            CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
+            if (!checkTokenResult.Ok)
+                return new PlaylistResult(checkTokenResult);
+
+            return _playlistService.UpdatePlaylist(checkTokenResult.AuthToken.UserId, playlistId, request);
+        }
+
+        [HttpPost("create")]
+        public PlaylistResult CreatePlaylist([FromBody] PlaylistRequest request)
+        {
+            CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
+            if (!checkTokenResult.Ok)
+                return new PlaylistResult(checkTokenResult);
+
+            return _playlistService.CreatePlaylist(checkTokenResult.AuthToken.UserId, request);
+        }
+
+        [HttpGet("userPlaylists")]
+        public UserPlaylistsResult GetUserPlaylists()
+        {
+            CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
+            if (!checkTokenResult.Ok)
+                return new UserPlaylistsResult(checkTokenResult);
+
+            return _playlistService.GetUserPlaylists(checkTokenResult.AuthToken.UserId);
+        }
+
         [HttpGet("playlist")]
-        public PlaylistResult UploadAudio(Guid? playlist, int skip = 0, int take = 50)
+        public PlaylistResult GetPlaylist(Guid? playlist, int skip = 0, int take = 50)
         {
             CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
             if (!checkTokenResult.Ok)

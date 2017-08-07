@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PlayCat.Tests.Extensions;
 
 namespace PlayCat.Tests
 {
@@ -39,7 +40,23 @@ namespace PlayCat.Tests
             Assert.True(result.Info.Length > 0);
         }
 
-        public void SqlLiteDatabaseTest(Action<DbContextOptions<PlayCatDbContext>> action)
+
+        protected Guid GetUserId(PlayCatDbContext context)
+        {
+            var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
+
+            string password = "123456abc";
+            string email = "test@gmail.com";
+
+            DataModel.User user = context.CreateUser(email, "test", "test", password, inviteService.GenerateInvite());
+            DataModel.AuthToken authToken = context.CreateToken(DateTime.Now.AddDays(-1), false, user.Id);
+
+            context.SaveChanges();
+
+            return user.Id;
+        }
+
+        protected void SqlLiteDatabaseTest(Action<DbContextOptions<PlayCatDbContext>> action)
         {
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
