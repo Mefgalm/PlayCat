@@ -1,7 +1,6 @@
 ﻿using System;
-using PlayCat.DataService.Request.PlaylistRequest;
+using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
-using PlayCat.DataService.Response.PlaylistResponse;
 
 namespace PlayCat.DataService
 {
@@ -11,6 +10,6 @@ namespace PlayCat.DataService
         BaseResult DeletePlaylist(Guid userId, Guid playlistId);
         PlaylistResult GetPlaylist(Guid userId, Guid? playlistId, int skip, int take);
         UserPlaylistsResult GetUserPlaylists(Guid userId);
-        PlaylistResult UpdatePlaylist(Guid userId, Guid playlistId, PlaylistRequest request);
+        PlaylistResult UpdatePlaylist(Guid userId, UpdatePlaylistRequest request);
     }
 }

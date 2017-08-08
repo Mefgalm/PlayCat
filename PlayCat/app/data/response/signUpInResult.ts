@@ -3,7 +3,7 @@ import { User } from '../user';
 import { AuthToken } from '../authToken';
 
 export class SignUpInResult extends BaseResult {
-    user: User;
-    authToken: AuthToken;
-    errors: Map<string, string>;
+    public user: User;
+    public authToken: AuthToken;
+    public errors: Map<string, string>;
 }

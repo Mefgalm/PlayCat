@@ -10,8 +10,10 @@ var core_1 = require("@angular/core");
 var audios_component_1 = require("./audios/audios.component");
 var playlist_component_1 = require("./playlist/playlist.component");
 var upload_component_1 = require("./upload/upload.component");
+var forms_1 = require("@angular/forms");
 var router_1 = require("@angular/router");
 var menu_module_1 = require("../menu/menu.module");
+var error_module_1 = require("../../shared/components/error.module");
 var MusicModule = (function () {
     function MusicModule() {
     }
@@ -21,6 +23,8 @@ MusicModule = __decorate([
     core_1.NgModule({
         imports: [
             menu_module_1.MenuModule,
+            error_module_1.ErrorModule,
+            forms_1.ReactiveFormsModule,
             router_1.RouterModule.forChild([
                 {
                     path: 'audios',

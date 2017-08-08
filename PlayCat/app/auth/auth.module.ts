@@ -10,14 +10,14 @@ import { RouterModule } from '@angular/router';
 
 import { SignInComponent } from './signIn/signIn.component';
 import { SignUpComponent } from './signUp/signUp.component';
-
-import { ErrorComponent } from '../shared/components/error.component';
+import { ErrorModule } from '../shared/components/error.module';
 
 @NgModule({
     imports: [
         BrowserModule,
         HttpModule,
         JsonpModule,
+        ErrorModule,
         ReactiveFormsModule,
         RouterModule.forChild([
             {
@@ -33,7 +33,6 @@ import { ErrorComponent } from '../shared/components/error.component';
     declarations: [
         SignInComponent,
         SignUpComponent,
-        ErrorComponent
     ],
     providers: [
         AuthService,

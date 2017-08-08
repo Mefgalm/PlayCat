@@ -1,14 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlayCat.DataService;
-using PlayCat.DataService.Request.PlaylistRequest;
+using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
-using PlayCat.DataService.Response.AudioResponse;
-using PlayCat.DataService.Response.AuthResponse;
-using PlayCat.DataService.Response.PlaylistResponse;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PlayCat.Controllers
 {
@@ -25,7 +19,7 @@ namespace PlayCat.Controllers
             _authService = authService;
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{playlistId}")]
         public BaseResult DeletePlaylist(Guid playlistId)
         {
             CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
@@ -36,13 +30,13 @@ namespace PlayCat.Controllers
         }
 
         [HttpPut("update")]
-        public PlaylistResult UpdatePlaylist([FromBody] Guid playlistId, [FromBody] PlaylistRequest request)
+        public PlaylistResult UpdatePlaylist([FromBody] UpdatePlaylistRequest request)
         {
             CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
             if (!checkTokenResult.Ok)
                 return new PlaylistResult(checkTokenResult);
 
-            return _playlistService.UpdatePlaylist(checkTokenResult.AuthToken.UserId, playlistId, request);
+            return _playlistService.UpdatePlaylist(checkTokenResult.AuthToken.UserId, request);
         }
 
         [HttpPost("create")]

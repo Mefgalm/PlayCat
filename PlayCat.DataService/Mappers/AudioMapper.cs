@@ -19,6 +19,18 @@ namespace PlayCat.DataService.Mappers
                     Uploader = UserMapper.ToApi.FromData(audioDTO.Uploader),                    
                 };
             }
+
+            public static ApiModel.Audio FromData(DataModel.Audio audio)
+            {
+                return audio == null ? null : new ApiModel.Audio()
+                {
+                    AccessUrl = audio.AccessUrl,
+                    Artist = audio.Artist,
+                    Id = audio.Id,
+                    Song = audio.Song,
+                    Uploader = UserMapper.ToApi.FromData(audio.Uploader),
+                };
+            }
         }
     }
 }

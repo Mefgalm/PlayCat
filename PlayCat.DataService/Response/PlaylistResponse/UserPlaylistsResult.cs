@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlayCat.DataService.Response.PlaylistResponse
+namespace PlayCat.DataService.Response
 {
     public class UserPlaylistsResult : BaseResult
     {

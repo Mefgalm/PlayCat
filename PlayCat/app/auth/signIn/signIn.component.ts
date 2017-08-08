@@ -4,7 +4,6 @@ import { FormService } from '../../shared/services/form.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ValidationService } from '../../shared/services/validation.service';
 import { ValidationModel } from '../../data/validationModel';
-import { ErrorComponent } from '../../shared/components/error.component';
 import { SignInRequest } from '../../data/request/signInRequest';
 import { SignUpInResult } from '../../data/response/signUpInResult';
 import { Router, ActivatedRoute } from '@angular/router';

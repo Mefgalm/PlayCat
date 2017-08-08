@@ -1,5 +1,5 @@
-﻿using PlayCat.DataService.Request.AuthRequest;
-using PlayCat.DataService.Response.AuthResponse;
+﻿using PlayCat.DataService.Request;
+using PlayCat.DataService.Response;
 
 namespace PlayCat.DataService
 {

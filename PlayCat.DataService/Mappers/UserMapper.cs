@@ -1,5 +1,5 @@
 ﻿using PlayCat.DataService.Request;
-using PlayCat.DataService.Request.AuthRequest;
+using PlayCat.DataService.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;

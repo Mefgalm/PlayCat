@@ -17,7 +17,7 @@ var forms_1 = require("@angular/forms");
 var router_1 = require("@angular/router");
 var signIn_component_1 = require("./signIn/signIn.component");
 var signUp_component_1 = require("./signUp/signUp.component");
-var error_component_1 = require("../shared/components/error.component");
+var error_module_1 = require("../shared/components/error.module");
 var AuthModule = (function () {
     function AuthModule() {
     }
@@ -29,6 +29,7 @@ AuthModule = __decorate([
             platform_browser_1.BrowserModule,
             http_1.HttpModule,
             http_1.JsonpModule,
+            error_module_1.ErrorModule,
             forms_1.ReactiveFormsModule,
             router_1.RouterModule.forChild([
                 {
@@ -44,7 +45,6 @@ AuthModule = __decorate([
         declarations: [
             signIn_component_1.SignInComponent,
             signUp_component_1.SignUpComponent,
-            error_component_1.ErrorComponent
         ],
         providers: [
             auth_service_1.AuthService,

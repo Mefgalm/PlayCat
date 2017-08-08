@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlayCat.DataService.Request.UserRequest
+namespace PlayCat.DataService.Request
 {
     public class UpdateProfileRequest
     {

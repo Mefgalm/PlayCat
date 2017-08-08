@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using PlayCat.DataService.Response.AudioResponse;
+using PlayCat.DataService.Response;
 using PlayCat.DataService.Mappers;
 using PlayCat.DataService.DTO;
-using PlayCat.DataService.Response.PlaylistResponse;
-using PlayCat.DataService.Request.PlaylistRequest;
-using PlayCat.DataService.Response;
+using PlayCat.DataService.Request;
 
 namespace PlayCat.DataService
 {
@@ -21,11 +19,11 @@ namespace PlayCat.DataService
         {
         }
 
-        public PlaylistResult UpdatePlaylist(Guid userId, Guid playlistId, PlaylistRequest request)
+        public PlaylistResult UpdatePlaylist(Guid userId, UpdatePlaylistRequest request)
         {
             return RequestTemplateCheckModel(request, () =>
             {
-                DataModel.Playlist playlist = _dbContext.Playlists.FirstOrDefault(x => x.Id == playlistId && x.OwnerId == userId);
+                DataModel.Playlist playlist = _dbContext.Playlists.FirstOrDefault(x => x.Id == request.PlaylistId && x.OwnerId == userId);
 
                 if (playlist == null)
                     return ResponseBuilder<PlaylistResult>.Create().Fail().SetInfoAndBuild(PlaylistNotFound);

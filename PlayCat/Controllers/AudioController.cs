@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PlayCat.DataService;
-using PlayCat.DataService.Response.AudioResponse;
-using PlayCat.DataService.Response.AuthResponse;
+using PlayCat.DataService.Request;
+using PlayCat.DataService.Response;
 using System;
 
 namespace PlayCat.Controllers
@@ -9,7 +9,7 @@ namespace PlayCat.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class AudioController : BaseController
-    {        
+    {
         private readonly IAudioService _audioService;
         private readonly IAuthService _authService;
 
@@ -27,6 +27,26 @@ namespace PlayCat.Controllers
                 return new AudioResult(checkTokenResult);
 
             return _audioService.GetAudios(playlistId, skip, take);
+        }
+
+        [HttpPost("addToPlaylist")]
+        public BaseResult AddToPlaylist([FromBody] AddRemovePlaylistRequest request)
+        {
+            CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
+            if (!checkTokenResult.Ok)
+                return checkTokenResult;
+
+            return _audioService.AddToPlaylist(checkTokenResult.AuthToken.UserId, request);
+        }
+
+        [HttpDelete("removeFromPlaylist")]
+        public BaseResult RemoveFromPlaylist([FromBody] AddRemovePlaylistRequest request)
+        {
+            CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
+            if (!checkTokenResult.Ok)
+                return checkTokenResult;
+
+            return _audioService.RemoveFromPlaylist(checkTokenResult.AuthToken.UserId, request);
         }
     }
 }

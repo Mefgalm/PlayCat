@@ -1,7 +1,7 @@
 ﻿using PlayCat.ApiModel;
 using System.Collections.Generic;
 
-namespace PlayCat.DataService.Response.PlaylistResponse
+namespace PlayCat.DataService.Response
 {
     public class PlaylistResult : BaseResult
     {

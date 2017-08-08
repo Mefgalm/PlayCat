@@ -5,8 +5,6 @@ using PlayCat.Music.Youtube;
 using System.IO;
 using PlayCat.DataService.Request;
 using PlayCat.Music;
-using PlayCat.DataService.Request.AudioRequest;
-using PlayCat.DataService.Response.AudioResponse;
 using System;
 using PlayCat.Tests.Extensions;
 

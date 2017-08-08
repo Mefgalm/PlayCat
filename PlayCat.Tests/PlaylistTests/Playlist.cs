@@ -3,9 +3,8 @@ using PlayCat.Tests.Extensions;
 using System;
 using System.Linq;
 using Xunit;
-using PlayCat.DataService.Response.AudioResponse;
-using PlayCat.DataService.Response.PlaylistResponse;
-using PlayCat.DataService.Request.PlaylistRequest;
+using PlayCat.DataService.Response;
+using PlayCat.DataService.Request;
 
 namespace PlayCat.Tests.PlaylistTests
 {
@@ -135,8 +134,9 @@ namespace PlayCat.Tests.PlaylistTests
                     string newTitle = "New title";
                     var updatePlaylist = context.CreatePlaylist(false, userId, "Top", 0);
                     context.SaveChanges();
-                    var result = playListService.UpdatePlaylist(userId, Guid.Empty, new PlaylistRequest()
+                    var result = playListService.UpdatePlaylist(userId, new UpdatePlaylistRequest()
                     {
+                        PlaylistId = Guid.Empty,
                         Title = newTitle,
                     });
 
@@ -166,9 +166,10 @@ namespace PlayCat.Tests.PlaylistTests
                     context.SaveChanges();
 
                     string newTitle = "New title";
-                    var result = playListService.UpdatePlaylist(userId, updatePlaylist.Id, new PlaylistRequest()
+                    var result = playListService.UpdatePlaylist(userId, new UpdatePlaylistRequest()
                     {
                         Title = newTitle,
+                        PlaylistId = updatePlaylist.Id,
                     });
 
                     CheckIfSuccess(result);
