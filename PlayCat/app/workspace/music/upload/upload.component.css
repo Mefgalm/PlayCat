@@ -1,1 +1,104 @@
-﻿
+﻿.upload-page {
+    width: 100%;
+    height: 100%;
+    font-family: Lato, sans-serif;
+    color: #18121e;
+    background: url('../app/assets/images/bg-gray-cat.jpg') no-repeat fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+input {
+    font-family: Lato, sans-serif;
+    font-size: 24px;
+    color: #18121e;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #18121e;
+    background: transparent;
+    line-height: 2;
+    padding-left: 5%;
+    margin-bottom: 5%;
+    width: 95%;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #18121e;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: #18121e;
+}
+
+:-ms-input-placeholder { /* IE 10+ */
+    color: #18121e;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: #18121e;
+}
+
+.link-row {
+    padding-left: 10%;
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.link-line {
+    width: 85%;
+}
+
+.go-button {
+    font-family: Lato, sans-serif;
+    font-size: 35px;
+    line-height: 1.7;
+    background-color: #39118a;
+    color: #ffffff;
+    border: none;
+    width: 100%;
+}
+
+.go-line {
+    width: 10%;
+}
+
+.player-row {
+    margin-top: 5%;
+    padding-left: 10%;
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.yt-video {
+    width: 50%;
+}
+
+.info {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.artist-line, .song-line, id-line {
+    width: 100%;
+}
+
+.upload-button {
+    font-family: Lato, sans-serif;
+    font-size: 35px;
+    line-height: 1.7;
+    background-color: #39118a;
+    color: #ffffff;
+    margin-top: 5%;
+    border: none;
+    width: 100%;
+}
