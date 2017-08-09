@@ -160,7 +160,7 @@ namespace PlayCat.Tests.UploadTests
                     Assert.NotNull(result.UrlInfo);
                     Assert.Equal("Flume", result.UrlInfo.Artist);
                     Assert.Equal("Say It (feat. Tove Lo) (Illenium Remix)", result.UrlInfo.Song);
-                    Assert.Equal(8023661, result.UrlInfo.ContentLenght);
+                    Assert.Equal(8023661, result.UrlInfo.ContentLength);
                 }
             });            
         }        

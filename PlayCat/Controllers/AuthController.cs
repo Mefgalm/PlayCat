@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlayCat.DataService;
 using PlayCat.DataService.Request;
-using PlayCat.DataService.Request;
-using PlayCat.DataService.Response;
 using PlayCat.DataService.Response;
 
 namespace PlayCat.Controllers

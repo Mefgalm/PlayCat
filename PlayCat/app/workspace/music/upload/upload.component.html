@@ -1,11 +1,36 @@
 ﻿<site-menu>
-    <form [formGroup]="urlRequestForm" novalidate>
-        <input type="text" formControlName="url" />
-        <!--<error *ngIf="urlRequestForm.get('url').dirty"
+    <form [formGroup]="urlRequestForm" novalidate (ngSubmit)="videoInfo(urlRequestForm)">
+        <input type="text" formControlName="url" />        
+        <error *ngIf="urlRequestForm.get('url').dirty"
                [errorObject]="urlRequestErrorValiation['url']"
                [actualErrors]="urlRequestForm.get('url').errors">
-        </error>-->        
-        <error [errorObject]="urlRequestErrorValiation['url']"
-               [actualErrors]="urlRequestForm.get('url').errors"></error>
+        </error>
+        <div *ngIf="isVideoInfoProcessing">
+            Loading
+        </div>        
+        <button type="submit">Get video info</button>
+    </form>
+    <br/>
+    <form [formGroup]="uploadAudioForm" novalidate (ngSubmit)="uploadAudio(uploadAudioForm)">
+        <div>
+            Artist
+            <input type="text" formControlName="artist" />
+            <error *ngIf="uploadAudioForm.get('artist').dirty"
+                   [errorObject]="uploadAudioErrorValidation['artist']"
+                   [actualErrors]="uploadAudioForm.get('artist').errors">
+            </error>
+        </div>
+        <div>
+            Song
+            <input type="text" formControlName="song" />
+            <error *ngIf="uploadAudioForm.get('song').dirty"
+                   [errorObject]="uploadAudioErrorValidation['song']"
+                   [actualErrors]="uploadAudioForm.get('song').errors">
+            </error>
+        </div>
+        <div>
+            Content Length: {{contentLength}}
+        </div>
+        <button type="submit">Upload</button>
     </form>
 </site-menu>

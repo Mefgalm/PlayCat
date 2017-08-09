@@ -33,7 +33,7 @@ namespace PlayCat.Music.Youtube
             {
                Artist = artistAndSong.Artist,
                Song = artistAndSong.Song,
-               ContentLenght = headers.ContentLenght,
+               ContentLength = headers.ContentLenght,
             };
         }
 

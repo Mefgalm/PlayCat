@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PlayCat.DataService.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class initCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,7 +19,7 @@ namespace PlayCat.DataService.Migrations
                     LastName = table.Column<string>(maxLength: 100, nullable: true),
                     NickName = table.Column<string>(maxLength: 100, nullable: true),
                     PasswordHash = table.Column<string>(nullable: false),
-                    PasswordSald = table.Column<string>(nullable: false),
+                    PasswordSalt = table.Column<string>(nullable: false),
                     RegisterDate = table.Column<DateTime>(nullable: false),
                     VerificationCode = table.Column<string>(nullable: false)
                 },
@@ -33,14 +33,13 @@ namespace PlayCat.DataService.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    AccessUrl = table.Column<string>(nullable: false),
-                    Artist = table.Column<string>(maxLength: 100, nullable: false),
+                    AccessUrl = table.Column<string>(maxLength: 150, nullable: false),
+                    Artist = table.Column<string>(maxLength: 50, nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false),
-                    Extension = table.Column<string>(nullable: false),
-                    FileName = table.Column<string>(nullable: false),
-                    PhysicUrl = table.Column<string>(nullable: false),
-                    Song = table.Column<string>(maxLength: 100, nullable: false),
-                    UniqueIdentifier = table.Column<string>(nullable: false),
+                    Extension = table.Column<string>(maxLength: 10, nullable: false),
+                    FileName = table.Column<string>(maxLength: 50, nullable: false),
+                    Song = table.Column<string>(maxLength: 50, nullable: false),
+                    UniqueIdentifier = table.Column<string>(maxLength: 50, nullable: false),
                     UploaderId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -60,6 +59,7 @@ namespace PlayCat.DataService.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     DateExpired = table.Column<DateTime>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -78,15 +78,17 @@ namespace PlayCat.DataService.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Title = table.Column<string>(maxLength: 100, nullable: false),
-                    UserId = table.Column<Guid>(nullable: true)
+                    IsGeneral = table.Column<bool>(nullable: false),
+                    OrderValue = table.Column<int>(nullable: false),
+                    OwnerId = table.Column<Guid>(nullable: true),
+                    Title = table.Column<string>(maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Playlists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Playlists_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Playlists_Users_OwnerId",
+                        column: x => x.OwnerId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -98,7 +100,8 @@ namespace PlayCat.DataService.Migrations
                 {
                     PlaylistId = table.Column<Guid>(nullable: false),
                     AudioId = table.Column<Guid>(nullable: false),
-                    DateCreated = table.Column<DateTime>(nullable: false)
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    Order = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -140,9 +143,9 @@ namespace PlayCat.DataService.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Playlists_UserId",
+                name: "IX_Playlists_OwnerId",
                 table: "Playlists",
-                column: "UserId");
+                column: "OwnerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -16,13 +16,15 @@ var forms_1 = require("@angular/forms");
 var validation_service_1 = require("../../shared/services/validation.service");
 var signInRequest_1 = require("../../data/request/signInRequest");
 var router_1 = require("@angular/router");
+var userAuth_service_1 = require("../../shared/services/userAuth.service");
 var SignInComponent = (function () {
-    function SignInComponent(_fb, _router, _authService, _formService, _validationService) {
+    function SignInComponent(_fb, _router, _authService, _formService, _validationService, _userAuthService) {
         this._fb = _fb;
         this._router = _router;
         this._authService = _authService;
         this._formService = _formService;
         this._validationService = _validationService;
+        this._userAuthService = _userAuthService;
         this.modelName = 'SignInRequest';
         this.globalError = null;
         this.errors = new Map();
@@ -51,7 +53,9 @@ var SignInComponent = (function () {
                 .then(function (signUpInResult) {
                 _this.errors = signUpInResult.errors;
                 if (signUpInResult.ok) {
-                    //this._router.navigate(['/playlist']);
+                    _this._userAuthService.setUser(signUpInResult.user);
+                    _this._userAuthService.setAuthToken(signUpInResult.authToken);
+                    _this._router.navigate(['/audios']);
                 }
                 else if (signUpInResult.showInfo) {
                     _this.globalError = signUpInResult.info;
@@ -74,7 +78,8 @@ SignInComponent = __decorate([
         router_1.Router,
         auth_service_1.AuthService,
         form_service_1.FormService,
-        validation_service_1.ValidationService])
+        validation_service_1.ValidationService,
+        userAuth_service_1.UserAuthService])
 ], SignInComponent);
 exports.SignInComponent = SignInComponent;
 //# sourceMappingURL=signIn.component.js.map

@@ -64,6 +64,7 @@ namespace PlayCat.DataService
                     Id = Guid.NewGuid(),
                     IsGeneral = true,
                     OwnerId = dataUser.Id,
+                    OrderValue = 0,
                 };
 
                 _dbContext.AuthTokens.Add(dataAuthToken);

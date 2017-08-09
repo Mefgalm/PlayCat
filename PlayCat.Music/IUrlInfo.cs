@@ -2,7 +2,7 @@
 {
     public interface IUrlInfo
     {
-        long ContentLenght { get; set; }
+        long ContentLength { get; set; }
         string Artist { get; set; }
         string Song { get; set; }
     }    

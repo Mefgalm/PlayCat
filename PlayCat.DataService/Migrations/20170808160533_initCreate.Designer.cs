@@ -8,8 +8,8 @@ using PlayCat.DataService;
 namespace PlayCat.DataService.Migrations
 {
     [DbContext(typeof(PlayCatDbContext))]
-    [Migration("20170801091634_playlist-general")]
-    partial class playlistgeneral
+    [Migration("20170808160533_initCreate")]
+    partial class initCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,8 @@ namespace PlayCat.DataService.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccessUrl")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(150);
 
                     b.Property<string>("Artist")
                         .IsRequired()
@@ -32,17 +33,20 @@ namespace PlayCat.DataService.Migrations
                     b.Property<DateTime>("DateCreated");
 
                     b.Property<string>("Extension")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(10);
 
                     b.Property<string>("FileName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("Song")
                         .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<string>("UniqueIdentifier")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<Guid?>("UploaderId");
 
@@ -63,6 +67,8 @@ namespace PlayCat.DataService.Migrations
                     b.Property<Guid>("AudioId");
 
                     b.Property<DateTime>("DateCreated");
+
+                    b.Property<int>("Order");
 
                     b.HasKey("PlaylistId", "AudioId");
 
@@ -97,14 +103,16 @@ namespace PlayCat.DataService.Migrations
 
                     b.Property<bool>("IsGeneral");
 
+                    b.Property<int>("OrderValue");
+
+                    b.Property<Guid?>("OwnerId");
+
                     b.Property<string>("Title")
                         .HasMaxLength(100);
 
-                    b.Property<Guid?>("UserId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Playlists");
                 });
@@ -174,9 +182,9 @@ namespace PlayCat.DataService.Migrations
 
             modelBuilder.Entity("PlayCat.DataModel.Playlist", b =>
                 {
-                    b.HasOne("PlayCat.DataModel.User", "User")
+                    b.HasOne("PlayCat.DataModel.User", "Owner")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("OwnerId");
                 });
         }
     }

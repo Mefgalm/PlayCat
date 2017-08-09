@@ -15,7 +15,7 @@ namespace PlayCat.Tests.UploadTests
 {
     public class VideoUpload : BaseTest
     {
-        private Guid GetUserId(PlayCatDbContext context)
+        private new Guid GetUserId(PlayCatDbContext context)
         {
             var inviteService = _server.Host.Services.GetService(typeof(IInviteService)) as IInviteService;
 

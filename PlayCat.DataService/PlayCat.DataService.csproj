@@ -151,33 +151,9 @@
     <Compile Include="Mappers\AuthTokenMapper.cs" />
     <Compile Include="Mappers\PlaylistMapper.cs" />
     <Compile Include="Mappers\UserMapper.cs" />
-    <Compile Include="Migrations\20170708160509_initialCreate.cs" />
-    <Compile Include="Migrations\20170708160509_initialCreate.designer.cs">
-      <DependentUpon>20170708160509_initialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20170710222835_rename-fields.cs" />
-    <Compile Include="Migrations\20170710222835_rename-fields.designer.cs">
-      <DependentUpon>20170710222835_rename-fields.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20170730165703_update-music-model.cs" />
-    <Compile Include="Migrations\20170730165703_update-music-model.designer.cs">
-      <DependentUpon>20170730165703_update-music-model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20170801091634_playlist-general.cs" />
-    <Compile Include="Migrations\20170801091634_playlist-general.designer.cs">
-      <DependentUpon>20170801091634_playlist-general.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20170802142340_rename.cs" />
-    <Compile Include="Migrations\20170802142340_rename.designer.cs">
-      <DependentUpon>20170802142340_rename.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20170807091524_order-column.cs" />
-    <Compile Include="Migrations\20170807091524_order-column.designer.cs">
-      <DependentUpon>20170807091524_order-column.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20170807094429_fix-increment.cs" />
-    <Compile Include="Migrations\20170807094429_fix-increment.designer.cs">
-      <DependentUpon>20170807094429_fix-increment.cs</DependentUpon>
+    <Compile Include="Migrations\20170808160533_initCreate.cs" />
+    <Compile Include="Migrations\20170808160533_initCreate.designer.cs">
+      <DependentUpon>20170808160533_initCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\PlayCatDbContextModelSnapshot.cs" />
     <Compile Include="ModelValidationService.cs" />

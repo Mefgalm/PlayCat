@@ -16,8 +16,11 @@ var HttpService = (function () {
     function HttpService(_http) {
         this._http = _http;
         this.headers = new http_1.Headers();
-        this.headers.append('Content-Type', 'application/json');
+        this.headers.set('Content-Type', 'application/json');
     }
+    HttpService.prototype.updateAccessToken = function (accessToken) {
+        this.headers.set('AccessToken', accessToken);
+    };
     HttpService.prototype.post = function (url, jsonBody) {
         return this._http.post(url, jsonBody, { headers: this.headers }).toPromise();
     };
@@ -29,6 +32,18 @@ var HttpService = (function () {
     };
     HttpService.prototype.put = function (url, jsonBody) {
         return this._http.put(url, jsonBody, { headers: this.headers }).toPromise();
+    };
+    HttpService.prototype.buildParametersUrl = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        if (args === null || args.length === 0)
+            return '';
+        return '?' +
+            args.filter(function (x) { return x.value !== null; })
+                .map(function (x) { return x.key + '=' + x.value; })
+                .join('&');
     };
     return HttpService;
 }());

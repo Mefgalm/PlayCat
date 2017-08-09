@@ -67,8 +67,7 @@ namespace PlayCat.DataService.Migrations
 
                     b.Property<DateTime>("DateCreated");
 
-                    b.Property<int>("Order")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Order");
 
                     b.HasKey("PlaylistId", "AudioId");
 

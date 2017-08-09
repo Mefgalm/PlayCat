@@ -11,9 +11,13 @@ var audios_component_1 = require("./audios/audios.component");
 var playlist_component_1 = require("./playlist/playlist.component");
 var upload_component_1 = require("./upload/upload.component");
 var forms_1 = require("@angular/forms");
+var upload_service_1 = require("./upload/upload.service");
+var playlist_service_1 = require("./playlist/playlist.service");
 var router_1 = require("@angular/router");
 var menu_module_1 = require("../menu/menu.module");
 var error_module_1 = require("../../shared/components/error.module");
+var common_1 = require("@angular/common");
+var authGuard_service_1 = require("../../shared/services/authGuard.service");
 var MusicModule = (function () {
     function MusicModule() {
     }
@@ -24,19 +28,23 @@ MusicModule = __decorate([
         imports: [
             menu_module_1.MenuModule,
             error_module_1.ErrorModule,
+            common_1.CommonModule,
             forms_1.ReactiveFormsModule,
             router_1.RouterModule.forChild([
                 {
                     path: 'audios',
                     component: audios_component_1.AudiosComponent,
+                    canActivate: [authGuard_service_1.AuthGuardService],
                 },
                 {
                     path: 'playlist',
-                    component: playlist_component_1.PlaylistComponent
+                    component: playlist_component_1.PlaylistComponent,
+                    canActivate: [authGuard_service_1.AuthGuardService],
                 },
                 {
                     path: 'upload',
                     component: upload_component_1.UploadComponent,
+                    canActivate: [authGuard_service_1.AuthGuardService],
                 }
             ]),
         ],
@@ -44,6 +52,10 @@ MusicModule = __decorate([
             audios_component_1.AudiosComponent,
             playlist_component_1.PlaylistComponent,
             upload_component_1.UploadComponent,
+        ],
+        providers: [
+            upload_service_1.UploadService,
+            playlist_service_1.PlaylistService,
         ],
     })
 ], MusicModule);

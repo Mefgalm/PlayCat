@@ -1,3 +1,20 @@
-﻿<site-menu>
-    Playlist
+﻿<site-menu>    
+    <div *ngIf="playlist">
+        <div>
+            Id {{playlist.id}}
+        </div>
+        <div>
+            Title {{playlist.title}}
+        </div>
+        <h2>Songs</h2>
+        <div *ngFor="let audio of playlist.audios">
+            <div>
+                {{audio.artist}} - {{audio.song}}
+                <audio controls>
+                    <source [src]="audio.accessUrl" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+    </div>
 </site-menu>   

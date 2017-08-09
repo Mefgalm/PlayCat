@@ -7,6 +7,7 @@ import { ValidationModel } from '../../data/validationModel';
 import { SignInRequest } from '../../data/request/signInRequest';
 import { SignUpInResult } from '../../data/response/signUpInResult';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UserAuthService } from '../../shared/services/userAuth.service';
 
 @Component({
     selector: 'signIn',
@@ -28,7 +29,8 @@ export class SignInComponent {
         private _router: Router,
         private _authService: AuthService,
         private _formService: FormService,
-        private _validationService: ValidationService
+        private _validationService: ValidationService,
+        private _userAuthService: UserAuthService,
     ) {
         this.globalError = null;
         this.errors = new Map<string, string>();
@@ -50,7 +52,7 @@ export class SignInComponent {
 
     public save({ value, valid }: { value: any, valid: boolean }) {
         if (valid) {
-            var request = new SignInRequest(
+            let request = new SignInRequest(
                 value.email,
                 value.password);
 
@@ -59,7 +61,10 @@ export class SignInComponent {
                 .then(signUpInResult => {
                     this.errors = signUpInResult.errors;
                     if (signUpInResult.ok) {
-                        //this._router.navigate(['/playlist']);
+                        this._userAuthService.setUser(signUpInResult.user);
+                        this._userAuthService.setAuthToken(signUpInResult.authToken);
+
+                        this._router.navigate(['/audios']);
                     } else if (signUpInResult.showInfo) {
                         this.globalError = signUpInResult.info;
                     }

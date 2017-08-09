@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var UrlRequest = (function () {
-    function UrlRequest() {
+    function UrlRequest(url) {
+        this.url = url;
     }
     return UrlRequest;
 }());

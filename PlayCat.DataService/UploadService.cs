@@ -51,7 +51,7 @@ namespace PlayCat.DataService
                 if (urlInfo == null)
                     throw new ArgumentNullException(nameof(urlInfo));
 
-                if (urlInfo.ContentLenght > _videoRestrictsOptions.Value.AllowedSize)
+                if (urlInfo.ContentLength > _videoRestrictsOptions.Value.AllowedSize)
                     return ResponseBuilder<GetInfoResult>.Create().Fail().SetInfoAndBuild("Maximim video size is 25 MB");
 
                 string videoId = UrlFormatter.GetYoutubeVideoIdentifier(request.Url);

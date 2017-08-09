@@ -12,28 +12,70 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var user_1 = require("../../data/user");
 var authToken_1 = require("../../data/authToken");
+var http_service_1 = require("./http.service");
 var UserAuthService = (function () {
-    function UserAuthService(user, authToken) {
-        this._user = user;
-        this._authToken = authToken;
+    function UserAuthService(_httpService) {
+        this._httpService = _httpService;
+        this._userLSKey = 'user';
+        this._authTokenLSKey = 'authToken';
+        this.setAuthToken(this.getAuthTokenLS());
+        this.setUser(this.getUserLS());
     }
+    UserAuthService.prototype.saveUserLS = function (user) {
+        if (user === null) {
+            localStorage.removeItem(this._userLSKey);
+        }
+        else {
+            localStorage.setItem(this._userLSKey, JSON.stringify(user));
+        }
+    };
+    UserAuthService.prototype.getUserLS = function () {
+        var item = localStorage.getItem(this._userLSKey);
+        if (item === null)
+            return null;
+        var jsonUserObject = JSON.parse(item);
+        return Object.assign(new user_1.User(), jsonUserObject);
+    };
+    UserAuthService.prototype.saveAuthTokenLS = function (authToken) {
+        if (authToken === null) {
+            localStorage.removeItem(this._authTokenLSKey);
+        }
+        else {
+            localStorage.setItem(this._authTokenLSKey, JSON.stringify(authToken));
+        }
+    };
+    UserAuthService.prototype.getAuthTokenLS = function () {
+        var item = localStorage.getItem(this._authTokenLSKey);
+        if (item === null)
+            return null;
+        var jsonAuthTokenObject = JSON.parse(item);
+        return Object.assign(new authToken_1.AuthToken(), jsonAuthTokenObject);
+    };
     UserAuthService.prototype.setUser = function (user) {
         this._user = user;
+        this.saveUserLS(user);
     };
     UserAuthService.prototype.getUser = function () {
         return this._user;
     };
     UserAuthService.prototype.setAuthToken = function (authToken) {
+        if (authToken !== null) {
+            this._httpService.updateAccessToken(authToken.id);
+        }
         this._authToken = authToken;
+        this.saveAuthTokenLS(authToken);
     };
     UserAuthService.prototype.getAuthToken = function () {
         return this._authToken;
+    };
+    UserAuthService.prototype.isValid = function () {
+        return this._user !== null && this._authToken !== null;
     };
     return UserAuthService;
 }());
 UserAuthService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [user_1.User, authToken_1.AuthToken])
+    __metadata("design:paramtypes", [http_service_1.HttpService])
 ], UserAuthService);
 exports.UserAuthService = UserAuthService;
 //# sourceMappingURL=userAuth.service.js.map

@@ -24,7 +24,7 @@ var UploadService = (function () {
             .then(function (x) { return Object.assign(new getInfoResult_1.GetInfoResult(), x.json()); });
     };
     UploadService.prototype.uploadAudio = function (uploadAudioRequest) {
-        return this._httpService.post(this._videoInfoUrl, JSON.stringify(uploadAudioRequest))
+        return this._httpService.post(this._uploadAudioUrl, JSON.stringify(uploadAudioRequest))
             .then(function (x) { return Object.assign(new baseResult_1.BaseResult(), x.json()); });
     };
     return UploadService;

@@ -1,10 +1,10 @@
 ﻿export class UrlInfo {
-    public contentLenght: number;
+    public contentLength: number;
     public artist: string;
     public song: string;
 
-    constructor(contentLenght: number, artist: string, song: string) {
-        this.contentLenght = contentLenght;
+    constructor(contentLength: number, artist: string, song: string) {
+        this.contentLength = contentLength;
         this.artist = artist;
         this.song = song;
     }

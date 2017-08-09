@@ -26,6 +26,8 @@ namespace PlayCat.Helpers
             if (url == null)
                 throw new ArgumentNullException(nameof(url));
 
+            url = RemoveParametersFromUrl(url);
+
             int idIndex = url.LastIndexOf('=');
 
             if (idIndex < 0 && url.Contains("youtu.be"))
