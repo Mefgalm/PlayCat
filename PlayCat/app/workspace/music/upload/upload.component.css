@@ -24,20 +24,22 @@ input {
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: #18121e;
+    color: #848287;
 }
 
 ::-moz-placeholder { /* Firefox 19+ */
-    color: #18121e;
+    color: #848287;
 }
 
 :-ms-input-placeholder { /* IE 10+ */
-    color: #18121e;
+    color: #848287;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-    color: #18121e;
+    color: #848287;
 }
+
+/*color: #18121e;*/
 
 .link-row {
     padding-left: 10%;
@@ -78,6 +80,7 @@ input {
 
 .yt-video {
     width: 50%;
+    padding-right: 50px;
 }
 
 .info {
@@ -101,4 +104,22 @@ input {
     margin-top: 5%;
     border: none;
     width: 100%;
+}
+
+.yt-frame-video {
+    width: 100%;
+    height: 100%;
+}
+
+.video-processing-loader {
+    margin: 0 auto;
+}
+
+.global-error {
+    text-align: center;
+    color: red;
+}
+
+.uploading-loader {
+    margin-top: 20px;
 }

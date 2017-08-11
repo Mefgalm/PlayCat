@@ -16,8 +16,11 @@ var playlist_service_1 = require("./playlist/playlist.service");
 var router_1 = require("@angular/router");
 var menu_module_1 = require("../menu/menu.module");
 var error_module_1 = require("../../shared/components/error.module");
+var loader_module_1 = require("../../shared/components/loader.module");
 var common_1 = require("@angular/common");
 var authGuard_service_1 = require("../../shared/services/authGuard.service");
+var forms_2 = require("@angular/forms");
+var safe_pipe_1 = require("../../shared/pipes/safe.pipe");
 var MusicModule = (function () {
     function MusicModule() {
     }
@@ -29,6 +32,8 @@ MusicModule = __decorate([
             menu_module_1.MenuModule,
             error_module_1.ErrorModule,
             common_1.CommonModule,
+            forms_2.FormsModule,
+            loader_module_1.LoaderModule,
             forms_1.ReactiveFormsModule,
             router_1.RouterModule.forChild([
                 {
@@ -52,6 +57,7 @@ MusicModule = __decorate([
             audios_component_1.AudiosComponent,
             playlist_component_1.PlaylistComponent,
             upload_component_1.UploadComponent,
+            safe_pipe_1.SafePipe
         ],
         providers: [
             upload_service_1.UploadService,

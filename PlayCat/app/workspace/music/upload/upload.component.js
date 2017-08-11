@@ -27,8 +27,8 @@ var UploadComponent = (function () {
         this.urlRequestErrorValiation = new Map();
         this.isVideoInfoProcessing = false;
         this.isAudioUploadProcessing = false;
-        this._isValidUrl = false;
-        this._url = null;
+        this.isUrlConfirm = false;
+        this.url = null;
         this.urlRequestForm = this._fb.group({
             url: [null],
         });
@@ -56,7 +56,8 @@ var UploadComponent = (function () {
         this.uploadAudioForm.patchValue({
             artist: getInfoResult.urlInfo.artist,
             song: getInfoResult.urlInfo.song,
-            url: this._url,
+            url: this.url,
+            videoId: getInfoResult.urlInfo.videoId,
         });
     };
     UploadComponent.prototype.videoInfo = function (_a) {
@@ -65,18 +66,18 @@ var UploadComponent = (function () {
         if (valid && !this.isVideoInfoProcessing) {
             this.isVideoInfoProcessing = true;
             var urlRequest = new urlRequest_1.UrlRequest(value.url);
+            this.videoInfoError = null;
             this._uploadSerice
                 .videoInfo(urlRequest)
                 .then(function (getInfoResult) {
-                _this._isValidUrl = getInfoResult.ok;
+                _this.isUrlConfirm = getInfoResult.ok;
                 if (getInfoResult.ok) {
-                    _this.contentLength = getInfoResult.urlInfo.contentLength;
-                    _this._url = value.url;
+                    _this.url = value.url;
                     _this.loadVideoInfo(getInfoResult);
+                    _this.videoId = getInfoResult.urlInfo.videoId;
                 }
                 else {
-                    _this.contentLength = 0;
-                    _this._url = null;
+                    _this.url = null;
                     if (getInfoResult.showInfo) {
                         _this.videoInfoError = getInfoResult.info;
                     }
@@ -91,23 +92,25 @@ var UploadComponent = (function () {
     UploadComponent.prototype.uploadAudio = function (_a) {
         var _this = this;
         var value = _a.value, valid = _a.valid;
-        if (valid && !this.isAudioUploadProcessing && this._isValidUrl) {
+        if (valid && !this.isAudioUploadProcessing && this.isUrlConfirm) {
             this.isAudioUploadProcessing = true;
-            var uploadAudioRequest = new uploadAudioRequest_1.UploadAudioRequest(value.artist, value.song, this._url);
+            this.audioUploadError = null;
+            var uploadAudioRequest = new uploadAudioRequest_1.UploadAudioRequest(value.artist, value.song, this.url);
             this._uploadSerice
                 .uploadAudio(uploadAudioRequest)
                 .then(function (baseResult) {
                 if (baseResult.ok) {
-                    alert("Song added to your playlist");
-                    console.log(baseResult);
+                    _this.url = null;
+                    _this.isUrlConfirm = false;
+                    _this.urlRequestForm.patchValue({
+                        url: null,
+                    });
+                    _this.urlRequestForm.reset();
                 }
-                else {
-                    _this.urlRequestForm.clearValidators();
-                    _this.uploadAudioForm.clearValidators();
-                    _this._url = null;
-                    _this._isValidUrl = false;
-                    _this.isAudioUploadProcessing = false;
+                else if (baseResult.showInfo) {
+                    _this.audioUploadError = baseResult.info;
                 }
+                _this.isAudioUploadProcessing = false;
             });
         }
         else {

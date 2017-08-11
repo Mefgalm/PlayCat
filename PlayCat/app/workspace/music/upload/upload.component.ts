@@ -17,8 +17,8 @@ export class UploadComponent {
     private _urlRequstModelName = 'UrlRequest';
     private _uploadAudioModelName = 'UploadAudioRequest';
 
-    private _url;
-    private _isValidUrl;
+    public url;
+    public isUrlConfirm;
 
     public isVideoInfoProcessing;
     public isAudioUploadProcessing;
@@ -29,9 +29,10 @@ export class UploadComponent {
     public urlRequestErrorValiation: Map<string, Map<string, ValidationModel>>;
     public uploadAudioErrorValidation: Map<string, Map<string, ValidationModel>>;
 
-    public contentLength: number;
-
     public videoInfoError: string;
+    public audioUploadError: string;
+
+    public videoId: string;
 
     constructor(
         private _fb: FormBuilder,
@@ -44,8 +45,8 @@ export class UploadComponent {
         this.isVideoInfoProcessing = false;
         this.isAudioUploadProcessing = false;
 
-        this._isValidUrl = false;
-        this._url = null;
+        this.isUrlConfirm = false;
+        this.url = null;
 
         this.urlRequestForm = this._fb.group({
             url: [null],
@@ -76,7 +77,8 @@ export class UploadComponent {
         this.uploadAudioForm.patchValue({
             artist: getInfoResult.urlInfo.artist,
             song: getInfoResult.urlInfo.song,
-            url: this._url,
+            url: this.url,
+            videoId: getInfoResult.urlInfo.videoId,
         });
     }
 
@@ -85,21 +87,21 @@ export class UploadComponent {
             this.isVideoInfoProcessing = true;
 
             let urlRequest = new UrlRequest(value.url);
+            this.videoInfoError = null;
 
             this._uploadSerice
                 .videoInfo(urlRequest)
                 .then(getInfoResult => {
-                    this._isValidUrl = getInfoResult.ok;
+                    this.isUrlConfirm = getInfoResult.ok;
 
                     if (getInfoResult.ok) {
-                        this.contentLength = getInfoResult.urlInfo.contentLength;
 
-                        this._url = value.url;
+                        this.url = value.url;
                         this.loadVideoInfo(getInfoResult);
+                        this.videoId = getInfoResult.urlInfo.videoId;
                     } else {
-                        this.contentLength = 0;
 
-                        this._url = null;
+                        this.url = null;
                         if (getInfoResult.showInfo) {
                             this.videoInfoError = getInfoResult.info;
                         }
@@ -113,29 +115,33 @@ export class UploadComponent {
     }
 
     uploadAudio({ value, valid }: { value: any, valid: boolean }) {
-        if (valid && !this.isAudioUploadProcessing && this._isValidUrl) {
+        if (valid && !this.isAudioUploadProcessing && this.isUrlConfirm) {
             this.isAudioUploadProcessing = true;
+
+            this.audioUploadError = null;
 
             let uploadAudioRequest = new UploadAudioRequest(
                 value.artist,
                 value.song,
-                this._url
+                this.url
             );
 
             this._uploadSerice
                 .uploadAudio(uploadAudioRequest)
                 .then(baseResult => {
                     if (baseResult.ok) {
-                        alert("Song added to your playlist");
-                        console.log(baseResult);
-                    } else {
-                        this.urlRequestForm.clearValidators();
-                        this.uploadAudioForm.clearValidators();
+                        this.url = null;
+                        this.isUrlConfirm = false;
 
-                        this._url = null;
-                        this._isValidUrl = false;
-                        this.isAudioUploadProcessing = false;
+                        this.urlRequestForm.patchValue({
+                            url: null,
+                        });
+                        this.urlRequestForm.reset();
+                    } else if (baseResult.showInfo) {
+                        this.audioUploadError = baseResult.info;
                     }
+
+                    this.isAudioUploadProcessing = false;
                 });
         } else {
             this._formService.markControlsAsDirty(this.uploadAudioForm);

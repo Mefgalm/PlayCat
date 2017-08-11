@@ -34,6 +34,7 @@ namespace PlayCat.Music.Youtube
                Artist = artistAndSong.Artist,
                Song = artistAndSong.Song,
                ContentLength = headers.ContentLenght,
+               VideoId = UrlFormatter.GetYoutubeVideoIdentifier(url),
             };
         }
 

@@ -8,14 +8,19 @@ import { PlaylistService } from './playlist/playlist.service';
 import { RouterModule } from '@angular/router';
 import { MenuModule } from '../menu/menu.module';
 import { ErrorModule } from '../../shared/components/error.module';
+import { LoaderModule } from '../../shared/components/loader.module';
 import { CommonModule } from '@angular/common';
 import { AuthGuardService } from '../../shared/services/authGuard.service';
+import { FormsModule } from '@angular/forms';
+import { SafePipe } from '../../shared/pipes/safe.pipe';
 
 @NgModule({
     imports: [
         MenuModule,
         ErrorModule,
         CommonModule,
+        FormsModule,
+        LoaderModule,
         ReactiveFormsModule,
         RouterModule.forChild([
             {
@@ -39,6 +44,7 @@ import { AuthGuardService } from '../../shared/services/authGuard.service';
         AudiosComponent,
         PlaylistComponent,
         UploadComponent,
+        SafePipe
     ],
     providers: [
         UploadService,

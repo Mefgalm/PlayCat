@@ -32,4 +32,4 @@ import { AuthGuardService } from './shared/services/authGuard.service';
     bootstrap: [AppComponent],    
 })
 export class AppModule {
-}
+} 

@@ -52,11 +52,9 @@ namespace PlayCat.DataService
                     throw new ArgumentNullException(nameof(urlInfo));
 
                 if (urlInfo.ContentLength > _videoRestrictsOptions.Value.AllowedSize)
-                    return ResponseBuilder<GetInfoResult>.Create().Fail().SetInfoAndBuild("Maximim video size is 25 MB");
+                    return ResponseBuilder<GetInfoResult>.Create().Fail().SetInfoAndBuild("Maximim video size is 25 MB");                
 
-                string videoId = UrlFormatter.GetYoutubeVideoIdentifier(request.Url);
-
-                if (_dbContext.Audios.Any(x => x.UniqueIdentifier == videoId))
+                if (_dbContext.Audios.Any(x => x.UniqueIdentifier == urlInfo.VideoId))
                     return responseBuilder.SetInfoAndBuild("Video already uploaded");
 
                 return ResponseBuilder<GetInfoResult>.SuccessBuild(new GetInfoResult()
