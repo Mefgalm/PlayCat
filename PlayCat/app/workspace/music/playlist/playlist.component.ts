@@ -1,6 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { PlaylistService } from './playlist.service';
 import { Playlist } from '../../../data/playlist';
+import { AudioPlayerService } from '../../audioPlayer/audioPlayer.service';
 
 @Component({
     selector: 'playlist',
@@ -10,7 +11,8 @@ import { Playlist } from '../../../data/playlist';
 export class PlaylistComponent {
     public playlist: Playlist;
 
-    constructor(private _playlistService: PlaylistService) {
+    constructor(private _playlistService: PlaylistService,
+        public audioPlayerService: AudioPlayerService) {
         
     }
 
@@ -19,7 +21,7 @@ export class PlaylistComponent {
             .getPlaylist(null, 0, 10)
             .then(playlistResult => {
                 if (playlistResult.ok) {
-                    this.playlist = playlistResult.playlist;
+                    this.audioPlayerService.setPlaylist(playlistResult.playlist);
                 }
                 console.log(playlistResult);
             });

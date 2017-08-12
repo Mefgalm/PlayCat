@@ -145,6 +145,10 @@ namespace PlayCat.DataService
                     } catch(Exception ex)
                     {
                         transaction.Rollback();
+
+                        user.IsUploadingAudio = false;
+                        _dbContext.SaveChanges();
+
                         throw ex;
                     }
                 }

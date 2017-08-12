@@ -8,9 +8,10 @@ using PlayCat.DataService;
 namespace PlayCat.DataService.Migrations
 {
     [DbContext(typeof(PlayCatDbContext))]
-    partial class PlayCatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170812140511_remove-string-lenght-max-lenght-for-song-and-artist")]
+    partial class removestringlenghtmaxlenghtforsongandartist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

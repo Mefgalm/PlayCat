@@ -44,7 +44,7 @@ import { SafePipe } from '../../shared/pipes/safe.pipe';
         AudiosComponent,
         PlaylistComponent,
         UploadComponent,
-        SafePipe
+        SafePipe,     
     ],
     providers: [
         UploadService,

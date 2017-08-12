@@ -10,19 +10,16 @@ namespace PlayCat.DataModel
         [Key]
         public Guid Id { get; set; }
 
-        [MaxLength(50)]
         [Required(AllowEmptyStrings = false)]
         public string Artist { get; set; }
 
-        [MaxLength(50)]
         [Required(AllowEmptyStrings = false)]        
         public string Song { get; set; }
 
-        [MaxLength(150)]
+        [MaxLength(200)]
         [Required(AllowEmptyStrings = false)]
         public string AccessUrl { get; set; }
 
-        [MaxLength(50)]
         [Required(AllowEmptyStrings = false)]
         public string FileName { get; set; }
 

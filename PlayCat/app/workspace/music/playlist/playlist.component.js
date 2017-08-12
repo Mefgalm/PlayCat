@@ -11,9 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var playlist_service_1 = require("./playlist.service");
+var audioPlayer_service_1 = require("../../audioPlayer/audioPlayer.service");
 var PlaylistComponent = (function () {
-    function PlaylistComponent(_playlistService) {
+    function PlaylistComponent(_playlistService, audioPlayerService) {
         this._playlistService = _playlistService;
+        this.audioPlayerService = audioPlayerService;
     }
     PlaylistComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -21,7 +23,7 @@ var PlaylistComponent = (function () {
             .getPlaylist(null, 0, 10)
             .then(function (playlistResult) {
             if (playlistResult.ok) {
-                _this.playlist = playlistResult.playlist;
+                _this.audioPlayerService.setPlaylist(playlistResult.playlist);
             }
             console.log(playlistResult);
         });
@@ -34,7 +36,8 @@ PlaylistComponent = __decorate([
         templateUrl: './app/workspace/music/playlist/playlist.component.html',
         styleUrls: ['./app/workspace/music/playlist/playlist.component.css'],
     }),
-    __metadata("design:paramtypes", [playlist_service_1.PlaylistService])
+    __metadata("design:paramtypes", [playlist_service_1.PlaylistService,
+        audioPlayer_service_1.AudioPlayerService])
 ], PlaylistComponent);
 exports.PlaylistComponent = PlaylistComponent;
 //# sourceMappingURL=playlist.component.js.map

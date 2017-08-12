@@ -57,7 +57,7 @@ MusicModule = __decorate([
             audios_component_1.AudiosComponent,
             playlist_component_1.PlaylistComponent,
             upload_component_1.UploadComponent,
-            safe_pipe_1.SafePipe
+            safe_pipe_1.SafePipe,
         ],
         providers: [
             upload_service_1.UploadService,

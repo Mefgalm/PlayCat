@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { WorkspaceModule } from './workspace/workspace.module';
 import { HttpService } from './shared/services/http.service';
 import { AuthGuardService } from './shared/services/authGuard.service';
+import { ErrorComponent } from './shared/components/error.component';
 
 @NgModule({
     imports: [

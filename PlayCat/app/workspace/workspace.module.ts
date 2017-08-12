@@ -7,12 +7,16 @@ import { PlaylistComponent } from './music/playlist/playlist.component';
 import { UploadComponent } from './music/upload/upload.component';
 import { ProfileComponent } from './cabinet/profile/profile.component';
 import { UpdateProfileComponent } from './cabinet/updateProfile/updateProfile.component';
+import { AudioPlayerService } from './audioPlayer/audioPlayer.service';
 
 @NgModule({
     imports: [
         CabinetModule,
         MusicModule,
-    ],   
+    ],
+    providers: [
+        AudioPlayerService,
+    ]
 })
 export class WorkspaceModule {
 

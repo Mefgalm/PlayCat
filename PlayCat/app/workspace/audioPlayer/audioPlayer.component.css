@@ -1,0 +1,9 @@
+﻿.audioPlayer {
+    background-color: rgba(235, 236, 241, 0.51);
+    box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.35);
+    height: 60px;
+    z-index: 5;
+    position: fixed;
+    width: 100%;
+    top: calc(100% - 60px);
+}

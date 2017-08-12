@@ -1,0 +1,18 @@
+﻿<div class="audioPlayer">
+    <div *ngIf="isLoaded">
+        <button (click)="pause()">Pause</button>
+        <button (click)="play()">Play</button>
+
+         {{currentTime | secondToTime}} {{audioPlayerService.getArtist()}} - {{audioPlayerService.getSong()}} {{duration | secondToTime}}
+
+        Time: <input type="number" (change)="setCurrentTime($event.target.value)"/>
+        Volume <input type="number" (change)="setVolume($event.target.value)" value="50"/>
+
+        <!--<div #progressBar style="width: 200px; height: 15px; color: red;" (click)="changeTime()">
+
+        </div>-->
+
+        <button (click)="prev()">Prev</button>
+        <button (click)="next()">Next</button>
+    </div>
+</div>
