@@ -1,92 +1,100 @@
 ﻿import { Component, ViewChild } from '@angular/core';
 import { AudioPlayerService } from './audioPlayer.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Playlist } from '../../data/playlist';
+import { Audiotrack } from '../../data/audio';
 
 @Component({
     selector: 'audioPlayer',
     templateUrl: './app/workspace/audioPlayer/audioPlayer.component.html',
-    styleUrls: ['./app/workspace/audioPlayer/audioPlayer.component.css'],
+    styleUrls: [
+        './app/workspace/audioPlayer/audioPlayer.component.css', 
+    ],
 })
 export class AudioPlayerComponent {
     @ViewChild('progressBar') progressBar;
+    private _timeUpdateSubscription: any;
+    private _audioChangedSubscription: any;
+    private _actionChangedSubscription: any;
+    private _durationChangeSubscription: any;
+    private _playlistLoadedSubscription: any;
 
-    private onPlaylistLoadedSubscription: any;
-
-    public isLoaded: boolean;
-    public isPlaying: boolean;
-
+    public isPlaylistLoaded: boolean;
     public currentTime: number;
     public duration: number;
 
-    private _audio: any;
+    public display: boolean;
 
-    constructor(public audioPlayerService: AudioPlayerService, private _sanitizer: DomSanitizer) {
-        this.isLoaded = false;
-        this.isPlaying = false;
-        this.currentTime = 0;
+    public playlist: Playlist;
+    public audio: Audiotrack;
 
-        this._audio = new Audio();
+    public isPlaying: boolean;
 
-        this.onPlaylistLoadedSubscription = audioPlayerService.getOnLoadedEmitter()
-            .subscribe(isLoaded => {
-                this.isLoaded = isLoaded;
-                this.selectSource();
+    constructor(private _audioPlayerService: AudioPlayerService) {
+        this.isPlaylistLoaded = false;
+        this.display = false;
 
-                this.registerEvents();
-            });
-    }
+        this.isPlaying = this._audioPlayerService.isPlaying();
 
-    private registerEvents() {
-        this._audio.onended = () => this.next();
-        this._audio.ondurationchange = () => this.duration = this._audio.duration;
-        this._audio.ontimeupdate = () => this.currentTime = this._audio.currentTime;
-    }
+        this.playlist = this._audioPlayerService.getPlaylist();
+        this.audio = this._audioPlayerService.getCurrentAudio();
+        this.currentTime = this._audioPlayerService.getCurrentTime();
+        this.duration = this._audioPlayerService.getDuration();
 
-    ngOnDestroy() {
-        this.onPlaylistLoadedSubscription.unsubscribe();
-    }
-
-    private selectSource() {
-        this._audio.src = this.audioPlayerService.getCurrentAudio().accessUrl;
-    }
-
-    next() {
-        this.audioPlayerService.playNext();
-
-        this.selectSource();
-        if (this.isPlaying) {
-            this.play();
+        if (this.playlist) {
+            this.isPlaylistLoaded = true;            
+        } else {
+            this._playlistLoadedSubscription = this._audioPlayerService.getOnPlaylistLoadedEmitter()
+                .subscribe(playlist => {
+                    this.playlist = playlist;
+                    this.isPlaylistLoaded = true;
+                });
         }
+
+        this._audioChangedSubscription = this._audioPlayerService.getOnAudioChanged()
+            .subscribe(audio => this.audio = audio);
+
+        this._durationChangeSubscription = this._audioPlayerService.getOnDurationEmitter()
+            .subscribe(duration => this.duration = duration);
+
+        this._timeUpdateSubscription = this._audioPlayerService.getOnTimeUpdateEmitter()
+            .subscribe(currentTime => this.currentTime = currentTime);
+
+        this._actionChangedSubscription = this._audioPlayerService.getOnActionChanged()
+            .subscribe(isPlaingAction => this.isPlaying = isPlaingAction);
+    }    
+
+    showDialog() {
+        this.display = true;
     }
 
-    prev() {
-        this.audioPlayerService.playPrev();
-
-        this.selectSource();
-        if (this.isPlaying) {
-            this.play();
-        }
-    }
-
-    pause() {
-        this._audio.pause();
-
-        this.isPlaying = false;
+    hideDialog() {
+        this.display = false;
     }
 
     play() {
-        this._audio.play();
-
-        this.isPlaying = true;
+        this._audioPlayerService.play();
     }
 
-    setCurrentTime(value: number) {
-        this.pause();
-        this._audio.currentTime = 1 * value;
-        this.play();
+    playById(id: string) {
+        this._audioPlayerService.playById(id);
     }
 
-    setVolume(value: number) {
-        this._audio.volume = value / 100;
+    pause() {
+        this._audioPlayerService.pause();
+    }
+
+    next() {
+        this._audioPlayerService.next();
+    }
+
+    previous() {
+        this._audioPlayerService.previous();
+    }
+
+    onNgDestroy() {
+        this._playlistLoadedSubscription.unsubscribe();
+        this._audioChangedSubscription.unsubscribe();
+        this._durationChangeSubscription.unsubscribe();
+        this._timeUpdateSubscription.unsubscribe();
     }
 }

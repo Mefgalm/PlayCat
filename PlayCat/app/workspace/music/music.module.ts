@@ -4,7 +4,6 @@ import { PlaylistComponent } from './playlist/playlist.component';
 import { UploadComponent } from './upload/upload.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UploadService } from './upload/upload.service'
-import { PlaylistService } from './playlist/playlist.service';
 import { RouterModule } from '@angular/router';
 import { MenuModule } from '../menu/menu.module';
 import { ErrorModule } from '../../shared/components/error.module';
@@ -48,7 +47,6 @@ import { SafePipe } from '../../shared/pipes/safe.pipe';
     ],
     providers: [
         UploadService,
-        PlaylistService,
     ],
 })
 export class MusicModule {

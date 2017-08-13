@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpService } from '../../../shared/services/http.service';
-import { PlaylistResult } from '../../../data/response/playlistResult';
-import { UrlParametr } from '../../../data/urlParamert';
+import { HttpService } from '../../shared/services/http.service';
+import { PlaylistResult } from '../../data/response/playlistResult';
+import { UrlParametr } from '../../data/urlParamert';
 
 @Injectable()
 export class PlaylistService {

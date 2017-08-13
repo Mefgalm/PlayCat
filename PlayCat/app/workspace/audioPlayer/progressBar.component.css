@@ -1,0 +1,8 @@
+﻿.outer {
+    background-color: antiquewhite;
+}
+
+.inner {
+    background-color: red;
+    position: relative;
+}

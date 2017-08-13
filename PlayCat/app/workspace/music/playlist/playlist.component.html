@@ -1,17 +1,3 @@
 ﻿<site-menu>    
-    <div>
-        <div>
-            Title {{audioPlayerService.getTitle()}}
-        </div>
-        <h2>Songs</h2>
-        <div *ngFor="let audio of audioPlayerService.getAudios()">
-            <div>
-                {{audio.artist}} - {{audio.song}}
-                <!--<audio controls>
-                    <source [src]="audio.accessUrl" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>-->
-            </div>
-        </div>
-    </div>
+    Playlist
 </site-menu>   

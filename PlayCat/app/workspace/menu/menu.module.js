@@ -12,6 +12,8 @@ var menu_component_1 = require("./menu.component");
 var router_1 = require("@angular/router");
 var audioPlayer_component_1 = require("../audioPlayer/audioPlayer.component");
 var secondToTime_pipe_1 = require("../../shared/pipes/secondToTime.pipe");
+var primeng_1 = require("primeng/primeng");
+var progressBar_component_1 = require("../audioPlayer/progressBar.component");
 var MenuModule = (function () {
     function MenuModule() {
     }
@@ -21,12 +23,14 @@ MenuModule = __decorate([
     core_1.NgModule({
         imports: [
             router_1.RouterModule,
-            common_1.CommonModule
+            common_1.CommonModule,
+            primeng_1.DialogModule,
         ],
         declarations: [
             menu_component_1.MenuComponent,
             audioPlayer_component_1.AudioPlayerComponent,
             secondToTime_pipe_1.SecondToTimePipe,
+            progressBar_component_1.ProgressBarComponent,
         ],
         exports: [
             menu_component_1.MenuComponent,

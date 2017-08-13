@@ -15,6 +15,7 @@ var auth_module_1 = require("./auth/auth.module");
 var workspace_module_1 = require("./workspace/workspace.module");
 var http_service_1 = require("./shared/services/http.service");
 var authGuard_service_1 = require("./shared/services/authGuard.service");
+var animations_1 = require("@angular/platform-browser/animations");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -24,6 +25,7 @@ AppModule = __decorate([
     core_1.NgModule({
         imports: [
             platform_browser_1.BrowserModule,
+            animations_1.BrowserAnimationsModule,
             auth_module_1.AuthModule,
             workspace_module_1.WorkspaceModule,
             router_1.RouterModule.forRoot([

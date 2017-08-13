@@ -1,6 +1,6 @@
 ﻿import { User } from './user';
 
-export class Audio {
+export class Audiotrack {
     public artist: string;
     public song: string;
     public id: string;

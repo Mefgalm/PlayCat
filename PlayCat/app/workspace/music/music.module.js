@@ -12,7 +12,6 @@ var playlist_component_1 = require("./playlist/playlist.component");
 var upload_component_1 = require("./upload/upload.component");
 var forms_1 = require("@angular/forms");
 var upload_service_1 = require("./upload/upload.service");
-var playlist_service_1 = require("./playlist/playlist.service");
 var router_1 = require("@angular/router");
 var menu_module_1 = require("../menu/menu.module");
 var error_module_1 = require("../../shared/components/error.module");
@@ -61,7 +60,6 @@ MusicModule = __decorate([
         ],
         providers: [
             upload_service_1.UploadService,
-            playlist_service_1.PlaylistService,
         ],
     })
 ], MusicModule);

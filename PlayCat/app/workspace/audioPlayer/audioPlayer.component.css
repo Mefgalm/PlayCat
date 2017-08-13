@@ -7,3 +7,23 @@
     width: 100%;
     top: calc(100% - 60px);
 }
+
+.audios-panel {
+    position: absolute;
+    top: 10%;
+    height: 80%;
+    width: 100%;
+}
+
+/deep/ .ui-dialog {
+    height: calc(100% - 140px);
+    width: 100%;
+    border-radius: 0;
+    padding: 0;
+}
+
+/deep/ .ui-dialog-content {
+    height:100%;
+    width: 100%;
+    padding: 0 !important;
+}

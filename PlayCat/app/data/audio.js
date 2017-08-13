@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Audio = (function () {
-    function Audio() {
+var Audiotrack = (function () {
+    function Audiotrack() {
     }
-    return Audio;
+    return Audiotrack;
 }());
-exports.Audio = Audio;
+exports.Audiotrack = Audiotrack;
 //# sourceMappingURL=audio.js.map

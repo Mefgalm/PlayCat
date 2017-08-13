@@ -10,9 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var http_service_1 = require("../../../shared/services/http.service");
-var playlistResult_1 = require("../../../data/response/playlistResult");
-var urlParamert_1 = require("../../../data/urlParamert");
+var http_service_1 = require("../../shared/services/http.service");
+var playlistResult_1 = require("../../data/response/playlistResult");
+var urlParamert_1 = require("../../data/urlParamert");
 var PlaylistService = (function () {
     function PlaylistService(_httpService) {
         this._httpService = _httpService;

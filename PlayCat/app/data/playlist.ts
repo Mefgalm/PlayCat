@@ -1,4 +1,4 @@
-﻿import { Audio } from './audio';
+﻿import { Audiotrack } from './audio';
 import { User } from './user';
 
 export class Playlist {
@@ -6,5 +6,5 @@ export class Playlist {
     public title: string;
     public isGeneral: boolean;
     public owner: User;
-    public audios: Audio[];
+    public audios: Audiotrack[];
 }
