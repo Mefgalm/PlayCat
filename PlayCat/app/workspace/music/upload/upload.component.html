@@ -1,4 +1,4 @@
-﻿<site-menu>
+﻿<site-menu> <loader *ngIf="isVideoInfoProcessing || isAudioUploadProcessing"></loader>
     <div class="upload-page">
         <form class="link-row" [formGroup]="urlRequestForm" novalidate (ngSubmit)="videoInfo(urlRequestForm)">
             <div class="link-line">
@@ -12,9 +12,6 @@
                 <button class="submit go-button" type="submit">go</button>
             </div>
         </form>
-        <div class="video-processing-loader">
-            <loader *ngIf="isVideoInfoProcessing"></loader>
-        </div>
         <div *ngIf="videoInfoError" class="global-error">
             {{videoInfoError}}
         </div>
@@ -45,9 +42,6 @@
                 </div>
             </div>
         </form>
-        <div class="uploading-loader video-processing-loader">
-            <loader *ngIf="isAudioUploadProcessing"></loader>
-        </div>
         <div *ngIf="audioUploadError" class="global-error">
             {{audioUploadError}}
         </div>
