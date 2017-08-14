@@ -1,52 +1,61 @@
 ﻿<div class="audioPlayer">
     <div *ngIf="isPlaylistLoaded">
 
+        <div *ngIf="!audio">
+            Your playlist is empty
+        </div>
+        <div *ngIf="audio">
+            <!--<p-overlayPanel #op appendTo="body">
+                Content
+            </p-overlayPanel>
 
-        <!--<p-overlayPanel #op appendTo="body">
-            Content
-        </p-overlayPanel>
-
-        <button type="text" pButton label="Basic" (click)="op.toggle($event)"></button>-->
+            <button type="text" pButton label="Basic" (click)="op.toggle($event)"></button>-->
 
 
-        <button *ngIf="isPlaying" (click)="pause()">Pause</button>
-        <button *ngIf="!isPlaying" (click)="play()">Play</button>
+            <button *ngIf="isPlaying" (click)="pause()">Pause</button>
+            <button *ngIf="!isPlaying" (click)="play()">Play</button>
 
-        {{currentTime | secondToTime}} {{audio.artist}} - {{audio.song}} {{duration | secondToTime}}
+            {{currentTime | secondToTime}} {{audio.artist}} - {{audio.song}} {{duration | secondToTime}}
 
-        <progressBar [min]="0" [max]="duration"></progressBar>
+            <progressBar [min]="0" 
+                         [max]="duration"
+                         [height]="20" 
+                         [width]="300" 
+                         [horizontal-padding]="10"
+                         [vertical-padding]="5"
+                         [currentValue]="currentTime"
+                         (onClick)="volumeChanged($event)"></progressBar>
 
-        Time: <input type="number" (change)="setCurrentTime($event.target.value)" />
-        Volume <input type="number" (change)="setVolume($event.target.value)" value="50" />        
+            Time: <input type="number" (change)="setCurrentTime($event.target.value)" />
+            Volume <input type="number" (change)="setVolume($event.target.value)" value="50" />
 
-        <button (click)="previous()">Previous</button>
-        <button (click)="next()">Next</button>
-
-        <p-dialog [(visible)]="display"
-                  [draggable]="false"
-                  [resizable]="false"
-                  [modal]="false"
-                  [showHeader]="false"
-                  [positionLeft]="0"
-                  [positionTop]="80">
-            <div class="audios-panel">
-                <table border="1" height="100%">
-                    <tr>
-                        <th>Play</th>
-                        <th>Artist</th>
-                        <th>Song</th>
-                    </tr>
-                    <tr *ngFor="let audio of playlist.audios">
-                        <td><button (click)="playById(audio.id)">Play</button></td>
-                        <td>{{audio.artist}}</td>
-                        <td>{{audio.song}}</td>
-                    </tr>
-                </table>
-            </div>
-        </p-dialog>
-        <button *ngIf="!display" style="float:right" (click)="showDialog()">Show</button>
-        <button *ngIf="display" style="float:right" (click)="hideDialog()">Hide</button>    
-        
+            <button (click)="previous()">Previous</button>
+            <button (click)="next()">Next</button>
+            <p-dialog [(visible)]="display"
+                      [draggable]="false"
+                      [resizable]="false"
+                      [modal]="false"
+                      [showHeader]="false"
+                      [positionLeft]="0"
+                      [positionTop]="80">
+                <div class="audios-panel">
+                    <table border="1" height="100%">
+                        <tr>
+                            <th>Play</th>
+                            <th>Artist</th>
+                            <th>Song</th>
+                        </tr>
+                        <tr *ngFor="let audio of playlist.audios">
+                            <td><button (click)="playById(audio.id)">Play</button></td>
+                            <td>{{audio.artist}}</td>
+                            <td>{{audio.song}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </p-dialog>
+            <button *ngIf="!display" style="float:right" (click)="showDialog()">Show</button>
+            <button *ngIf="display" style="float:right" (click)="hideDialog()">Hide</button>
+        </div>        
     </div>
     <div *ngIf="!isPlaylistLoaded">
         L O A D I N G

@@ -16,20 +16,34 @@ var ProgressBarComponent = (function () {
         this.max = 100;
         this.width = 300;
         this.height = 20;
+        this.currentValue = 0;
         this.horizontalPadding = 20;
         this.verticalPadding = 5;
         this.onClick = new core_1.EventEmitter();
     }
-    ProgressBarComponent.prototype.ngAfterViewInit = function () {
-        //this.outer.nativeElement.style.width = this.width + 'px';
-        //this.outer.nativeElement.style.height = this.height + 'px';
-        //this.inner.nativeElement.style.width = (this.width - this.horizontalPadding * 2) + 'px';
-        //this.inner.nativeElement.style.height = (this.height - this.verticalPadding * 2) + 'px';
-        //this.inner.nativeElement.style.top = this.verticalPadding + 'px';
-        //this.inner.nativeElement.style.left = this.horizontalPadding + 'px';
-        //console.log(this.max);
+    ProgressBarComponent.prototype.setElementSize = function (element, width, height, top, left) {
+        element.style.width = width + 'px';
+        element.style.height = height + 'px';
+        element.style.top = top + 'px';
+        element.style.left = left + 'px';
     };
-    ProgressBarComponent.prototype.onSeek = function (value) {
+    ProgressBarComponent.prototype.ngOnChanges = function () {
+        this.inner.nativeElement.style.width = (this.width / this.max) * this.currentValue + 'px';
+    };
+    ProgressBarComponent.prototype.ngAfterViewInit = function () {
+        this.setElementSize(this.outer.nativeElement, this.width + this.horizontalPadding * 2, this.height + this.verticalPadding * 2, 0, 0);
+        this.innerWrapper.nativeElement.style.width = 'calc(100% - ' + this.horizontalPadding * 2 + 'px)';
+        this.innerWrapper.nativeElement.style.height = 'calc(100% - ' + this.verticalPadding * 2 + 'px)';
+        this.innerWrapper.nativeElement.style['margin-top'] = this.verticalPadding + 'px';
+        this.innerWrapper.nativeElement.style['margin-bottom'] = this.verticalPadding + 'px';
+        this.innerWrapper.nativeElement.style['margin-left'] = this.horizontalPadding + 'px';
+        this.innerWrapper.nativeElement.style['margin-right'] = this.horizontalPadding + 'px';
+        this.innerWrapper.nativeElement.style['top'] = this.verticalPadding + 'px';
+        this.inner.nativeElement.style.height = '100%';
+    };
+    ProgressBarComponent.prototype.onSeek = function (offsetX) {
+        this.inner.nativeElement.style.width = offsetX + 'px';
+        this.onClick.emit((offsetX / this.width) * (this.max - this.min));
     };
     return ProgressBarComponent;
 }());
@@ -37,6 +51,10 @@ __decorate([
     core_1.ViewChild('outer'),
     __metadata("design:type", Object)
 ], ProgressBarComponent.prototype, "outer", void 0);
+__decorate([
+    core_1.ViewChild('innerWrapper'),
+    __metadata("design:type", Object)
+], ProgressBarComponent.prototype, "innerWrapper", void 0);
 __decorate([
     core_1.ViewChild('inner'),
     __metadata("design:type", Object)
@@ -57,6 +75,10 @@ __decorate([
     core_1.Input('height'),
     __metadata("design:type", Number)
 ], ProgressBarComponent.prototype, "height", void 0);
+__decorate([
+    core_1.Input('currentValue'),
+    __metadata("design:type", Number)
+], ProgressBarComponent.prototype, "currentValue", void 0);
 __decorate([
     core_1.Input('horizontal-padding'),
     __metadata("design:type", Number)

@@ -2,7 +2,10 @@
     background-color: antiquewhite;
 }
 
+.inner-wrapper {
+    position: relative;
+}
+
 .inner {
     background-color: red;
-    position: relative;
 }

@@ -62,6 +62,9 @@ var AudioPlayerComponent = (function () {
     AudioPlayerComponent.prototype.previous = function () {
         this._audioPlayerService.previous();
     };
+    AudioPlayerComponent.prototype.volumeChanged = function (value) {
+        console.log(value);
+    };
     AudioPlayerComponent.prototype.onNgDestroy = function () {
         this._playlistLoadedSubscription.unsubscribe();
         this._audioChangedSubscription.unsubscribe();

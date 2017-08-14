@@ -91,6 +91,10 @@ export class AudioPlayerComponent {
         this._audioPlayerService.previous();
     }
 
+    volumeChanged(value) {
+        console.log(value);
+    }
+
     onNgDestroy() {
         this._playlistLoadedSubscription.unsubscribe();
         this._audioChangedSubscription.unsubscribe();
