@@ -21,12 +21,13 @@ var AudioPlayerService = (function () {
         this._skip = 0;
         this._audio = new Audio();
         this._isPlaying = false;
-        this._audio.volume = 0.01;
+        this._audio.volume = 0.5;
         this.onPlaylistLoaded = new core_2.EventEmitter();
         this.onDurationChange = new core_2.EventEmitter();
         this.onTimeUpdate = new core_2.EventEmitter();
         this.onAudioChanged = new core_2.EventEmitter();
         this.onActionChanged = new core_2.EventEmitter();
+        this.onIsLoopChanged = new core_2.EventEmitter();
         this._audio.onended = function () {
             _this.next();
             _this.onAudioChanged.emit(_this._currentAudio);
@@ -39,6 +40,7 @@ var AudioPlayerService = (function () {
             _this._duration = _this._audio.duration;
             _this.onDurationChange.emit(_this._audio.duration);
         };
+        this._audio.oncanplay = function () { return _this.onAudioChanged.emit(_this._currentAudio); };
         this._playlistService
             .getPlaylist(null, this._skip, this._take)
             .then(function (playlistResult) {
@@ -54,6 +56,9 @@ var AudioPlayerService = (function () {
     //on event duration
     AudioPlayerService.prototype.getOnDurationEmitter = function () {
         return this.onDurationChange;
+    };
+    AudioPlayerService.prototype.getOnIsLoopEmitter = function () {
+        return this.onIsLoopChanged;
     };
     //time update
     AudioPlayerService.prototype.getOnTimeUpdateEmitter = function () {
@@ -76,6 +81,9 @@ var AudioPlayerService = (function () {
     };
     AudioPlayerService.prototype.getCurrentAudio = function () {
         return this._currentAudio;
+    };
+    AudioPlayerService.prototype.isLoop = function () {
+        return this._audio.loop;
     };
     AudioPlayerService.prototype.getCurrentTime = function () {
         return this._currentTime;
@@ -101,11 +109,22 @@ var AudioPlayerService = (function () {
     AudioPlayerService.prototype.isPlaying = function () {
         return this._isPlaying;
     };
+    AudioPlayerService.prototype.setIsLoop = function (isLoop) {
+        this._audio.loop = isLoop;
+        this.onIsLoopChanged.emit(this._audio.loop);
+    };
     AudioPlayerService.prototype.setVolume = function (volume) {
-        this._audio.volume = volume;
+        if (volume >= 0 && volume <= 100) {
+            this._audio.volume = volume;
+        }
+    };
+    AudioPlayerService.prototype.getVolume = function () {
+        return this._audio.volume;
     };
     AudioPlayerService.prototype.setCurrentTime = function (currentTime) {
-        this._audio.currentTime = currentTime;
+        if (currentTime >= 0 && currentTime <= this._duration) {
+            this._audio.currentTime = currentTime;
+        }
     };
     AudioPlayerService.prototype.next = function () {
         this.selectAudio(this._currentIndex + 1);
@@ -128,7 +147,6 @@ var AudioPlayerService = (function () {
             this._currentIndex = index;
             this._currentAudio = this._playlist.audios[index];
             this._audio.src = this._currentAudio.accessUrl;
-            this.onAudioChanged.emit(this._currentAudio);
         }
     };
     return AudioPlayerService;

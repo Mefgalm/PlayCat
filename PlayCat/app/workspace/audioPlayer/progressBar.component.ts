@@ -18,8 +18,8 @@ export class ProgressBarComponent {
 
     @Input('currentValue') currentValue: number = 0;
 
-    @Input('horizontal-padding') horizontalPadding: number = 20;
-    @Input('vertical-padding') verticalPadding: number = 5;
+    @Input('horizontal-padding') horizontalPadding: number = 0;
+    @Input('vertical-padding') verticalPadding: number = 0;
 
     @Output() onClick = new EventEmitter<number>();
 

@@ -20,6 +20,7 @@ export class AudioPlayerService {
     private readonly onTimeUpdate: EventEmitter<number>;
     private readonly onAudioChanged: EventEmitter<Audiotrack>;
     private readonly onActionChanged: EventEmitter<boolean>;
+    private readonly onIsLoopChanged: EventEmitter<boolean>;
 
     private _audioCount: number;
     private _isPlaying: boolean;
@@ -34,13 +35,14 @@ export class AudioPlayerService {
         this._audio = new Audio();
         this._isPlaying = false;
 
-        this._audio.volume = 0.01;
+        this._audio.volume = 0.5;
 
         this.onPlaylistLoaded = new EventEmitter();
         this.onDurationChange = new EventEmitter();
         this.onTimeUpdate = new EventEmitter();
         this.onAudioChanged = new EventEmitter();
         this.onActionChanged = new EventEmitter();
+        this.onIsLoopChanged = new EventEmitter();
 
         this._audio.onended = () => {
             this.next();
@@ -55,6 +57,8 @@ export class AudioPlayerService {
             this._duration = this._audio.duration;
             this.onDurationChange.emit(this._audio.duration);
         }
+
+        this._audio.oncanplay = () => this.onAudioChanged.emit(this._currentAudio);
 
         this._playlistService
             .getPlaylist(null, this._skip, this._take)
@@ -72,6 +76,10 @@ export class AudioPlayerService {
     //on event duration
     getOnDurationEmitter(): EventEmitter<number> {
         return this.onDurationChange;
+    }
+
+    getOnIsLoopEmitter(): EventEmitter<boolean> {
+        return this.onIsLoopChanged;
     }
 
     //time update
@@ -100,6 +108,10 @@ export class AudioPlayerService {
 
     getCurrentAudio(): Audiotrack {
         return this._currentAudio;
+    }
+
+    isLoop(): boolean {
+        return this._audio.loop;
     }
 
     getCurrentTime(): number {
@@ -134,12 +146,25 @@ export class AudioPlayerService {
         return this._isPlaying;
     }
 
+    setIsLoop(isLoop: boolean) {
+        this._audio.loop = isLoop;
+        this.onIsLoopChanged.emit(this._audio.loop);
+    }
+
     setVolume(volume: number) {
-        this._audio.volume = volume;
+        if (volume >= 0 && volume <= 100) {
+            this._audio.volume = volume;
+        }
+    }
+
+    getVolume(): number {
+        return this._audio.volume;
     }
 
     setCurrentTime(currentTime: number) {
-        this._audio.currentTime = currentTime;
+        if (currentTime >= 0 && currentTime <= this._duration) {
+            this._audio.currentTime = currentTime;
+        }
     }
 
     next() {
@@ -170,8 +195,6 @@ export class AudioPlayerService {
             this._currentAudio = this._playlist.audios[index];
 
             this._audio.src = this._currentAudio.accessUrl;
-
-            this.onAudioChanged.emit(this._currentAudio);
         }
     }
 }   

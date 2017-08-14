@@ -1,11 +1,16 @@
-﻿.outer {
-    background-color: antiquewhite;
+﻿.clicable-wrapper {
+    cursor: pointer;
 }
 
-.inner-wrapper {
+.line {
+    background-color: #39118a;
+    width: 0px;
+}
+
+.background-line {
+    top: 5px;
+    width: 100%;
+    height: calc(100% - 10px);
     position: relative;
-}
-
-.inner {
-    background-color: red;
+    background-color: gray;
 }

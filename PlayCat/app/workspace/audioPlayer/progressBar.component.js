@@ -17,8 +17,8 @@ var ProgressBarComponent = (function () {
         this.width = 300;
         this.height = 20;
         this.currentValue = 0;
-        this.horizontalPadding = 20;
-        this.verticalPadding = 5;
+        this.horizontalPadding = 0;
+        this.verticalPadding = 0;
         this.onClick = new core_1.EventEmitter();
     }
     ProgressBarComponent.prototype.setElementSize = function (element, width, height, top, left) {

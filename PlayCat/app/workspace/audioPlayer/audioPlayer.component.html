@@ -1,10 +1,20 @@
 ﻿<div class="audioPlayer">
+    <!--<div *ngIf="isPlaylistLoaded && audio">
+        Ok
+    </div>
+    <div *ngIf="isPlaylistLoaded && !audio">
+        Empty
+    </div>
+    <div *ngIf="!isPlaylistLoaded">
+        Loading
+    </div>-->
+
     <div *ngIf="isPlaylistLoaded">
 
         <div *ngIf="!audio">
             Your playlist is empty
         </div>
-        <div *ngIf="audio">
+        <div *ngIf="audio" class="audio-controls">
             <!--<p-overlayPanel #op appendTo="body">
                 Content
             </p-overlayPanel>
@@ -12,25 +22,41 @@
             <button type="text" pButton label="Basic" (click)="op.toggle($event)"></button>-->
 
 
-            <button *ngIf="isPlaying" (click)="pause()">Pause</button>
-            <button *ngIf="!isPlaying" (click)="play()">Play</button>
+            <div>
+                <button *ngIf="isPlaying" (click)="pause()">Pause</button>
+                <button *ngIf="!isPlaying" (click)="play()">Play</button>
 
-            {{currentTime | secondToTime}} {{audio.artist}} - {{audio.song}} {{duration | secondToTime}}
+                {{currentTime | secondToTime}} {{audio.artist}} - {{audio.song}} {{duration | secondToTime}}
+            </div>
 
-            <progressBar [min]="0" 
-                         [max]="duration"
-                         [height]="20" 
-                         [width]="300" 
-                         [horizontal-padding]="10"
-                         [vertical-padding]="5"
-                         [currentValue]="currentTime"
-                         (onClick)="volumeChanged($event)"></progressBar>
+            <div style="display: flex;">
+                <progressBar [min]="0" 
+                             [max]="duration"
+                             [height]="15" 
+                             [width]="300" 
+                             [horizontal-padding]="10"
+                             [vertical-padding]="0"
+                             [currentValue]="currentTime"
+                             (onClick)="currentTimeChanged($event)">
+                </progressBar>
 
-            Time: <input type="number" (change)="setCurrentTime($event.target.value)" />
-            Volume <input type="number" (change)="setVolume($event.target.value)" value="50" />
+                <progressBar [min]="0"
+                             [max]="100"
+                             [height]="15"
+                             [width]="100"
+                             [horizontal-padding]="10"
+                             [vertical-padding]="0"
+                             [currentValue]="volume"
+                             (onClick)="volumeChanged($event)">
+                </progressBar>
 
-            <button (click)="previous()">Previous</button>
-            <button (click)="next()">Next</button>
+                <input type="checkbox" [checked]="isLoop" (change)="toggleLoop()"/>Loop
+            </div>
+            
+            <div>
+                <button (click)="previous()">Previous</button>
+                <button (click)="next()">Next</button>
+            </div>
             <p-dialog [(visible)]="display"
                       [draggable]="false"
                       [resizable]="false"

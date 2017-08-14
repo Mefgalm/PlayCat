@@ -1,7 +1,8 @@
 ﻿<div #outer class="outer">
-    <div #innerWrapper class="inner-wrapper" (click)="onSeek($event.offsetX)">
-        <div #inner class="inner">
-
+    <div #innerWrapper class="clicable-wrapper" (click)="onSeek($event.offsetX)">
+        <div class="background-line">
+            <div #inner class="line">
+            </div>
         </div>
     </div>
 </div>

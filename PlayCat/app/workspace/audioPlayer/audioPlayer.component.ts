@@ -17,6 +17,7 @@ export class AudioPlayerComponent {
     private _actionChangedSubscription: any;
     private _durationChangeSubscription: any;
     private _playlistLoadedSubscription: any;
+    private _isLoopChangedSubscription: any;
 
     public isPlaylistLoaded: boolean;
     public currentTime: number;
@@ -29,16 +30,22 @@ export class AudioPlayerComponent {
 
     public isPlaying: boolean;
 
+    public volume: number;
+
+    public isLoop: boolean;
+
     constructor(private _audioPlayerService: AudioPlayerService) {
         this.isPlaylistLoaded = false;
         this.display = false;
 
         this.isPlaying = this._audioPlayerService.isPlaying();
 
+        this.volume = this._audioPlayerService.getVolume() * 100;
         this.playlist = this._audioPlayerService.getPlaylist();
         this.audio = this._audioPlayerService.getCurrentAudio();
         this.currentTime = this._audioPlayerService.getCurrentTime();
         this.duration = this._audioPlayerService.getDuration();
+        this.isLoop = this._audioPlayerService.isLoop();
 
         if (this.playlist) {
             this.isPlaylistLoaded = true;            
@@ -61,6 +68,9 @@ export class AudioPlayerComponent {
 
         this._actionChangedSubscription = this._audioPlayerService.getOnActionChanged()
             .subscribe(isPlaingAction => this.isPlaying = isPlaingAction);
+
+        this._isLoopChangedSubscription = this._audioPlayerService.getOnIsLoopEmitter()
+            .subscribe(isLoop => this.isLoop = isLoop);
     }    
 
     showDialog() {
@@ -87,12 +97,22 @@ export class AudioPlayerComponent {
         this._audioPlayerService.next();
     }
 
+    toggleLoop() {
+        this._audioPlayerService.setIsLoop(!this.isLoop);
+    }
+
     previous() {
         this._audioPlayerService.previous();
     }
 
-    volumeChanged(value) {
-        console.log(value);
+    volumeChanged(value: number) {
+        this.volume = value;
+        this._audioPlayerService.setVolume(this.volume / 100);
+    }
+
+    currentTimeChanged(value: number) {
+        this.currentTime = value;
+        this._audioPlayerService.setCurrentTime(this.currentTime);
     }
 
     onNgDestroy() {
@@ -100,5 +120,6 @@ export class AudioPlayerComponent {
         this._audioChangedSubscription.unsubscribe();
         this._durationChangeSubscription.unsubscribe();
         this._timeUpdateSubscription.unsubscribe();
+        this._isLoopChangedSubscription.unsubscribe();
     }
 }
