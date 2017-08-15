@@ -169,7 +169,7 @@
     <Compile Include="Request\AudioRequest\UploadAudioRequest.cs" />
     <Compile Include="Request\AudioRequest\UrlRequest.cs" />
     <Compile Include="Request\PlaylistRequest\AddRemovePlaylistRequest.cs" />
-    <Compile Include="Request\PlaylistRequest\PlaylistRequest.cs" />
+    <Compile Include="Request\PlaylistRequest\CreatePlaylistRequest.cs" />
     <Compile Include="Request\PlaylistRequest\UpdatePlaylistRequest.cs" />
     <Compile Include="Request\UserRequest\UpdateProfileRequest.cs" />
     <Compile Include="ResponseBuilder.cs" />
