@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PlayCat.DataService.Request
 {
-    public class PlaylistRequest
+    public class CreatePlaylistRequest
     {
         [Required]
         [RegularExpression("^[a-zA-Z0-9_ -]{3,100}$", ErrorMessage = "Title allowed symbols in range 3 to 100")]

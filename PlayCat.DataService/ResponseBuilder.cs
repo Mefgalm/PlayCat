@@ -19,11 +19,6 @@ namespace PlayCat.DataService
             return new ResponseBuilder<T>(new T());
         }
 
-        public static ResponseBuilder<T> Create(T response)
-        {
-            return new ResponseBuilder<T>(response);
-        }
-
         public ResponseBuilder<T> SetInfo(string info)
         {
             _response.Info = info;
@@ -36,10 +31,13 @@ namespace PlayCat.DataService
             return _response;
         }
 
-        public ResponseBuilder<T> Fail()
+        public static ResponseBuilder<T> Fail()
         {
-            _response.Ok = false;
-            return this;
+            var obj = new T()
+            {
+                Ok = false,
+            };
+            return new ResponseBuilder<T>(obj);
         }
 
         public ResponseBuilder<T> IsShowInfo(bool isShow)
@@ -50,8 +48,11 @@ namespace PlayCat.DataService
 
         public ResponseBuilder<T> Success()
         {
-            _response.Ok = true;
-            return this;
+            var obj = new T()
+            {
+                Ok = true,
+            };
+            return new ResponseBuilder<T>(obj);
         }
 
         public ResponseBuilder<T> SetErrors(IDictionary<string, string> errorDictinary)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlayCat.DataService.Request
 {
-    public class UpdatePlaylistRequest : PlaylistRequest
+    public class UpdatePlaylistRequest : CreatePlaylistRequest
     {
         public Guid PlaylistId { get; set; }
     }

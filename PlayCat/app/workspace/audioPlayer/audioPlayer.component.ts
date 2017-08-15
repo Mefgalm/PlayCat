@@ -18,6 +18,7 @@ export class AudioPlayerComponent {
     private _durationChangeSubscription: any;
     private _playlistLoadedSubscription: any;
     private _isLoopChangedSubscription: any;
+    private _playlistChangedSubscription: any;
 
     public isPlaylistLoaded: boolean;
     public currentTime: number;
@@ -25,7 +26,8 @@ export class AudioPlayerComponent {
 
     public display: boolean;
 
-    public playlist: Playlist;
+    public playlists: Playlist[];
+    public currentPlaylist: Playlist;
     public audio: Audiotrack;
 
     public isPlaying: boolean;
@@ -41,18 +43,19 @@ export class AudioPlayerComponent {
         this.isPlaying = this._audioPlayerService.isPlaying();
 
         this.volume = this._audioPlayerService.getVolume() * 100;
-        this.playlist = this._audioPlayerService.getPlaylist();
+        this.playlists = this._audioPlayerService.getPlaylists();
+        this.currentPlaylist = this._audioPlayerService.getCurrentPlaylist();
         this.audio = this._audioPlayerService.getCurrentAudio();
         this.currentTime = this._audioPlayerService.getCurrentTime();
         this.duration = this._audioPlayerService.getDuration();
         this.isLoop = this._audioPlayerService.isLoop();
 
-        if (this.playlist) {
+        if (this.playlists) {
             this.isPlaylistLoaded = true;            
         } else {
-            this._playlistLoadedSubscription = this._audioPlayerService.getOnPlaylistLoadedEmitter()
-                .subscribe(playlist => {
-                    this.playlist = playlist;
+            this._playlistLoadedSubscription = this._audioPlayerService.getOnPlayerLoadedEmitter()
+                .subscribe(playlists => {
+                    this.playlists = playlists;
                     this.isPlaylistLoaded = true;
                 });
         }
@@ -71,6 +74,9 @@ export class AudioPlayerComponent {
 
         this._isLoopChangedSubscription = this._audioPlayerService.getOnIsLoopEmitter()
             .subscribe(isLoop => this.isLoop = isLoop);
+
+        this._playlistChangedSubscription = this._audioPlayerService.getOnPlaylistChanged()
+            .subscribe(currentPlaylist => this.currentPlaylist = currentPlaylist);
     }    
 
     showDialog() {
@@ -113,6 +119,10 @@ export class AudioPlayerComponent {
     currentTimeChanged(value: number) {
         this.currentTime = value;
         this._audioPlayerService.setCurrentTime(this.currentTime);
+    }
+
+    selectPlaylist(id: string) {
+        this._audioPlayerService.selectPlaylist(id);
     }
 
     onNgDestroy() {

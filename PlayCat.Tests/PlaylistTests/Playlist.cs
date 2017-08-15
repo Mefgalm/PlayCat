@@ -196,7 +196,7 @@ namespace PlayCat.Tests.PlaylistTests
                     DataModel.Playlist playlist = context.CreatePlaylist(true, userId, null, 0);
                     context.SaveChanges();
 
-                    var result = playListService.CreatePlaylist(userId, new PlaylistRequest()
+                    var result = playListService.CreatePlaylist(userId, new CreatePlaylistRequest()
                     {
                         Title = "13",
                     });
@@ -224,7 +224,7 @@ namespace PlayCat.Tests.PlaylistTests
                     context.SaveChanges();
 
                     string playlistTitle = "Test";
-                    var result = playListService.CreatePlaylist(userId, new PlaylistRequest()
+                    var result = playListService.CreatePlaylist(userId, new CreatePlaylistRequest()
                     {
                         Title = playlistTitle,
                     });
@@ -258,11 +258,12 @@ namespace PlayCat.Tests.PlaylistTests
 
                     context.SaveChanges();
 
-                    UserPlaylistsResult result = playListService.GetUserPlaylists(userId);
+                    UserPlaylistsResult result = playListService.GetUserPlaylists(userId, null, 0, 10);
 
                     CheckIfSuccess(result);
 
                     Assert.Equal(4, result.Playlists.Count());
+                    Assert.True(result.Playlists.All(x => !x.Audios.Any()));
                 }
             });
         }
@@ -280,7 +281,7 @@ namespace PlayCat.Tests.PlaylistTests
 
                     Guid userId = GetUserId(context);
 
-                    UserPlaylistsResult result = playListService.GetUserPlaylists(Guid.Empty);
+                    UserPlaylistsResult result = playListService.GetUserPlaylists(Guid.Empty, null, 0, 10);
 
                     CheckIfSuccess(result);
 
@@ -302,7 +303,7 @@ namespace PlayCat.Tests.PlaylistTests
 
                     Guid userId = GetUserId(context);
 
-                    UserPlaylistsResult result = playListService.GetUserPlaylists(userId);
+                    UserPlaylistsResult result = playListService.GetUserPlaylists(userId, null, 0, 10);
 
                     CheckIfSuccess(result);
 
@@ -328,17 +329,19 @@ namespace PlayCat.Tests.PlaylistTests
                     CreateAndAddAudio(context, playlist.Id, 5);
                     context.SaveChanges();
 
-                    PlaylistResult result = playListService.GetPlaylist(userId, playlist.Id, 0, 5);
+                    UserPlaylistsResult result = playListService.GetUserPlaylists(userId, playlist.Id, 0, 5);
 
                     CheckIfSuccess(result);
 
-                    Assert.Equal(playlist.Id, result.Playlist.Id);
-                    Assert.Equal(playlist.Title, result.Playlist.Title);
-                    Assert.Equal(5, result.Playlist.Audios.Count());
+                    Assert.Equal(playlist.Id, result.Playlists.FirstOrDefault().Id);
+                    Assert.Equal(playlist.Title, result.Playlists.FirstOrDefault().Title);
+                    Assert.Equal(1, result.Playlists.Count());
+                    Assert.Equal(5, result.Playlists.FirstOrDefault().Audios.Count());
 
-                    for(int i = 0; i < 4; i++)
+                    for (int i = 0; i < 4; i++)
                     {
-                        Assert.True(result.Playlist.Audios.ElementAt(i).DateAdded > result.Playlist.Audios.ElementAt(i + 1).DateAdded);
+                        Assert.True(result.Playlists.FirstOrDefault().Audios.ElementAt(i).DateAdded > 
+                                    result.Playlists.FirstOrDefault().Audios.ElementAt(i + 1).DateAdded);
                     }
                 }
             });
@@ -361,19 +364,19 @@ namespace PlayCat.Tests.PlaylistTests
                     CreateAndAddAudio(context, playlist.Id, 10);
                     context.SaveChanges();
 
-                    PlaylistResult result = playListService.GetPlaylist(userId, playlist.Id, 0, 10);
+                    UserPlaylistsResult result = playListService.GetUserPlaylists(userId, playlist.Id, 0, 10);
 
                     CheckIfSuccess(result);
 
-                    Assert.Equal(playlist.Id, result.Playlist.Id);
-                    Assert.Equal(playlist.Title, result.Playlist.Title);
-                    Assert.Equal(10, result.Playlist.Audios.Count());
+                    Assert.Equal(playlist.Id, result.Playlists.FirstOrDefault().Id);
+                    Assert.Equal(playlist.Title, result.Playlists.FirstOrDefault().Title);
+                    Assert.Equal(10, result.Playlists.FirstOrDefault().Audios.Count());
                 }
             });
         }
 
         [Fact]
-        public void ShouldReturnErrorOnWrongPlaylistId()
+        public void ShouldReturnGeneralOnNullPlaylistId()
         {
             SqlLiteDatabaseTest(options =>
             {
@@ -386,14 +389,17 @@ namespace PlayCat.Tests.PlaylistTests
                     Guid userId = GetUserId(context);
 
                     DataModel.Playlist playlist = context.CreatePlaylist(true, userId, null, 0);
+                    DataModel.Playlist playlist2 = context.CreatePlaylist(false, userId, "Rock", 0);
                     CreateAndAddAudio(context, playlist.Id, 10);
                     context.SaveChanges();
 
-                    PlaylistResult result = playListService.GetPlaylist(userId, Guid.Empty, 0, 10);
+                    UserPlaylistsResult result = playListService.GetUserPlaylists(userId, null, 0, 10);
 
-                    CheckIfFail(result);
+                    CheckIfSuccess(result);
 
-                    Assert.Null(result.Playlist);
+                    Assert.Equal(2, result.Playlists.Count());
+                    Assert.Equal(10, result.Playlists.FirstOrDefault(x => x.IsGeneral).Audios.Count());
+                    Assert.Equal(0, result.Playlists.FirstOrDefault(x => x.Id == playlist2.Id).Audios.Count());
                 }
             });
         }
@@ -412,16 +418,17 @@ namespace PlayCat.Tests.PlaylistTests
                     Guid userId = GetUserId(context);
 
                     DataModel.Playlist playlist = context.CreatePlaylist(true, userId, null, 0);
-                    CreateAndAddAudio(context, playlist.Id, 10);
+                    DataModel.Playlist playlist2 = context.CreatePlaylist(false, userId, "Rock", 0);
+                    DataModel.Playlist playlist3 = context.CreatePlaylist(false, userId, "RnB", 0);
+                    CreateAndAddAudio(context, playlist3.Id, 10);
                     context.SaveChanges();
 
-                    PlaylistResult result = playListService.GetPlaylist(userId, null, 0, 10);
+                    UserPlaylistsResult result = playListService.GetUserPlaylists(userId, playlist3.Id, 0, 10);
 
                     CheckIfSuccess(result);
-
-                    Assert.Equal(playlist.Id, result.Playlist.Id);
-                    Assert.Equal(playlist.Title, result.Playlist.Title);
-                    Assert.Equal(10, result.Playlist.Audios.Count());
+                    
+                    Assert.True(result.Playlists.Where(x => x.Id != playlist3.Id).All(x => !x.Audios.Any()));
+                    Assert.Equal(10, result.Playlists.FirstOrDefault(x => x.Id == playlist3.Id).Audios.Count());
                 }
             });
         }
@@ -452,13 +459,13 @@ namespace PlayCat.Tests.PlaylistTests
                     CreateAndAddAudio(context, playlist.Id, count);
                     context.SaveChanges();
 
-                    PlaylistResult result = playListService.GetPlaylist(userId, playlist.Id, skip, take);
+                    UserPlaylistsResult result = playListService.GetUserPlaylists(userId, playlist.Id, skip, take);
 
                     CheckIfSuccess(result);
 
-                    Assert.Equal(playlist.Id, result.Playlist.Id);
-                    Assert.Equal(playlist.Title, result.Playlist.Title);
-                    Assert.Equal(actualCount, result.Playlist.Audios.Count());
+                    Assert.Equal(playlist.Id, result.Playlists.FirstOrDefault().Id);
+                    Assert.Equal(playlist.Title, result.Playlists.FirstOrDefault().Title);
+                    Assert.Equal(actualCount, result.Playlists.FirstOrDefault().Audios.Count());
                 }
             });
         }

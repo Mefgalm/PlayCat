@@ -11,17 +11,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_service_1 = require("../../shared/services/http.service");
-var playlistResult_1 = require("../../data/response/playlistResult");
+var userPlaylistsResult_1 = require("../../data/response/userPlaylistsResult");
 var urlParamert_1 = require("../../data/urlParamert");
 var PlaylistService = (function () {
     function PlaylistService(_httpService) {
         this._httpService = _httpService;
-        this._playlistUrl = 'api/playlist/playlist';
+        this._playlistUrl = 'api/playlist/userPlaylists';
     }
-    PlaylistService.prototype.getPlaylist = function (playlistId, skip, take) {
+    PlaylistService.prototype.userPlaylists = function (playlistId, skip, take) {
         var parametrsLine = this._httpService.buildParametersUrl(new urlParamert_1.UrlParametr('playlistId', playlistId), new urlParamert_1.UrlParametr('skip', skip), new urlParamert_1.UrlParametr('take', take));
-        return this._httpService.get(this._playlistUrl + parametrsLine)
-            .then(function (x) { return Object.assign(new playlistResult_1.PlaylistResult(), x.json()); });
+        return this._httpService
+            .get(this._playlistUrl + parametrsLine)
+            .then(function (x) { return Object.assign(new userPlaylistsResult_1.UserPlaylistsResult(), x.json()); });
     };
     return PlaylistService;
 }());

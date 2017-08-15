@@ -19,6 +19,7 @@ namespace PlayCat.Helpers
             return new ModelValidationResult()
             {
                 Ok = false,
+                //TODO: replace empty
                 Errors = errors.ToDictionary(x => x.MemberNames.FirstOrDefault() ?? string.Empty, y => y.ErrorMessage),
             };
         }

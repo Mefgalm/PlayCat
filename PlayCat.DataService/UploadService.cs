@@ -44,7 +44,6 @@ namespace PlayCat.DataService
 
                 var responseBuilder =
                     ResponseBuilder<GetInfoResult>
-                    .Create()
                     .Fail();
 
                 //urlInfo can't be null
@@ -52,7 +51,7 @@ namespace PlayCat.DataService
                     throw new ArgumentNullException(nameof(urlInfo));
 
                 if (urlInfo.ContentLength > _videoRestrictsOptions.Value.AllowedSize)
-                    return ResponseBuilder<GetInfoResult>.Create().Fail().SetInfoAndBuild("Maximim video size is 25 MB");                
+                    return ResponseBuilder<GetInfoResult>.Fail().SetInfoAndBuild("Maximim video size is 25 MB");                
 
                 if (_dbContext.Audios.Any(x => x.UniqueIdentifier == urlInfo.VideoId))
                     return responseBuilder.SetInfoAndBuild("Video already uploaded");
@@ -74,7 +73,6 @@ namespace PlayCat.DataService
 
                 var responseBuilder =
                     ResponseBuilder<BaseResult>
-                           .Create()
                            .Fail();
 
                 if (user.IsUploadingAudio)

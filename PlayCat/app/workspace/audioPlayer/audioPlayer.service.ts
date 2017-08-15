@@ -9,20 +9,23 @@ export class AudioPlayerService {
     private readonly _take: number = 50;
     private _skip: number;
 
-    private _playlist: Playlist;
+    private _playlists: Playlist[];
+
+    private _currentPlaylist: Playlist;
+
     private _currentAudio: Audiotrack;
     private _currentIndex: number;
 
     private _audio: any;
 
-    private readonly onPlaylistLoaded: EventEmitter<Playlist>;
+    private readonly onPlayerLoaded: EventEmitter<Playlist[]>;
     private readonly onDurationChange: EventEmitter<number>;
     private readonly onTimeUpdate: EventEmitter<number>;
     private readonly onAudioChanged: EventEmitter<Audiotrack>;
     private readonly onActionChanged: EventEmitter<boolean>;
     private readonly onIsLoopChanged: EventEmitter<boolean>;
+    private readonly onPlaylistChanged: EventEmitter<Playlist>;
 
-    private _audioCount: number;
     private _isPlaying: boolean;
 
     private _currentTime: number;
@@ -37,12 +40,13 @@ export class AudioPlayerService {
 
         this._audio.volume = 0.5;
 
-        this.onPlaylistLoaded = new EventEmitter();
+        this.onPlayerLoaded = new EventEmitter();
         this.onDurationChange = new EventEmitter();
         this.onTimeUpdate = new EventEmitter();
         this.onAudioChanged = new EventEmitter();
         this.onActionChanged = new EventEmitter();
         this.onIsLoopChanged = new EventEmitter();
+        this.onPlaylistChanged = new EventEmitter();
 
         this._audio.onended = () => {
             this.next();
@@ -61,14 +65,15 @@ export class AudioPlayerService {
         this._audio.oncanplay = () => this.onAudioChanged.emit(this._currentAudio);
 
         this._playlistService
-            .getPlaylist(null, this._skip, this._take)
-            .then(playlistResult => {
-                if (playlistResult.ok) {
-                    this._playlist = playlistResult.playlist;
-                    this._audioCount = playlistResult.playlist.audios.length;
+            .userPlaylists(null, this._skip, this._take)
+            .then(userPlaylistsResult => {
+                if (userPlaylistsResult.ok) {
+                    this._playlists = userPlaylistsResult.playlists;
+                    
+                    this.selectPlaylist(null);
                     this.selectAudio(this._currentIndex);
 
-                    this.onPlaylistLoaded.emit(this._playlist);
+                    this.onPlayerLoaded.emit(this._playlists);
                 }
             });
     }
@@ -96,14 +101,18 @@ export class AudioPlayerService {
         return this.onAudioChanged;
     }
 
+    getOnPlaylistChanged(): EventEmitter<Playlist> {
+        return this.onPlaylistChanged;
+    }
+
     //playlist loaded
-    getOnPlaylistLoadedEmitter(): EventEmitter<Playlist> {
-        return this.onPlaylistLoaded;
+    getOnPlayerLoadedEmitter(): EventEmitter<Playlist[]> {
+        return this.onPlayerLoaded;
     }
 
     //playlist info
     getPlaylist(): Playlist {
-        return this._playlist;
+        return this._currentPlaylist;
     }
 
     getCurrentAudio(): Audiotrack {
@@ -120,6 +129,14 @@ export class AudioPlayerService {
 
     getDuration(): number {
         return this._duration;
+    }
+
+    getPlaylists(): Playlist[] {
+        return this._playlists;
+    }
+
+    getCurrentPlaylist(): Playlist {
+        return this._currentPlaylist;
     }
 
     //controls
@@ -181,18 +198,26 @@ export class AudioPlayerService {
             this.play();
     }
 
+    selectPlaylist(id: string) {
+        if (id) {
+            this._currentPlaylist = this._playlists.find(x => x.id === id);
+        } else {
+            this._currentPlaylist = this._playlists.find(x => x.isGeneral);
+        }
+        this.onPlaylistChanged.emit(this._currentPlaylist);
+    }
 
     private selectById(id: string) {
-        let audio = this._playlist.audios.find(a => a.id === id);
+        let audio = this._currentPlaylist.audios.find(a => a.id === id);
         if (audio) {
-            this.selectAudio(this._playlist.audios.indexOf(audio));
+            this.selectAudio(this._currentPlaylist.audios.indexOf(audio));
         }
     }
 
     private selectAudio(index: number) {
-        if (this._playlist && this._playlist.audios[index]) {
+        if (this._currentPlaylist && this._currentPlaylist.audios[index]) {
             this._currentIndex = index;
-            this._currentAudio = this._playlist.audios[index];
+            this._currentAudio = this._currentPlaylist.audios[index];
 
             this._audio.src = this._currentAudio.accessUrl;
         }
