@@ -8,7 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = require("@angular/common");
 var core_1 = require("@angular/core");
-var forms_1 = require("@angular/forms");
 var menu_component_1 = require("./menu.component");
 var router_1 = require("@angular/router");
 var audioPlayer_component_1 = require("../audioPlayer/audioPlayer.component");
@@ -26,7 +25,6 @@ MenuModule = __decorate([
             router_1.RouterModule,
             common_1.CommonModule,
             primeng_1.DialogModule,
-            forms_1.FormsModule,
         ],
         declarations: [
             menu_component_1.MenuComponent,
