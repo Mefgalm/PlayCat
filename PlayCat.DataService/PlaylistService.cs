@@ -26,7 +26,7 @@ namespace PlayCat.DataService
                 DataModel.Playlist playlist = _dbContext.Playlists.FirstOrDefault(x => x.Id == request.PlaylistId && x.OwnerId == userId);
 
                 if (playlist == null)
-                    return ResponseBuilder<PlaylistResult>.Create().Fail().SetInfoAndBuild(PlaylistNotFound);
+                    return ResponseBuilder<PlaylistResult>.Fail().SetInfoAndBuild(PlaylistNotFound);
 
                 playlist.Title = request.Title;
 
@@ -55,10 +55,10 @@ namespace PlayCat.DataService
                     .FirstOrDefault();
 
                 if (playlistWithAudios == null)
-                    return ResponseBuilder<BaseResult>.Create().Fail().SetInfoAndBuild(PlaylistNotFound);
+                    return ResponseBuilder<BaseResult>.Fail().SetInfoAndBuild(PlaylistNotFound);
 
                 if(playlistWithAudios.Playlist.IsGeneral)
-                    return ResponseBuilder<BaseResult>.Create().Fail().SetInfoAndBuild("General playlist cannot be removed");
+                    return ResponseBuilder<BaseResult>.Fail().SetInfoAndBuild("General playlist cannot be removed");
 
                 _dbContext.Playlists.Remove(playlistWithAudios.Playlist);
                 _dbContext.AudioPlaylists.RemoveRange(playlistWithAudios.AudioPlaylists);
@@ -68,7 +68,7 @@ namespace PlayCat.DataService
             });
         }
 
-        public PlaylistResult CreatePlaylist(Guid userId, PlaylistRequest request)
+        public PlaylistResult CreatePlaylist(Guid userId, CreatePlaylistRequest request)
         {
             return RequestTemplateCheckModel(request, () =>
             {
@@ -91,26 +91,7 @@ namespace PlayCat.DataService
             });
         }
 
-        public UserPlaylistsResult GetUserPlaylists(Guid userId)
-        {
-            return RequestTemplate(() =>
-            {
-                IEnumerable<ApiModel.Playlist> apiPlaylists =
-                    (from p in _dbContext.Playlists
-                     where p.OwnerId == userId
-                     orderby p.Title
-                     select p)
-                    .ToList()
-                    .Select(x => PlaylistMapper.ToApi.FromData(x));
-
-                return ResponseBuilder<UserPlaylistsResult>.SuccessBuild(new UserPlaylistsResult()
-                {
-                    Playlists = apiPlaylists,
-                });
-            });
-        }
-
-        public PlaylistResult GetPlaylist(Guid userId, Guid? playlistId, int skip, int take)
+        public UserPlaylistsResult GetUserPlaylists(Guid userId, Guid? playlistId, int skip, int take)
         {
             return RequestTemplate(() =>
             {
@@ -135,32 +116,47 @@ namespace PlayCat.DataService
                     .Skip(skip)
                     .Take(take);
 
-                //join playlist to with audios
-                var playlistWithAudiosQry =
-                    from p in _dbContext.Playlists
-                    join paq in playlistAudiosQry on p.Id equals paq.PlaylistId into _paq
-                    select new PlaylistDTO()
-                    {
-                        Id = p.Id,
-                        IsGeneral = p.IsGeneral,
-                        Owner = p.Owner,
-                        Title = p.Title,
-                        Audios = _paq.Select(x => x.AudioDTO),
-                    };
-
-                //select playlist and audios base on playlistId or take General playlist
-                playlistWithAudiosQry = playlistId.HasValue
-                        ? playlistWithAudiosQry.Where(x => x.Id == playlistId.Value)
-                        : playlistWithAudiosQry.Where(x => x.Owner.Id == userId && x.IsGeneral);
-
-                PlaylistDTO playlistDTO = playlistWithAudiosQry.FirstOrDefault();
-
-                if (playlistDTO == null)
-                    return ResponseBuilder<PlaylistResult>.Create().Fail().SetInfoAndBuild("Playlist not found");
-
-                return ResponseBuilder<PlaylistResult>.SuccessBuild(new PlaylistResult()
+                IEnumerable<ApiModel.Playlist> apiPlaylists = null;
+                if (playlistId.HasValue)
                 {
-                    Playlist = PlaylistMapper.ToApi.FromDTO(playlistDTO),
+                    //join playlist to with audios
+                     apiPlaylists =
+                        (from p in _dbContext.Playlists
+                         join paq in playlistAudiosQry.Where(x => x.PlaylistId == playlistId) on p.Id equals paq.PlaylistId into _paq
+                         where p.OwnerId == userId
+                         select new PlaylistDTO()
+                         {
+                             Id = p.Id,
+                             IsGeneral = p.IsGeneral,
+                             Owner = p.Owner,
+                             Title = p.Title,
+                             Audios = _paq.Select(x => x.AudioDTO),
+                         })
+                        .ToList()
+                        .Select(x => PlaylistMapper.ToApi.FromDTO(x));
+                } else
+                {
+                    //if no playlist id then select from general
+                    apiPlaylists = 
+                        (from p in _dbContext.Playlists
+                         join paq in playlistAudiosQry on new { playlistId = p.Id, isGeneral = p.IsGeneral } 
+                                                   equals new { playlistId = paq.PlaylistId, isGeneral = true } into _paq
+                         where p.OwnerId == userId
+                         select new PlaylistDTO()
+                         {
+                             Id = p.Id,
+                             IsGeneral = p.IsGeneral,
+                             Owner = p.Owner,
+                             Title = p.Title,
+                             Audios = _paq.Select(x => x.AudioDTO),
+                         })
+                        .ToList()
+                        .Select(x => PlaylistMapper.ToApi.FromDTO(x));
+                }
+
+                return ResponseBuilder<UserPlaylistsResult>.SuccessBuild(new UserPlaylistsResult()
+                {
+                    Playlists = apiPlaylists,
                 });
             });
         }

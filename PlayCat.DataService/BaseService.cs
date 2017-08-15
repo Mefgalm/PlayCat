@@ -25,7 +25,6 @@ namespace PlayCat.DataService
             where T : BaseResult, new()
         {
             return ResponseBuilder<T>
-                    .Create()
                     .Fail()
                     .SetCode(ResponseCode.UnexpectedServerError)
                     .SetInfoAndBuild(message);
@@ -59,10 +58,9 @@ namespace PlayCat.DataService
                 ModelValidationResult modelValidationResult = ModelValidator.Validate(request);
                 if (!modelValidationResult.Ok)
                     return ResponseBuilder<TReturn>
-                       .Create()
+                       .Fail()
                        .IsShowInfo(false)
                        .SetErrors(modelValidationResult.Errors)
-                       .Fail()
                        .SetInfo("Model is not valid")
                        .Build();
 

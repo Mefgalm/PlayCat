@@ -22,12 +22,13 @@ var AudioPlayerService = (function () {
         this._audio = new Audio();
         this._isPlaying = false;
         this._audio.volume = 0.5;
-        this.onPlaylistLoaded = new core_2.EventEmitter();
+        this.onPlayerLoaded = new core_2.EventEmitter();
         this.onDurationChange = new core_2.EventEmitter();
         this.onTimeUpdate = new core_2.EventEmitter();
         this.onAudioChanged = new core_2.EventEmitter();
         this.onActionChanged = new core_2.EventEmitter();
         this.onIsLoopChanged = new core_2.EventEmitter();
+        this.onPlaylistChanged = new core_2.EventEmitter();
         this._audio.onended = function () {
             _this.next();
             _this.onAudioChanged.emit(_this._currentAudio);
@@ -42,13 +43,13 @@ var AudioPlayerService = (function () {
         };
         this._audio.oncanplay = function () { return _this.onAudioChanged.emit(_this._currentAudio); };
         this._playlistService
-            .getPlaylist(null, this._skip, this._take)
-            .then(function (playlistResult) {
-            if (playlistResult.ok) {
-                _this._playlist = playlistResult.playlist;
-                _this._audioCount = playlistResult.playlist.audios.length;
+            .userPlaylists(null, this._skip, this._take)
+            .then(function (userPlaylistsResult) {
+            if (userPlaylistsResult.ok) {
+                _this._playlists = userPlaylistsResult.playlists;
+                _this.selectPlaylist(null);
                 _this.selectAudio(_this._currentIndex);
-                _this.onPlaylistLoaded.emit(_this._playlist);
+                _this.onPlayerLoaded.emit(_this._playlists);
             }
         });
     }
@@ -71,13 +72,16 @@ var AudioPlayerService = (function () {
     AudioPlayerService.prototype.getOnAudioChanged = function () {
         return this.onAudioChanged;
     };
+    AudioPlayerService.prototype.getOnPlaylistChanged = function () {
+        return this.onPlaylistChanged;
+    };
     //playlist loaded
-    AudioPlayerService.prototype.getOnPlaylistLoadedEmitter = function () {
-        return this.onPlaylistLoaded;
+    AudioPlayerService.prototype.getOnPlayerLoadedEmitter = function () {
+        return this.onPlayerLoaded;
     };
     //playlist info
     AudioPlayerService.prototype.getPlaylist = function () {
-        return this._playlist;
+        return this._currentPlaylist;
     };
     AudioPlayerService.prototype.getCurrentAudio = function () {
         return this._currentAudio;
@@ -90,6 +94,12 @@ var AudioPlayerService = (function () {
     };
     AudioPlayerService.prototype.getDuration = function () {
         return this._duration;
+    };
+    AudioPlayerService.prototype.getPlaylists = function () {
+        return this._playlists;
+    };
+    AudioPlayerService.prototype.getCurrentPlaylist = function () {
+        return this._currentPlaylist;
     };
     //controls
     AudioPlayerService.prototype.play = function () {
@@ -136,16 +146,25 @@ var AudioPlayerService = (function () {
         if (this._isPlaying)
             this.play();
     };
+    AudioPlayerService.prototype.selectPlaylist = function (id) {
+        if (id) {
+            this._currentPlaylist = this._playlists.find(function (x) { return x.id === id; });
+        }
+        else {
+            this._currentPlaylist = this._playlists.find(function (x) { return x.isGeneral; });
+        }
+        this.onPlaylistChanged.emit(this._currentPlaylist);
+    };
     AudioPlayerService.prototype.selectById = function (id) {
-        var audio = this._playlist.audios.find(function (a) { return a.id === id; });
+        var audio = this._currentPlaylist.audios.find(function (a) { return a.id === id; });
         if (audio) {
-            this.selectAudio(this._playlist.audios.indexOf(audio));
+            this.selectAudio(this._currentPlaylist.audios.indexOf(audio));
         }
     };
     AudioPlayerService.prototype.selectAudio = function (index) {
-        if (this._playlist && this._playlist.audios[index]) {
+        if (this._currentPlaylist && this._currentPlaylist.audios[index]) {
             this._currentIndex = index;
-            this._currentAudio = this._playlist.audios[index];
+            this._currentAudio = this._currentPlaylist.audios[index];
             this._audio.src = this._currentAudio.accessUrl;
         }
     };

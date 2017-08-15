@@ -6,10 +6,9 @@ namespace PlayCat.DataService
 {
     public interface IPlaylistService : ISetDbContext
     {
-        PlaylistResult CreatePlaylist(Guid userId, PlaylistRequest request);
+        PlaylistResult CreatePlaylist(Guid userId, CreatePlaylistRequest request);
         BaseResult DeletePlaylist(Guid userId, Guid playlistId);
-        PlaylistResult GetPlaylist(Guid userId, Guid? playlistId, int skip, int take);
-        UserPlaylistsResult GetUserPlaylists(Guid userId);
+        UserPlaylistsResult GetUserPlaylists(Guid userId, Guid? playlistId, int skip, int take);
         PlaylistResult UpdatePlaylist(Guid userId, UpdatePlaylistRequest request);
     }
 }

@@ -8,7 +8,7 @@ namespace PlayCat.Music
 {
     public class FFmpegExtractAudio : IExtractAudio
     {
-        //ffmpeg -i video.mp4 -f mp3 -ab 192000 -vn music.mp3
+        //Exampe: ffmpeg -i video.mp4 -f mp3 -ab 192000 -vn music.mp3
 
         //The -i option in the above command is simple: it is the path to the input file. 
         //The second option -f mp3 tells ffmpeg that the ouput is in mp3 format. 
@@ -58,7 +58,6 @@ namespace PlayCat.Music
 
             //delete video
             File.Delete(videofilePath);
-
 
             //return info about audio file
             return new PCFile()

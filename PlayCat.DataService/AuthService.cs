@@ -27,7 +27,6 @@ namespace PlayCat.DataService
             {
                 var responseBuilder =
                     ResponseBuilder<SignUpInResult>
-                    .Create()
                     .Fail();
 
                 if (!_inviteService.IsInviteValid(request.VerificationCode))
@@ -89,7 +88,7 @@ namespace PlayCat.DataService
                     .FirstOrDefault(x => x.Email == request.Email);
 
                 if (dataUser == null || !Crypto.VerifyHashedPassword(dataUser.PasswordHash, request.Password + dataUser.PasswordSalt))
-                    return ResponseBuilder<SignUpInResult>.Create().Fail().SetInfoAndBuild("Email or password is incorrect");
+                    return ResponseBuilder<SignUpInResult>.Fail().SetInfoAndBuild("Email or password is incorrect");
 
                 UpdateAuthToken(dataUser.AuthToken);
 
@@ -107,10 +106,9 @@ namespace PlayCat.DataService
         {
             var responseBuilder =
                 ResponseBuilder<CheckTokenResult>
-                .Create()
+                .Fail()
                 .IsShowInfo(false)
-                .SetCode(ResponseCode.InvalidToken)
-                .Fail();
+                .SetCode(ResponseCode.InvalidToken);
 
             if (string.IsNullOrEmpty(token))
                 return responseBuilder.SetInfoAndBuild("Token not found in headers");

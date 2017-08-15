@@ -69,7 +69,7 @@ namespace PlayCat.DataService
                     .FirstOrDefault();
 
                 if (playlistInfo == null)
-                    return ResponseBuilder<BaseResult>.Create().Fail().SetInfoAndBuild("Playlist not found");
+                    return ResponseBuilder<BaseResult>.Fail().SetInfoAndBuild("Playlist not found");
 
                 if (playlistInfo.AddedAudioPlaylist != null)
                 {
@@ -98,10 +98,10 @@ namespace PlayCat.DataService
                     .FirstOrDefault();
 
                 if (playlistInfo == null)
-                    return ResponseBuilder<BaseResult>.Create().Fail().SetInfoAndBuild("Playlist not found");
+                    return ResponseBuilder<BaseResult>.Fail().SetInfoAndBuild("Playlist not found");
 
                 if (playlistInfo.IsAlreadyAdded)
-                    return ResponseBuilder<BaseResult>.Create().Fail().SetInfoAndBuild("Audio is already added");
+                    return ResponseBuilder<BaseResult>.Fail().SetInfoAndBuild("Audio is already added");
 
                 var audioPlaylist = new DataModel.AudioPlaylist()
                 {

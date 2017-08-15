@@ -40,7 +40,7 @@ namespace PlayCat.Controllers
         }
 
         [HttpPost("create")]
-        public PlaylistResult CreatePlaylist([FromBody] PlaylistRequest request)
+        public PlaylistResult CreatePlaylist([FromBody] CreatePlaylistRequest request)
         {
             CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
             if (!checkTokenResult.Ok)
@@ -50,23 +50,13 @@ namespace PlayCat.Controllers
         }
 
         [HttpGet("userPlaylists")]
-        public UserPlaylistsResult GetUserPlaylists()
+        public UserPlaylistsResult GetUserPlaylists(Guid? playlistId, int skip = 0, int take = 50)
         {
             CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
             if (!checkTokenResult.Ok)
                 return new UserPlaylistsResult(checkTokenResult);
 
-            return _playlistService.GetUserPlaylists(checkTokenResult.AuthToken.UserId);
-        }
-
-        [HttpGet("playlist")]
-        public PlaylistResult GetPlaylist(Guid? playlist, int skip = 0, int take = 50)
-        {
-            CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
-            if (!checkTokenResult.Ok)
-                return new PlaylistResult(checkTokenResult);
-
-            return _playlistService.GetPlaylist(checkTokenResult.AuthToken.UserId, playlist, skip, take);
+            return _playlistService.GetUserPlaylists(checkTokenResult.AuthToken.UserId, playlistId, skip, take);
         }
     }
 }

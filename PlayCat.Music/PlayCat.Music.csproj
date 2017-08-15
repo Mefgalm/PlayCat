@@ -97,7 +97,6 @@
     <Compile Include="IUrlInfo.cs" />
     <Compile Include="StorageType.cs" />
     <Compile Include="UrlInfo.cs" />
-    <Compile Include="VideoConverter.cs" />
     <Compile Include="VideoRestrictsOptions.cs" />
     <Compile Include="YoutubeVideoInfo.cs" />
     <Compile Include="FFmpegExtractAudio.cs" />

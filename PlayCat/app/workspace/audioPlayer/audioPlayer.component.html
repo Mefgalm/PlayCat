@@ -15,13 +15,6 @@
             Your playlist is empty
         </div>
         <div *ngIf="audio" class="audio-controls">
-            <!--<p-overlayPanel #op appendTo="body">
-                Content
-            </p-overlayPanel>
-
-            <button type="text" pButton label="Basic" (click)="op.toggle($event)"></button>-->
-
-
             <div>
                 <button *ngIf="isPlaying" (click)="pause()">Pause</button>
                 <button *ngIf="!isPlaying" (click)="play()">Play</button>
@@ -64,17 +57,25 @@
                       [showHeader]="false"
                       [positionLeft]="0"
                       [positionTop]="80">
-                <div class="audios-panel">
+                <div class="audios-panel" style="justify-content: space-between">
                     <table border="1" height="100%">
                         <tr>
                             <th>Play</th>
                             <th>Artist</th>
                             <th>Song</th>
                         </tr>
-                        <tr *ngFor="let audio of playlist.audios">
+                        <tr *ngFor="let audio of currentPlaylist.audios">
                             <td><button (click)="playById(audio.id)">Play</button></td>
                             <td>{{audio.artist}}</td>
                             <td>{{audio.song}}</td>
+                        </tr>
+                    </table>
+                    <table border="1" height="100%">
+                        <tr>
+                            <th>Title</th>
+                        </tr>
+                        <tr *ngFor="let currentPlaylist of playlists">
+                            <td>{{currentPlaylist.Title}}</td>
                         </tr>
                     </table>
                 </div>

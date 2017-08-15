@@ -19,18 +19,19 @@ var AudioPlayerComponent = (function () {
         this.display = false;
         this.isPlaying = this._audioPlayerService.isPlaying();
         this.volume = this._audioPlayerService.getVolume() * 100;
-        this.playlist = this._audioPlayerService.getPlaylist();
+        this.playlists = this._audioPlayerService.getPlaylists();
+        this.currentPlaylist = this._audioPlayerService.getCurrentPlaylist();
         this.audio = this._audioPlayerService.getCurrentAudio();
         this.currentTime = this._audioPlayerService.getCurrentTime();
         this.duration = this._audioPlayerService.getDuration();
         this.isLoop = this._audioPlayerService.isLoop();
-        if (this.playlist) {
+        if (this.playlists) {
             this.isPlaylistLoaded = true;
         }
         else {
-            this._playlistLoadedSubscription = this._audioPlayerService.getOnPlaylistLoadedEmitter()
-                .subscribe(function (playlist) {
-                _this.playlist = playlist;
+            this._playlistLoadedSubscription = this._audioPlayerService.getOnPlayerLoadedEmitter()
+                .subscribe(function (playlists) {
+                _this.playlists = playlists;
                 _this.isPlaylistLoaded = true;
             });
         }
@@ -44,6 +45,8 @@ var AudioPlayerComponent = (function () {
             .subscribe(function (isPlaingAction) { return _this.isPlaying = isPlaingAction; });
         this._isLoopChangedSubscription = this._audioPlayerService.getOnIsLoopEmitter()
             .subscribe(function (isLoop) { return _this.isLoop = isLoop; });
+        this._playlistChangedSubscription = this._audioPlayerService.getOnPlaylistChanged()
+            .subscribe(function (currentPlaylist) { return _this.currentPlaylist = currentPlaylist; });
     }
     AudioPlayerComponent.prototype.showDialog = function () {
         this.display = true;
@@ -76,6 +79,9 @@ var AudioPlayerComponent = (function () {
     AudioPlayerComponent.prototype.currentTimeChanged = function (value) {
         this.currentTime = value;
         this._audioPlayerService.setCurrentTime(this.currentTime);
+    };
+    AudioPlayerComponent.prototype.selectPlaylist = function (id) {
+        this._audioPlayerService.selectPlaylist(id);
     };
     AudioPlayerComponent.prototype.onNgDestroy = function () {
         this._playlistLoadedSubscription.unsubscribe();
