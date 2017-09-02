@@ -12,6 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var core_2 = require("@angular/core");
 var playlist_service_1 = require("./playlist.service");
+var createPlaylistRequest_1 = require("../../data/request/createPlaylistRequest");
+var updatePlaylistRequest_1 = require("../../data/request/updatePlaylistRequest");
 var AudioPlayerService = (function () {
     function AudioPlayerService(_playlistService) {
         var _this = this;
@@ -49,7 +51,7 @@ var AudioPlayerService = (function () {
                 _this._playlists = userPlaylistsResult.playlists;
                 _this.selectPlaylist(null);
                 _this.selectAudio(_this._currentIndex);
-                _this.onPlayerLoaded.emit(_this._playlists);
+                _this.emitPlaylistLoaded();
             }
         });
     }
@@ -96,7 +98,7 @@ var AudioPlayerService = (function () {
         return this._duration;
     };
     AudioPlayerService.prototype.getPlaylists = function () {
-        return this._playlists;
+        return this._playlists.slice();
     };
     AudioPlayerService.prototype.getCurrentPlaylist = function () {
         return this._currentPlaylist;
@@ -155,11 +157,44 @@ var AudioPlayerService = (function () {
         }
         this.onPlaylistChanged.emit(this._currentPlaylist);
     };
+    AudioPlayerService.prototype.createPlaylist = function (title) {
+        var _this = this;
+        var createPlaylistRequest = new createPlaylistRequest_1.CreatePlaylistRequest(title);
+        this._playlistService
+            .createPlaylist(createPlaylistRequest)
+            .then(function (playlistResult) {
+            if (playlistResult.ok) {
+                _this._playlists.push(playlistResult.playlist);
+                _this.emitPlaylistLoaded();
+            }
+        });
+    };
+    AudioPlayerService.prototype.updatePlaylist = function (id, title) {
+        var _this = this;
+        var updatePlaylistRequest = new updatePlaylistRequest_1.UpdatePlaylistRequest(id, title);
+        this._playlistService
+            .updatePlaylist(updatePlaylistRequest)
+            .then(function (playlistResult) {
+            if (playlistResult.ok) {
+                var index = _this._playlists.findIndex(function (x) { return x.id == id; });
+                _this._playlists[index] = playlistResult.playlist;
+                _this.emitPlaylistLoaded();
+            }
+        });
+    };
     AudioPlayerService.prototype.selectById = function (id) {
         var audio = this._currentPlaylist.audios.find(function (a) { return a.id === id; });
         if (audio) {
             this.selectAudio(this._currentPlaylist.audios.indexOf(audio));
         }
+    };
+    AudioPlayerService.prototype.emitPlaylistLoaded = function () {
+        this._playlists = this._playlists.sort(function (a, b) {
+            if (a.isGeneral && !b.isGeneral)
+                return -1;
+            return (a.title > b.title) ? 1 : -1;
+        });
+        this.onPlayerLoaded.emit(this._playlists.slice());
     };
     AudioPlayerService.prototype.selectAudio = function (index) {
         if (this._currentPlaylist && this._currentPlaylist.audios[index]) {

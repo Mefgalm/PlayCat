@@ -3,21 +3,16 @@ import { NgModule } from '@angular/core';
 import { MenuComponent } from './menu.component';
 import { RouterModule } from '@angular/router';
 import { AudioPlayerComponent } from '../audioPlayer/audioPlayer.component';
-import { SecondToTimePipe } from '../../shared/pipes/secondToTime.pipe';
-import { DialogModule } from 'primeng/primeng';
-import { ProgressBarComponent } from '../audioPlayer/progressBar.component';
+import { AudioPlayerModule } from '../audioPlayer/audioPlayer.module';
 
 @NgModule({
     imports: [
         RouterModule,
         CommonModule,
-        DialogModule,
+        AudioPlayerModule,
     ],
     declarations: [
         MenuComponent,
-        AudioPlayerComponent,
-        SecondToTimePipe,
-        ProgressBarComponent,
     ],
     exports: [
         MenuComponent,

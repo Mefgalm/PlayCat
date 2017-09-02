@@ -6,30 +6,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = require("@angular/common");
 var core_1 = require("@angular/core");
-var menu_component_1 = require("./menu.component");
-var router_1 = require("@angular/router");
-var audioPlayer_module_1 = require("../audioPlayer/audioPlayer.module");
-var MenuModule = (function () {
-    function MenuModule() {
+var progressBar_component_1 = require("./progressBar.component");
+var ProgressBarModule = (function () {
+    function ProgressBarModule() {
     }
-    return MenuModule;
+    return ProgressBarModule;
 }());
-MenuModule = __decorate([
+ProgressBarModule = __decorate([
     core_1.NgModule({
-        imports: [
-            router_1.RouterModule,
-            common_1.CommonModule,
-            audioPlayer_module_1.AudioPlayerModule,
-        ],
         declarations: [
-            menu_component_1.MenuComponent,
+            progressBar_component_1.ProgressBarComponent,
         ],
         exports: [
-            menu_component_1.MenuComponent,
+            progressBar_component_1.ProgressBarComponent,
         ],
     })
-], MenuModule);
-exports.MenuModule = MenuModule;
-//# sourceMappingURL=menu.module.js.map
+], ProgressBarModule);
+exports.ProgressBarModule = ProgressBarModule;
+//# sourceMappingURL=progressBar.module.js.map

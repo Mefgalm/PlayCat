@@ -3,6 +3,8 @@ import { EventEmitter } from '@angular/core';
 import { Playlist } from '../../data/playlist';
 import { Audiotrack } from '../../data/audio';
 import { PlaylistService } from './playlist.service';
+import { CreatePlaylistRequest } from '../../data/request/createPlaylistRequest';
+import { UpdatePlaylistRequest } from '../../data/request/updatePlaylistRequest';
 
 @Injectable()
 export class AudioPlayerService {
@@ -18,12 +20,12 @@ export class AudioPlayerService {
 
     private _audio: any;
 
-    private readonly onPlayerLoaded: EventEmitter<Playlist[]>;
-    private readonly onDurationChange: EventEmitter<number>;
-    private readonly onTimeUpdate: EventEmitter<number>;
-    private readonly onAudioChanged: EventEmitter<Audiotrack>;
-    private readonly onActionChanged: EventEmitter<boolean>;
-    private readonly onIsLoopChanged: EventEmitter<boolean>;
+    private readonly onPlayerLoaded:    EventEmitter<Playlist[]>;
+    private readonly onDurationChange:  EventEmitter<number>;
+    private readonly onTimeUpdate:      EventEmitter<number>;
+    private readonly onAudioChanged:    EventEmitter<Audiotrack>;
+    private readonly onActionChanged:   EventEmitter<boolean>;
+    private readonly onIsLoopChanged:   EventEmitter<boolean>;
     private readonly onPlaylistChanged: EventEmitter<Playlist>;
 
     private _isPlaying: boolean;
@@ -40,13 +42,13 @@ export class AudioPlayerService {
 
         this._audio.volume = 0.5;
 
-        this.onPlayerLoaded = new EventEmitter();
-        this.onDurationChange = new EventEmitter();
-        this.onTimeUpdate = new EventEmitter();
-        this.onAudioChanged = new EventEmitter();
-        this.onActionChanged = new EventEmitter();
-        this.onIsLoopChanged = new EventEmitter();
-        this.onPlaylistChanged = new EventEmitter();
+        this.onPlayerLoaded =    new EventEmitter<Playlist[]>();
+        this.onDurationChange =  new EventEmitter<number>();
+        this.onTimeUpdate =      new EventEmitter<number>();
+        this.onAudioChanged =    new EventEmitter<Audiotrack>();
+        this.onActionChanged =   new EventEmitter<boolean>();
+        this.onIsLoopChanged =   new EventEmitter<boolean>();
+        this.onPlaylistChanged = new EventEmitter<Playlist>();
 
         this._audio.onended = () => {
             this.next();
@@ -73,7 +75,7 @@ export class AudioPlayerService {
                     this.selectPlaylist(null);
                     this.selectAudio(this._currentIndex);
 
-                    this.onPlayerLoaded.emit(this._playlists);
+                    this.emitPlaylistLoaded();
                 }
             });
     }
@@ -132,7 +134,7 @@ export class AudioPlayerService {
     }
 
     getPlaylists(): Playlist[] {
-        return this._playlists;
+        return this._playlists.slice();
     }
 
     getCurrentPlaylist(): Playlist {
@@ -207,11 +209,49 @@ export class AudioPlayerService {
         this.onPlaylistChanged.emit(this._currentPlaylist);
     }
 
+    createPlaylist(title: string) {
+        let createPlaylistRequest = new CreatePlaylistRequest(title);
+
+        this._playlistService
+            .createPlaylist(createPlaylistRequest)
+            .then(playlistResult => {
+                if (playlistResult.ok) {
+                    this._playlists.push(playlistResult.playlist);          
+                    this.emitPlaylistLoaded();
+                }
+            });
+    }
+
+    updatePlaylist(id: string, title: string) {
+        let updatePlaylistRequest = new UpdatePlaylistRequest(id, title);
+
+        this._playlistService
+            .updatePlaylist(updatePlaylistRequest)
+            .then(playlistResult => {
+                if (playlistResult.ok) {
+                    let index = this._playlists.findIndex(x => x.id == id);
+                    this._playlists[index] = playlistResult.playlist;
+
+                    this.emitPlaylistLoaded();
+                }
+            });
+    }
+
     private selectById(id: string) {
         let audio = this._currentPlaylist.audios.find(a => a.id === id);
         if (audio) {
             this.selectAudio(this._currentPlaylist.audios.indexOf(audio));
         }
+    }
+
+    private emitPlaylistLoaded() {
+        this._playlists = this._playlists.sort((a, b) => {
+            if (a.isGeneral && !b.isGeneral)
+                return -1;
+
+            return (a.title > b.title) ? 1 : -1;
+        });
+        this.onPlayerLoaded.emit(this._playlists.slice());
     }
 
     private selectAudio(index: number) {

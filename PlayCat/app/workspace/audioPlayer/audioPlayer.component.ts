@@ -36,6 +36,8 @@ export class AudioPlayerComponent {
 
     public isLoop: boolean;
 
+    public playListName: string;
+
     constructor(private _audioPlayerService: AudioPlayerService) {
         this.isPlaylistLoaded = false;
         this.display = false;
@@ -43,7 +45,7 @@ export class AudioPlayerComponent {
         this.isPlaying = this._audioPlayerService.isPlaying();
 
         this.volume = this._audioPlayerService.getVolume() * 100;
-        this.playlists = this._audioPlayerService.getPlaylists();
+        //this.playlists = this._audioPlayerService.getPlaylists();
         this.currentPlaylist = this._audioPlayerService.getCurrentPlaylist();
         this.audio = this._audioPlayerService.getCurrentAudio();
         this.currentTime = this._audioPlayerService.getCurrentTime();
@@ -123,6 +125,14 @@ export class AudioPlayerComponent {
 
     selectPlaylist(id: string) {
         this._audioPlayerService.selectPlaylist(id);
+    }
+
+    createPlaylist(playlist: Playlist) {
+        this._audioPlayerService.createPlaylist(playlist.title);
+    }
+
+    updatePlaylist(playlist: Playlist) {
+        this._audioPlayerService.updatePlaylist(playlist.id, playlist.title);
     }
 
     onNgDestroy() {

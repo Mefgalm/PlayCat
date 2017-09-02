@@ -10,7 +10,6 @@ var core_1 = require("@angular/core");
 var cabinet_module_1 = require("./cabinet/cabinet.module");
 var music_module_1 = require("./music/music.module");
 var audioPlayer_service_1 = require("./audioPlayer/audioPlayer.service");
-var playlist_service_1 = require("./audioPlayer/playlist.service");
 var WorkspaceModule = (function () {
     function WorkspaceModule() {
     }
@@ -24,7 +23,6 @@ WorkspaceModule = __decorate([
         ],
         providers: [
             audioPlayer_service_1.AudioPlayerService,
-            playlist_service_1.PlaylistService
         ]
     })
 ], WorkspaceModule);

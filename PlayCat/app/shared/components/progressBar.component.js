@@ -94,8 +94,8 @@ __decorate([
 ProgressBarComponent = __decorate([
     core_1.Component({
         selector: 'progressBar',
-        templateUrl: './app/workspace/audioPlayer/progressBar.component.html',
-        styleUrls: ['./app/workspace/audioPlayer/progressBar.component.css'],
+        templateUrl: './app/shared/components/progressBar.component.html',
+        styleUrls: ['./app/shared/components/progressBar.component.css'],
     }),
     __metadata("design:paramtypes", [])
 ], ProgressBarComponent);

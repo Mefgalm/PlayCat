@@ -2,8 +2,8 @@
 
 @Component({
     selector: 'progressBar',
-    templateUrl: './app/workspace/audioPlayer/progressBar.component.html',
-    styleUrls: ['./app/workspace/audioPlayer/progressBar.component.css'],
+    templateUrl: './app/shared/components/progressBar.component.html',
+    styleUrls: ['./app/shared/components/progressBar.component.css'],
 })
 export class ProgressBarComponent {
     @ViewChild('outer') outer;

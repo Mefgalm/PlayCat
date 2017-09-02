@@ -19,7 +19,7 @@ var AudioPlayerComponent = (function () {
         this.display = false;
         this.isPlaying = this._audioPlayerService.isPlaying();
         this.volume = this._audioPlayerService.getVolume() * 100;
-        this.playlists = this._audioPlayerService.getPlaylists();
+        //this.playlists = this._audioPlayerService.getPlaylists();
         this.currentPlaylist = this._audioPlayerService.getCurrentPlaylist();
         this.audio = this._audioPlayerService.getCurrentAudio();
         this.currentTime = this._audioPlayerService.getCurrentTime();
@@ -82,6 +82,12 @@ var AudioPlayerComponent = (function () {
     };
     AudioPlayerComponent.prototype.selectPlaylist = function (id) {
         this._audioPlayerService.selectPlaylist(id);
+    };
+    AudioPlayerComponent.prototype.createPlaylist = function (playlist) {
+        this._audioPlayerService.createPlaylist(playlist.title);
+    };
+    AudioPlayerComponent.prototype.updatePlaylist = function (playlist) {
+        this._audioPlayerService.updatePlaylist(playlist.id, playlist.title);
     };
     AudioPlayerComponent.prototype.onNgDestroy = function () {
         this._playlistLoadedSubscription.unsubscribe();

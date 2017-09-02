@@ -70,14 +70,12 @@
                             <td>{{audio.song}}</td>
                         </tr>
                     </table>
-                    <table border="1" height="100%">
-                        <tr>
-                            <th>Title</th>
-                        </tr>
-                        <tr *ngFor="let currentPlaylist of playlists">
-                            <td>{{currentPlaylist.Title}}</td>
-                        </tr>
-                    </table>
+                    <div>
+                        <playlist [playlists]="playlists"
+                                  (onCreate)="createPlaylist($event)"
+                                  (onEdit)="updatePlaylist($event)">
+                        </playlist>
+                    </div>
                 </div>
             </p-dialog>
             <button *ngIf="!display" style="float:right" (click)="showDialog()">Show</button>

@@ -116,11 +116,11 @@ namespace PlayCat.DataService
                     .Skip(skip)
                     .Take(take);
 
-                IEnumerable<ApiModel.Playlist> apiPlaylists = null;
+                IQueryable<PlaylistDTO> playlistDtoQry = null;
                 if (playlistId.HasValue)
                 {
                     //join playlist to with audios
-                     apiPlaylists =
+                    playlistDtoQry =
                         (from p in _dbContext.Playlists
                          join paq in playlistAudiosQry.Where(x => x.PlaylistId == playlistId) on p.Id equals paq.PlaylistId into _paq
                          where p.OwnerId == userId
@@ -131,15 +131,13 @@ namespace PlayCat.DataService
                              Owner = p.Owner,
                              Title = p.Title,
                              Audios = _paq.Select(x => x.AudioDTO),
-                         })
-                        .ToList()
-                        .Select(x => PlaylistMapper.ToApi.FromDTO(x));
+                         });
                 } else
                 {
                     //if no playlist id then select from general
-                    apiPlaylists = 
+                    playlistDtoQry =
                         (from p in _dbContext.Playlists
-                         join paq in playlistAudiosQry on new { playlistId = p.Id, isGeneral = p.IsGeneral } 
+                         join paq in playlistAudiosQry on new { playlistId = p.Id, isGeneral = p.IsGeneral }
                                                    equals new { playlistId = paq.PlaylistId, isGeneral = true } into _paq
                          where p.OwnerId == userId
                          select new PlaylistDTO()
@@ -149,10 +147,15 @@ namespace PlayCat.DataService
                              Owner = p.Owner,
                              Title = p.Title,
                              Audios = _paq.Select(x => x.AudioDTO),
-                         })
-                        .ToList()
-                        .Select(x => PlaylistMapper.ToApi.FromDTO(x));
+                         });
                 }
+
+                IEnumerable<ApiModel.Playlist> apiPlaylists =
+                    playlistDtoQry
+                                .OrderByDescending(x => x.IsGeneral)
+                                .ThenBy(x => x.Title)
+                                .ToList()
+                                .Select(x => PlaylistMapper.ToApi.FromDTO(x));
 
                 return ResponseBuilder<UserPlaylistsResult>.SuccessBuild(new UserPlaylistsResult()
                 {

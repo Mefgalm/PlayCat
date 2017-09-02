@@ -8,7 +8,6 @@ import { UploadComponent } from './music/upload/upload.component';
 import { ProfileComponent } from './cabinet/profile/profile.component';
 import { UpdateProfileComponent } from './cabinet/updateProfile/updateProfile.component';
 import { AudioPlayerService } from './audioPlayer/audioPlayer.service';
-import { PlaylistService } from './audioPlayer/playlist.service';
 
 @NgModule({
     imports: [
@@ -17,7 +16,7 @@ import { PlaylistService } from './audioPlayer/playlist.service';
     ],
     providers: [
         AudioPlayerService,
-        PlaylistService
+        //PlaylistService
     ]
 })
 export class WorkspaceModule {

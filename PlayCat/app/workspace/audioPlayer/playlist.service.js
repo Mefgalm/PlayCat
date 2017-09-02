@@ -13,16 +13,27 @@ var core_1 = require("@angular/core");
 var http_service_1 = require("../../shared/services/http.service");
 var userPlaylistsResult_1 = require("../../data/response/userPlaylistsResult");
 var urlParamert_1 = require("../../data/urlParamert");
+var playlistResult_1 = require("../../data/response/playlistResult");
 var PlaylistService = (function () {
     function PlaylistService(_httpService) {
         this._httpService = _httpService;
         this._playlistUrl = 'api/playlist/userPlaylists';
+        this._createPlaylistUrl = 'api/playlist/create';
+        this._updatePlaylistUrl = 'api/playlist/update';
     }
     PlaylistService.prototype.userPlaylists = function (playlistId, skip, take) {
         var parametrsLine = this._httpService.buildParametersUrl(new urlParamert_1.UrlParametr('playlistId', playlistId), new urlParamert_1.UrlParametr('skip', skip), new urlParamert_1.UrlParametr('take', take));
         return this._httpService
             .get(this._playlistUrl + parametrsLine)
             .then(function (x) { return Object.assign(new userPlaylistsResult_1.UserPlaylistsResult(), x.json()); });
+    };
+    PlaylistService.prototype.createPlaylist = function (createPlaylistRequest) {
+        return this._httpService.post(this._createPlaylistUrl, JSON.stringify(createPlaylistRequest))
+            .then(function (x) { return Object.assign(new playlistResult_1.PlaylistResult(), x.json()); });
+    };
+    PlaylistService.prototype.updatePlaylist = function (updatePlaylistRequest) {
+        return this._httpService.put(this._updatePlaylistUrl, JSON.stringify(updatePlaylistRequest))
+            .then(function (x) { return Object.assign(new playlistResult_1.PlaylistResult(), x.json()); });
     };
     return PlaylistService;
 }());
