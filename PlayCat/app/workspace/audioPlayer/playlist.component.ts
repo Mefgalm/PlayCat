@@ -90,11 +90,18 @@ export class PlaylistComponent {
         });
     }
 
+    delete(playlistEdit: PlaylistEdit) {
+        let playlist = new Playlist();
+        playlist.id = playlistEdit.id;
+
+        this.onDelete.emit(playlist);
+    }
+
     stopEdit(playlistEdit: PlaylistEdit) {
         playlistEdit.isEditing = false;
     }
 
-    public create({ value, valid }: { value: any, valid: boolean }) {
+    create({ value, valid }: { value: any, valid: boolean }) {
         if (valid) {
             let playlist = new Playlist();
             playlist.title = value.title;
@@ -105,7 +112,7 @@ export class PlaylistComponent {
         }
     }
 
-    public update({ value, valid }: { value: any, valid: boolean }) {
+    update({ value, valid }: { value: any, valid: boolean }) {
         if (valid) {
             let playlist = new Playlist();
             playlist.title = value.title;

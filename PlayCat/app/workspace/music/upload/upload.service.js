@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_service_1 = require("../../../shared/services/http.service");
 var getInfoResult_1 = require("../../../data/response/getInfoResult");
-var baseResult_1 = require("../../../data/response/baseResult");
+var uploadResult_1 = require("../../../data/response/uploadResult");
 var UploadService = (function () {
     function UploadService(_httpService) {
         this._httpService = _httpService;
@@ -25,7 +25,7 @@ var UploadService = (function () {
     };
     UploadService.prototype.uploadAudio = function (uploadAudioRequest) {
         return this._httpService.post(this._uploadAudioUrl, JSON.stringify(uploadAudioRequest))
-            .then(function (x) { return Object.assign(new baseResult_1.BaseResult(), x.json()); });
+            .then(function (x) { return Object.assign(new uploadResult_1.UploadResult(), x.json()); });
     };
     return UploadService;
 }());

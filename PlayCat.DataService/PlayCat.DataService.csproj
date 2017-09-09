@@ -181,6 +181,7 @@
     <Compile Include="Response\AudioResponse\GetInfoResult.cs" />
     <Compile Include="Response\PlaylistResponse\PlaylistResult.cs" />
     <Compile Include="Response\AuthResponse\SignUpInResult.cs" />
+    <Compile Include="Response\UploadResponse\UploadResult.cs" />
     <Compile Include="Response\UserResponse\UpdateProfileResult.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="Test\EmptyClass.cs" />

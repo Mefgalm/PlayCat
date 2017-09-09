@@ -16,11 +16,13 @@ var upload_service_1 = require("./upload.service");
 var form_service_1 = require("../../../shared/services/form.service");
 var urlRequest_1 = require("../../../data/request/urlRequest");
 var uploadAudioRequest_1 = require("../../../data/request/uploadAudioRequest");
+var audioPlayer_service_1 = require("../../audioPlayer/audioPlayer.service");
 var UploadComponent = (function () {
-    function UploadComponent(_fb, _uploadSerice, _validationService, _formService) {
+    function UploadComponent(_fb, _uploadSerice, _validationService, _audioPlayerService, _formService) {
         this._fb = _fb;
         this._uploadSerice = _uploadSerice;
         this._validationService = _validationService;
+        this._audioPlayerService = _audioPlayerService;
         this._formService = _formService;
         this._urlRequstModelName = 'UrlRequest';
         this._uploadAudioModelName = 'UploadAudioRequest';
@@ -98,17 +100,18 @@ var UploadComponent = (function () {
             var uploadAudioRequest = new uploadAudioRequest_1.UploadAudioRequest(value.artist, value.song, this.url);
             this._uploadSerice
                 .uploadAudio(uploadAudioRequest)
-                .then(function (baseResult) {
-                if (baseResult.ok) {
+                .then(function (uploadResult) {
+                if (uploadResult.ok) {
                     _this.url = null;
                     _this.isUrlConfirm = false;
+                    _this._audioPlayerService.uploadSong(uploadResult.audio, null);
                     _this.urlRequestForm.patchValue({
                         url: null,
                     });
                     _this.urlRequestForm.reset();
                 }
-                else if (baseResult.showInfo) {
-                    _this.audioUploadError = baseResult.info;
+                else if (uploadResult.showInfo) {
+                    _this.audioUploadError = uploadResult.info;
                 }
                 _this.isAudioUploadProcessing = false;
             });
@@ -128,6 +131,7 @@ UploadComponent = __decorate([
     __metadata("design:paramtypes", [forms_1.FormBuilder,
         upload_service_1.UploadService,
         validation_service_1.ValidationService,
+        audioPlayer_service_1.AudioPlayerService,
         form_service_1.FormService])
 ], UploadComponent);
 exports.UploadComponent = UploadComponent;

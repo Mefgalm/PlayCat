@@ -66,6 +66,11 @@ var PlaylistComponent = (function () {
             title: playlistEdit.title
         });
     };
+    PlaylistComponent.prototype.delete = function (playlistEdit) {
+        var playlist = new playlist_1.Playlist();
+        playlist.id = playlistEdit.id;
+        this.onDelete.emit(playlist);
+    };
     PlaylistComponent.prototype.stopEdit = function (playlistEdit) {
         playlistEdit.isEditing = false;
     };

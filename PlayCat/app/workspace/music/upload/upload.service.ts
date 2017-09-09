@@ -3,6 +3,7 @@ import { HttpService } from '../../../shared/services/http.service';
 import { UrlRequest } from '../../../data/request/urlRequest';
 import { UploadAudioRequest } from '../../../data/request/uploadAudioRequest';
 import { GetInfoResult } from '../../../data/response/getInfoResult';
+import { UploadResult } from '../../../data/response/uploadResult';
 import { BaseResult } from '../../../data/response/baseResult';
 
 @Injectable()
@@ -17,8 +18,8 @@ export class UploadService {
         return this._httpService.post(this._videoInfoUrl, JSON.stringify(urlRequest))
             .then(x => Object.assign(new GetInfoResult(), x.json()));
     }
-    uploadAudio(uploadAudioRequest: UploadAudioRequest) : Promise<BaseResult> {
+    uploadAudio(uploadAudioRequest: UploadAudioRequest) : Promise<UploadResult> {
         return this._httpService.post(this._uploadAudioUrl, JSON.stringify(uploadAudioRequest))
-            .then(x => Object.assign(new BaseResult(), x.json()));
+            .then(x => Object.assign(new UploadResult(), x.json()));
     }
 }   

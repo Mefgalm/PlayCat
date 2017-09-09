@@ -14,12 +14,14 @@ var http_service_1 = require("../../shared/services/http.service");
 var userPlaylistsResult_1 = require("../../data/response/userPlaylistsResult");
 var urlParamert_1 = require("../../data/urlParamert");
 var playlistResult_1 = require("../../data/response/playlistResult");
+var baseResult_1 = require("../../data/response/baseResult");
 var PlaylistService = (function () {
     function PlaylistService(_httpService) {
         this._httpService = _httpService;
         this._playlistUrl = 'api/playlist/userPlaylists';
         this._createPlaylistUrl = 'api/playlist/create';
         this._updatePlaylistUrl = 'api/playlist/update';
+        this._deletePlaylistUrl = 'api/playlist/delete';
     }
     PlaylistService.prototype.userPlaylists = function (playlistId, skip, take) {
         var parametrsLine = this._httpService.buildParametersUrl(new urlParamert_1.UrlParametr('playlistId', playlistId), new urlParamert_1.UrlParametr('skip', skip), new urlParamert_1.UrlParametr('take', take));
@@ -34,6 +36,10 @@ var PlaylistService = (function () {
     PlaylistService.prototype.updatePlaylist = function (updatePlaylistRequest) {
         return this._httpService.put(this._updatePlaylistUrl, JSON.stringify(updatePlaylistRequest))
             .then(function (x) { return Object.assign(new playlistResult_1.PlaylistResult(), x.json()); });
+    };
+    PlaylistService.prototype.deletePlaylist = function (playlistId) {
+        return this._httpService.delete(this._deletePlaylistUrl + '/' + playlistId)
+            .then(function (x) { return Object.assign(new baseResult_1.BaseResult(), x.json()); });
     };
     return PlaylistService;
 }());

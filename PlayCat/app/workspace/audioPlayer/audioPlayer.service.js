@@ -148,6 +148,20 @@ var AudioPlayerService = (function () {
         if (this._isPlaying)
             this.play();
     };
+    AudioPlayerService.prototype.uploadSong = function (audio, playlistId) {
+        if (this._playlists) {
+            var index = -1;
+            if (playlistId) {
+                index = this._playlists.findIndex(function (x) { return x.id == playlistId; });
+            }
+            else {
+                index = this._playlists.findIndex(function (x) { return x.isGeneral; });
+            }
+            if (index !== -1) {
+                this._playlists[index].audios.splice(index, 0, audio);
+            }
+        }
+    };
     AudioPlayerService.prototype.selectPlaylist = function (id) {
         if (id) {
             this._currentPlaylist = this._playlists.find(function (x) { return x.id === id; });
@@ -165,6 +179,18 @@ var AudioPlayerService = (function () {
             .then(function (playlistResult) {
             if (playlistResult.ok) {
                 _this._playlists.push(playlistResult.playlist);
+                _this.emitPlaylistLoaded();
+            }
+        });
+    };
+    AudioPlayerService.prototype.deletePlaylist = function (id) {
+        var _this = this;
+        this._playlistService
+            .deletePlaylist(id)
+            .then(function (baseResult) {
+            if (baseResult.ok) {
+                var index = _this._playlists.findIndex(function (x) { return x.id == id; });
+                _this._playlists.splice(index, 1);
                 _this.emitPlaylistLoaded();
             }
         });

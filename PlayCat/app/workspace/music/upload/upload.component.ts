@@ -7,6 +7,7 @@ import { GetInfoResult } from '../../../data/response/getInfoResult';
 import { FormService } from '../../../shared/services/form.service';
 import { UrlRequest } from '../../../data/request/urlRequest';
 import { UploadAudioRequest } from '../../../data/request/uploadAudioRequest';
+import { AudioPlayerService } from '../../audioPlayer/audioPlayer.service';
 
 @Component({
     selector: 'upload',
@@ -38,6 +39,7 @@ export class UploadComponent {
         private _fb: FormBuilder,
         private _uploadSerice: UploadService,
         private _validationService: ValidationService,
+        private _audioPlayerService: AudioPlayerService,
         private _formService: FormService) {
 
         this.urlRequestErrorValiation = new Map<string, Map<string, ValidationModel>>();
@@ -128,17 +130,19 @@ export class UploadComponent {
 
             this._uploadSerice
                 .uploadAudio(uploadAudioRequest)
-                .then(baseResult => {
-                    if (baseResult.ok) {
+                .then(uploadResult => {
+                    if (uploadResult.ok) {
                         this.url = null;
                         this.isUrlConfirm = false;
+
+                        this._audioPlayerService.uploadSong(uploadResult.audio, null);
 
                         this.urlRequestForm.patchValue({
                             url: null,
                         });
                         this.urlRequestForm.reset();
-                    } else if (baseResult.showInfo) {
-                        this.audioUploadError = baseResult.info;
+                    } else if (uploadResult.showInfo) {
+                        this.audioUploadError = uploadResult.info;
                     }
 
                     this.isAudioUploadProcessing = false;

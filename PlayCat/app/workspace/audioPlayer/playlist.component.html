@@ -9,7 +9,7 @@
                     <button type="button" (click)="startEdit(playlist)">Edit</button>
                 </div>
                 <div>
-                    <button type="button">Delete</button>
+                    <button type="button" (click)="delete(playlist)">Delete</button>
                 </div>      
             </div>
             <div *ngIf="playlist.isGeneral">

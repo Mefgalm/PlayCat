@@ -89,6 +89,9 @@ var AudioPlayerComponent = (function () {
     AudioPlayerComponent.prototype.updatePlaylist = function (playlist) {
         this._audioPlayerService.updatePlaylist(playlist.id, playlist.title);
     };
+    AudioPlayerComponent.prototype.deletePlaylist = function (playlist) {
+        this._audioPlayerService.deletePlaylist(playlist.id);
+    };
     AudioPlayerComponent.prototype.onNgDestroy = function () {
         this._playlistLoadedSubscription.unsubscribe();
         this._audioChangedSubscription.unsubscribe();

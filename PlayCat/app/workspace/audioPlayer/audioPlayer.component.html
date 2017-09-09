@@ -73,6 +73,7 @@
                     <div>
                         <playlist [playlists]="playlists"
                                   (onCreate)="createPlaylist($event)"
+                                  (onDelete)="deletePlaylist($event)"
                                   (onEdit)="updatePlaylist($event)">
                         </playlist>
                     </div>

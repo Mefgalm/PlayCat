@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PlayCat.DataService.Mappers;
 using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
+using PlayCat.DataService.Response.UploadResponse;
 using PlayCat.Helpers;
 using PlayCat.Music;
 using System;
@@ -63,7 +65,7 @@ namespace PlayCat.DataService
             });
         }
 
-        public BaseResult UploadAudio(Guid userId, UploadAudioRequest request)
+        public UploadResult UploadAudio(Guid userId, UploadAudioRequest request)
         {
             return RequestTemplateCheckModel(request, () =>
             {
@@ -72,7 +74,7 @@ namespace PlayCat.DataService
                     throw new Exception("User not found, but token does");
 
                 var responseBuilder =
-                    ResponseBuilder<BaseResult>
+                    ResponseBuilder<UploadResult>
                            .Fail();
 
                 if (user.IsUploadingAudio)
@@ -134,12 +136,16 @@ namespace PlayCat.DataService
 
                         //add entities
                         _dbContext.AudioPlaylists.Add(audioPlaylist);
-                        _dbContext.Audios.Add(audio);
+                        DataModel.Audio audioEntity = _dbContext.Audios.Add(audio).Entity;
 
                         _dbContext.SaveChanges();
 
                         transaction.Commit();
-                        return ResponseBuilder<BaseResult>.SuccessBuild();
+                        return ResponseBuilder<UploadResult>.SuccessBuild(new UploadResult()
+                        {
+                            Audio = AudioMapper.ToApi.FromData(audioEntity),
+                        });
+
                     } catch(Exception ex)
                     {
                         transaction.Rollback();

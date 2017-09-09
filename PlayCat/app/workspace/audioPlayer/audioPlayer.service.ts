@@ -200,6 +200,21 @@ export class AudioPlayerService {
             this.play();
     }
 
+    uploadSong(audio: Audiotrack, playlistId: string) {
+        if (this._playlists) {
+            let index = -1;
+            if (playlistId) {
+                index = this._playlists.findIndex(x => x.id == playlistId);
+            } else {
+                index = this._playlists.findIndex(x => x.isGeneral);
+            }
+
+            if (index !== -1) {
+                this._playlists[index].audios.splice(index, 0, audio);
+            }
+        }
+    }
+
     selectPlaylist(id: string) {
         if (id) {
             this._currentPlaylist = this._playlists.find(x => x.id === id);
@@ -219,6 +234,19 @@ export class AudioPlayerService {
                     this._playlists.push(playlistResult.playlist);          
                     this.emitPlaylistLoaded();
                 }
+            });
+    }
+
+    deletePlaylist(id: string) {
+        this._playlistService
+            .deletePlaylist(id)
+            .then(baseResult => {
+                if (baseResult.ok) {
+                    let index = this._playlists.findIndex(x => x.id == id);
+                    this._playlists.splice(index, 1);
+
+                    this.emitPlaylistLoaded();
+                }                
             });
     }
 

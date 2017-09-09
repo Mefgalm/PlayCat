@@ -1,6 +1,7 @@
 ﻿using PlayCat.DataService;
 using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
+using PlayCat.DataService.Response.UploadResponse;
 using PlayCat.Music;
 using PlayCat.Tests.Extensions;
 using System;
@@ -37,8 +38,8 @@ namespace PlayCat.Tests.UploadTests
             var uploadService = _server.Host.Services.GetService(typeof(IUploadService)) as IUploadService;
 
             var uploadAudioRequest = new UploadAudioRequest();
-
-            BaseResult result = uploadService.UploadAudio(Guid.Empty, uploadAudioRequest);
+            
+            UploadResult result = uploadService.UploadAudio(Guid.Empty, uploadAudioRequest);
 
             CheckIfFail(result);
 
@@ -69,8 +70,8 @@ namespace PlayCat.Tests.UploadTests
 
                     Guid userId = GetUserId(context);
 
-                    var result = uploadService.UploadAudio(userId, uploadAudioRequest);
-                    var resultDownloaded = uploadService.UploadAudio(userId, uploadAudioRequest);
+                    UploadResult result = uploadService.UploadAudio(userId, uploadAudioRequest);
+                    UploadResult resultDownloaded = uploadService.UploadAudio(userId, uploadAudioRequest);
 
                     CheckIfFail(resultDownloaded);
 
@@ -117,7 +118,7 @@ namespace PlayCat.Tests.UploadTests
                         File.Delete(Path.Combine(audioFilePath, "80AlC3LaPqQ.mp3"));
                     });
                     Thread.Sleep(500);
-                    var result = uploadService.UploadAudio(userId, uploadAudioRequest);                    
+                    UploadResult result = uploadService.UploadAudio(userId, uploadAudioRequest);                    
 
                     CheckIfFail(result);
                     Assert.Equal("User already uploading audio", result.Info);
@@ -145,14 +146,14 @@ namespace PlayCat.Tests.UploadTests
                     };
 
                     Guid userId = GetUserId(context);
-                    var result = uploadService.UploadAudio(userId, uploadAudioRequest);
+                    UploadResult result = uploadService.UploadAudio(userId, uploadAudioRequest);
 
                     CheckIfSuccess(result);
 
                     var audio = context.Audios.Single();
 
-                    Assert.Equal("Say It (feat. Tove Lo) (Illenium Remix)", audio.Song);
-                    Assert.Equal("Flume", audio.Artist);
+                    Assert.Equal("Say It (feat. Tove Lo) (Illenium Remix)", result.Audio.Song);
+                    Assert.Equal("Flume", result.Audio.Artist);
                     Assert.Equal("80AlC3LaPqQ", audio.UniqueIdentifier);
 
                     var audioPlaylists = context.AudioPlaylists.Single();

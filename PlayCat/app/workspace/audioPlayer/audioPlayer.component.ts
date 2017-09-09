@@ -135,6 +135,10 @@ export class AudioPlayerComponent {
         this._audioPlayerService.updatePlaylist(playlist.id, playlist.title);
     }
 
+    deletePlaylist(playlist: Playlist) {
+        this._audioPlayerService.deletePlaylist(playlist.id);
+    }
+
     onNgDestroy() {
         this._playlistLoadedSubscription.unsubscribe();
         this._audioChangedSubscription.unsubscribe();
