@@ -11,18 +11,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var core_2 = require("@angular/core");
+var audios_service_1 = require("../music/audios/audios.service");
 var playlist_service_1 = require("./playlist.service");
 var createPlaylistRequest_1 = require("../../data/request/createPlaylistRequest");
 var updatePlaylistRequest_1 = require("../../data/request/updatePlaylistRequest");
 var AudioPlayerService = (function () {
-    function AudioPlayerService(_playlistService) {
+    function AudioPlayerService(_playlistService, _audioService) {
         var _this = this;
         this._playlistService = _playlistService;
+        this._audioService = _audioService;
         this._take = 50;
         this._currentIndex = 0;
         this._skip = 0;
         this._audio = new Audio();
         this._isPlaying = false;
+        this._playlistAudiosCount = new Map();
         this._audio.volume = 0.5;
         this.onPlayerLoaded = new core_2.EventEmitter();
         this.onDurationChange = new core_2.EventEmitter();
@@ -31,6 +34,7 @@ var AudioPlayerService = (function () {
         this.onActionChanged = new core_2.EventEmitter();
         this.onIsLoopChanged = new core_2.EventEmitter();
         this.onPlaylistChanged = new core_2.EventEmitter();
+        this.onPlaylistUpdated = new core_2.EventEmitter();
         this._audio.onended = function () {
             _this.next();
             _this.onAudioChanged.emit(_this._currentAudio);
@@ -51,7 +55,9 @@ var AudioPlayerService = (function () {
                 _this._playlists = userPlaylistsResult.playlists;
                 _this.selectPlaylist(null);
                 _this.selectAudio(_this._currentIndex);
-                _this.emitPlaylistLoaded();
+                _this._playlistAudiosCount.set(_this._currentPlaylist.id, _this._currentPlaylist.audios.length);
+                console.log(_this._playlistAudiosCount);
+                _this.emitPlayerLoaded();
             }
         });
     }
@@ -62,6 +68,9 @@ var AudioPlayerService = (function () {
     };
     AudioPlayerService.prototype.getOnIsLoopEmitter = function () {
         return this.onIsLoopChanged;
+    };
+    AudioPlayerService.prototype.getOnPlaylistUpdated = function () {
+        return this.onPlaylistUpdated;
     };
     //time update
     AudioPlayerService.prototype.getOnTimeUpdateEmitter = function () {
@@ -148,18 +157,11 @@ var AudioPlayerService = (function () {
         if (this._isPlaying)
             this.play();
     };
-    AudioPlayerService.prototype.uploadSong = function (audio, playlistId) {
+    AudioPlayerService.prototype.uploadSong = function (playlistId) {
         if (this._playlists) {
-            var index = -1;
-            if (playlistId) {
-                index = this._playlists.findIndex(function (x) { return x.id == playlistId; });
-            }
-            else {
-                index = this._playlists.findIndex(function (x) { return x.isGeneral; });
-            }
-            if (index !== -1) {
-                this._playlists[index].audios.splice(index, 0, audio);
-            }
+            if (!playlistId)
+                playlistId = this._playlists.filter(function (x) { return x.isGeneral; })[0].id;
+            this.reloadAudioForPlaylist(playlistId, 0, this._playlistAudiosCount.get(playlistId));
         }
     };
     AudioPlayerService.prototype.selectPlaylist = function (id) {
@@ -179,7 +181,7 @@ var AudioPlayerService = (function () {
             .then(function (playlistResult) {
             if (playlistResult.ok) {
                 _this._playlists.push(playlistResult.playlist);
-                _this.emitPlaylistLoaded();
+                _this.emitPlayerLoaded();
             }
         });
     };
@@ -191,7 +193,7 @@ var AudioPlayerService = (function () {
             if (baseResult.ok) {
                 var index = _this._playlists.findIndex(function (x) { return x.id == id; });
                 _this._playlists.splice(index, 1);
-                _this.emitPlaylistLoaded();
+                _this.emitPlayerLoaded();
             }
         });
     };
@@ -204,9 +206,23 @@ var AudioPlayerService = (function () {
             if (playlistResult.ok) {
                 var index = _this._playlists.findIndex(function (x) { return x.id == id; });
                 _this._playlists[index] = playlistResult.playlist;
-                _this.emitPlaylistLoaded();
+                _this.emitPlayerLoaded();
             }
         });
+    };
+    AudioPlayerService.prototype.reloadAudioForPlaylist = function (playlistId, skip, take) {
+        var _this = this;
+        var index = this._playlists.findIndex(function (x) { return x.id == playlistId; });
+        if (index !== -1) {
+            this._audioService
+                .loadAudios(playlistId, skip, take)
+                .then(function (audioResult) {
+                if (audioResult.ok) {
+                    _this._playlists[index].audios = audioResult.audios;
+                    _this.onPlaylistUpdated.emit(_this._playlists[index]);
+                }
+            });
+        }
     };
     AudioPlayerService.prototype.selectById = function (id) {
         var audio = this._currentPlaylist.audios.find(function (a) { return a.id === id; });
@@ -214,7 +230,7 @@ var AudioPlayerService = (function () {
             this.selectAudio(this._currentPlaylist.audios.indexOf(audio));
         }
     };
-    AudioPlayerService.prototype.emitPlaylistLoaded = function () {
+    AudioPlayerService.prototype.emitPlayerLoaded = function () {
         this._playlists = this._playlists.sort(function (a, b) {
             if (a.isGeneral && !b.isGeneral)
                 return -1;
@@ -233,7 +249,8 @@ var AudioPlayerService = (function () {
 }());
 AudioPlayerService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [playlist_service_1.PlaylistService])
+    __metadata("design:paramtypes", [playlist_service_1.PlaylistService,
+        audios_service_1.AudioService])
 ], AudioPlayerService);
 exports.AudioPlayerService = AudioPlayerService;
 //# sourceMappingURL=audioPlayer.service.js.map

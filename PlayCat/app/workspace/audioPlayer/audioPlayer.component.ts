@@ -19,6 +19,7 @@ export class AudioPlayerComponent {
     private _playlistLoadedSubscription: any;
     private _isLoopChangedSubscription: any;
     private _playlistChangedSubscription: any;
+    private _playlistUpdatedSubscription: any;
 
     public isPlaylistLoaded: boolean;
     public currentTime: number;
@@ -51,7 +52,7 @@ export class AudioPlayerComponent {
         this.currentTime = this._audioPlayerService.getCurrentTime();
         this.duration = this._audioPlayerService.getDuration();
         this.isLoop = this._audioPlayerService.isLoop();
-
+        
         if (this.playlists) {
             this.isPlaylistLoaded = true;            
         } else {
@@ -72,7 +73,17 @@ export class AudioPlayerComponent {
             .subscribe(currentTime => this.currentTime = currentTime);
 
         this._actionChangedSubscription = this._audioPlayerService.getOnActionChanged()
-            .subscribe(isPlaingAction => this.isPlaying = isPlaingAction);
+            .subscribe(isPlaingAction => this.isPlaying = isPlaingAction);        
+
+        this._playlistUpdatedSubscription = this._audioPlayerService.getOnPlaylistUpdated()
+            .subscribe(playlist => {
+                let index = this.playlists.findIndex(x => x.id == playlist.id);
+
+                if (index !== -1) {
+                    this.playlists.splice(index, 1);
+                    this.playlists.splice(index, 0, playlist);
+                }
+            });
 
         this._isLoopChangedSubscription = this._audioPlayerService.getOnIsLoopEmitter()
             .subscribe(isLoop => this.isLoop = isLoop);

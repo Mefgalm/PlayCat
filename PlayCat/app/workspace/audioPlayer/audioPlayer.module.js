@@ -10,12 +10,14 @@ var common_1 = require("@angular/common");
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var audioPlayer_component_1 = require("./audioPlayer.component");
+var audios_service_1 = require("../music/audios/audios.service");
 var progressBar_module_1 = require("../../shared/components/progressBar.module");
 var primeng_1 = require("primeng/primeng");
 var secondToTime_pipe_1 = require("../../shared/pipes/secondToTime.pipe");
 var playlist_service_1 = require("./playlist.service");
 var error_module_1 = require("../../shared/components/error.module");
 var playlist_component_1 = require("./playlist.component");
+var audio_component_1 = require("./audio.component");
 var AudioPlayerModule = (function () {
     function AudioPlayerModule() {
     }
@@ -34,13 +36,15 @@ AudioPlayerModule = __decorate([
         declarations: [
             audioPlayer_component_1.AudioPlayerComponent,
             secondToTime_pipe_1.SecondToTimePipe,
-            playlist_component_1.PlaylistComponent
+            playlist_component_1.PlaylistComponent,
+            audio_component_1.AudioComponent
         ],
         exports: [
             audioPlayer_component_1.AudioPlayerComponent
         ],
         providers: [
-            playlist_service_1.PlaylistService
+            playlist_service_1.PlaylistService,
+            audios_service_1.AudioService
         ]
     })
 ], AudioPlayerModule);

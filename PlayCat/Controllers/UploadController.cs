@@ -2,6 +2,7 @@
 using PlayCat.DataService;
 using PlayCat.DataService.Request;
 using PlayCat.DataService.Response;
+using System.Threading.Tasks;
 
 namespace PlayCat.Controllers
 {
@@ -29,13 +30,13 @@ namespace PlayCat.Controllers
         }
 
         [HttpPost("uploadAudio")]
-        public BaseResult UploadAudio([FromBody] UploadAudioRequest request)
+        public async Task<BaseResult> UploadAudio([FromBody] UploadAudioRequest request)
         {
             CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
             if (!checkTokenResult.Ok)
                 return checkTokenResult;
 
-            return _uploadService.UploadAudio(checkTokenResult.AuthToken.UserId, request);
+            return await _uploadService.UploadAudioAsync(checkTokenResult.AuthToken.UserId, request);
         }
     }
 }

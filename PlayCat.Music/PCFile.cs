@@ -11,5 +11,6 @@ namespace PlayCat.Music
         public string Filename { get; set; }
         public string Extension { get; set; }
         public StorageType StorageType { get; set; }
+        public double Duration { get; set; }
     }
 }

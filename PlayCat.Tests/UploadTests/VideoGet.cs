@@ -108,7 +108,7 @@ namespace PlayCat.Tests.UploadTests
                     Assert.Equal("Rick Astley", result.UrlInfo.Artist);
                     Assert.Equal("Together Forever", result.UrlInfo.Song);
 
-                    var uploadResult = uploadService.UploadAudio(userId, new UploadAudioRequest()
+                    var uploadResult = uploadService.UploadAudioAsync(userId, new UploadAudioRequest()
                     {
                         Artist = "Rick Astley",
                         Song = "Together Forever",

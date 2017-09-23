@@ -1,0 +1,12 @@
+﻿.audio {
+    display: flex;
+    align-items: flex-start;
+}
+
+.additional-controls {
+    align-self: flex-end;
+}
+
+.song-info {
+    display: flex;
+}

@@ -159,6 +159,10 @@
     <Compile Include="Migrations\20170812140511_remove-string-lenght-max-lenght-for-song-and-artist.designer.cs">
       <DependentUpon>20170812140511_remove-string-lenght-max-lenght-for-song-and-artist.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20170923214201_add-duration-to-song.cs" />
+    <Compile Include="Migrations\20170923214201_add-duration-to-song.designer.cs">
+      <DependentUpon>20170923214201_add-duration-to-song.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\PlayCatDbContextModelSnapshot.cs" />
     <Compile Include="ModelValidationService.cs" />
     <Compile Include="PlayCatDbContext.cs" />

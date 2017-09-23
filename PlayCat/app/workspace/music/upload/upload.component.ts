@@ -135,7 +135,7 @@ export class UploadComponent {
                         this.url = null;
                         this.isUrlConfirm = false;
 
-                        this._audioPlayerService.uploadSong(uploadResult.audio, null);
+                        this._audioPlayerService.uploadSong(null);
 
                         this.urlRequestForm.patchValue({
                             url: null,

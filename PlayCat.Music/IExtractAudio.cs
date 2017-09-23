@@ -1,7 +1,9 @@
-﻿namespace PlayCat.Music
+﻿using System.Threading.Tasks;
+
+namespace PlayCat.Music
 {
     public interface IExtractAudio
     {
-        IFile Extract(IFile videoFile);
+        Task<IFile> ExtractAsync(IFile videoFile);
     }
 }

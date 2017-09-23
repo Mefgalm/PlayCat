@@ -8,9 +8,10 @@ using PlayCat.DataService;
 namespace PlayCat.DataService.Migrations
 {
     [DbContext(typeof(PlayCatDbContext))]
-    partial class PlayCatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170923214201_add-duration-to-song")]
+    partial class adddurationtosong
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

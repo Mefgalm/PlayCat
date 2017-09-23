@@ -15,6 +15,7 @@ namespace PlayCat.DataService.Mappers
                     Artist = audioDTO.Artist,
                     DateAdded = audioDTO.DateAdded,
                     Id = audioDTO.Id,
+                    Duration = audioDTO.Duration,
                     Song = audioDTO.Song,
                     Uploader = UserMapper.ToApi.FromData(audioDTO.Uploader),                    
                 };
@@ -27,6 +28,8 @@ namespace PlayCat.DataService.Mappers
                     AccessUrl = audio.AccessUrl,
                     Artist = audio.Artist,
                     Id = audio.Id,
+                    Duration = audio.Duration,
+                    DateAdded = audio.DateCreated,
                     Song = audio.Song,
                     Uploader = UserMapper.ToApi.FromData(audio.Uploader),
                 };

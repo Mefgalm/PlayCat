@@ -11,10 +11,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_service_1 = require("../../../shared/services/http.service");
+var urlParamert_1 = require("../../../data/urlParamert");
+var audioResult_1 = require("../../../data/response/audioResult");
 var AudioService = (function () {
     function AudioService(_httpService) {
         this._httpService = _httpService;
+        this._audioUrl = 'api/audio/audios';
     }
+    AudioService.prototype.loadAudios = function (playlistId, skip, take) {
+        var parametrsLine = this._httpService.buildParametersUrl(new urlParamert_1.UrlParametr('playlistId', playlistId), new urlParamert_1.UrlParametr('skip', skip), new urlParamert_1.UrlParametr('take', take));
+        return this._httpService
+            .get(this._audioUrl + parametrsLine)
+            .then(function (x) { return Object.assign(new audioResult_1.AudioResult(), x.json()); });
+    };
     return AudioService;
 }());
 AudioService = __decorate([

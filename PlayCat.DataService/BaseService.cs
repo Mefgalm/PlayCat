@@ -2,6 +2,7 @@
 using PlayCat.DataService.Response;
 using PlayCat.Helpers;
 using System;
+using System.Threading.Tasks;
 
 namespace PlayCat.DataService
 {
@@ -71,6 +72,31 @@ namespace PlayCat.DataService
                 WriteLog(ex.Message);
                 return GetUnexpectedServerError<TReturn>(ex.Message);
             }
-        }        
+        }
+
+        protected async Task<TReturn> RequestTemplateCheckModelAsync<TReturn, TRequest>(TRequest request, Func<Task<TReturn>> func)
+            where TReturn : BaseResult, new()
+        {
+            try
+            {
+                TrimStrings.Trim(request);
+
+                ModelValidationResult modelValidationResult = ModelValidator.Validate(request);
+                if (!modelValidationResult.Ok)
+                    return ResponseBuilder<TReturn>
+                       .Fail()
+                       .IsShowInfo(false)
+                       .SetErrors(modelValidationResult.Errors)
+                       .SetInfo("Model is not valid")
+                       .Build();
+
+                return await func();
+            }
+            catch (Exception ex)
+            {
+                WriteLog(ex.Message);
+                return GetUnexpectedServerError<TReturn>(ex.Message);
+            }
+        }
     }
 }

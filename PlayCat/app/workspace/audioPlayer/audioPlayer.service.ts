@@ -2,6 +2,7 @@
 import { EventEmitter } from '@angular/core';
 import { Playlist } from '../../data/playlist';
 import { Audiotrack } from '../../data/audio';
+import { AudioService } from '../music/audios/audios.service';
 import { PlaylistService } from './playlist.service';
 import { CreatePlaylistRequest } from '../../data/request/createPlaylistRequest';
 import { UpdatePlaylistRequest } from '../../data/request/updatePlaylistRequest';
@@ -27,18 +28,26 @@ export class AudioPlayerService {
     private readonly onActionChanged:   EventEmitter<boolean>;
     private readonly onIsLoopChanged:   EventEmitter<boolean>;
     private readonly onPlaylistChanged: EventEmitter<Playlist>;
+    private readonly onPlaylistUpdated: EventEmitter<Playlist>;
 
     private _isPlaying: boolean;
 
     private _currentTime: number;
     private _duration: number;
 
-    constructor(private _playlistService: PlaylistService) {
+    private _playlistAudiosCount: Map<string, number>;
+
+    constructor(
+        private _playlistService: PlaylistService,
+        private _audioService: AudioService
+    ) {
         this._currentIndex = 0;
         this._skip = 0;
 
         this._audio = new Audio();
         this._isPlaying = false;
+
+        this._playlistAudiosCount = new Map<string, number>();
 
         this._audio.volume = 0.5;
 
@@ -49,6 +58,7 @@ export class AudioPlayerService {
         this.onActionChanged =   new EventEmitter<boolean>();
         this.onIsLoopChanged =   new EventEmitter<boolean>();
         this.onPlaylistChanged = new EventEmitter<Playlist>();
+        this.onPlaylistUpdated = new EventEmitter<Playlist>();
 
         this._audio.onended = () => {
             this.next();
@@ -71,11 +81,13 @@ export class AudioPlayerService {
             .then(userPlaylistsResult => {
                 if (userPlaylistsResult.ok) {
                     this._playlists = userPlaylistsResult.playlists;
-                    
+
                     this.selectPlaylist(null);
                     this.selectAudio(this._currentIndex);
 
-                    this.emitPlaylistLoaded();
+                    this._playlistAudiosCount.set(this._currentPlaylist.id, this._currentPlaylist.audios.length);
+                    console.log(this._playlistAudiosCount);
+                    this.emitPlayerLoaded();
                 }
             });
     }
@@ -87,6 +99,10 @@ export class AudioPlayerService {
 
     getOnIsLoopEmitter(): EventEmitter<boolean> {
         return this.onIsLoopChanged;
+    }
+
+    getOnPlaylistUpdated(): EventEmitter<Playlist> {
+        return this.onPlaylistUpdated;
     }
 
     //time update
@@ -200,18 +216,12 @@ export class AudioPlayerService {
             this.play();
     }
 
-    uploadSong(audio: Audiotrack, playlistId: string) {
+    uploadSong(playlistId: string) {
         if (this._playlists) {
-            let index = -1;
-            if (playlistId) {
-                index = this._playlists.findIndex(x => x.id == playlistId);
-            } else {
-                index = this._playlists.findIndex(x => x.isGeneral);
-            }
+            if (!playlistId)
+                playlistId = this._playlists.filter(x => x.isGeneral)[0].id;
 
-            if (index !== -1) {
-                this._playlists[index].audios.splice(index, 0, audio);
-            }
+            this.reloadAudioForPlaylist(playlistId, 0, this._playlistAudiosCount.get(playlistId));
         }
     }
 
@@ -232,7 +242,7 @@ export class AudioPlayerService {
             .then(playlistResult => {
                 if (playlistResult.ok) {
                     this._playlists.push(playlistResult.playlist);          
-                    this.emitPlaylistLoaded();
+                    this.emitPlayerLoaded();
                 }
             });
     }
@@ -245,7 +255,7 @@ export class AudioPlayerService {
                     let index = this._playlists.findIndex(x => x.id == id);
                     this._playlists.splice(index, 1);
 
-                    this.emitPlaylistLoaded();
+                    this.emitPlayerLoaded();
                 }                
             });
     }
@@ -260,9 +270,23 @@ export class AudioPlayerService {
                     let index = this._playlists.findIndex(x => x.id == id);
                     this._playlists[index] = playlistResult.playlist;
 
-                    this.emitPlaylistLoaded();
+                    this.emitPlayerLoaded();
                 }
             });
+    }
+
+    private reloadAudioForPlaylist(playlistId: string, skip: number, take: number) {
+        let index = this._playlists.findIndex(x => x.id == playlistId);
+        if (index !== -1) {
+            this._audioService
+                .loadAudios(playlistId, skip, take)
+                .then(audioResult => {
+                    if (audioResult.ok) {
+                        this._playlists[index].audios = audioResult.audios;
+                        this.onPlaylistUpdated.emit(this._playlists[index]);
+                    }
+                });
+        }
     }
 
     private selectById(id: string) {
@@ -272,7 +296,7 @@ export class AudioPlayerService {
         }
     }
 
-    private emitPlaylistLoaded() {
+    private emitPlayerLoaded() {
         this._playlists = this._playlists.sort((a, b) => {
             if (a.isGeneral && !b.isGeneral)
                 return -1;

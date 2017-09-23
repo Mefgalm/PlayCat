@@ -23,6 +23,8 @@ namespace PlayCat.DataModel
         [Required(AllowEmptyStrings = false)]
         public string FileName { get; set; }
 
+        public double Duration { get; set; }
+
         [MaxLength(10)]
         [Required(AllowEmptyStrings = false)]
         public string Extension { get; set; }

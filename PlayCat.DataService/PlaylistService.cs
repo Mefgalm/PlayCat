@@ -108,6 +108,7 @@ namespace PlayCat.DataService
                              Id = a.Id,
                              AccessUrl = a.AccessUrl,
                              Artist = a.Artist,
+                             Duration = a.Duration,
                              DateAdded = ap.DateCreated,
                              Song = a.Song,
                              Uploader = a.Uploader,
@@ -143,7 +144,7 @@ namespace PlayCat.DataService
                          select new PlaylistDTO()
                          {
                              Id = p.Id,
-                             IsGeneral = p.IsGeneral,
+                             IsGeneral = p.IsGeneral,                            
                              Owner = p.Owner,
                              Title = p.Title,
                              Audios = _paq.Select(x => x.AudioDTO),

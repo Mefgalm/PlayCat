@@ -43,6 +43,14 @@ var AudioPlayerComponent = (function () {
             .subscribe(function (currentTime) { return _this.currentTime = currentTime; });
         this._actionChangedSubscription = this._audioPlayerService.getOnActionChanged()
             .subscribe(function (isPlaingAction) { return _this.isPlaying = isPlaingAction; });
+        this._playlistUpdatedSubscription = this._audioPlayerService.getOnPlaylistUpdated()
+            .subscribe(function (playlist) {
+            var index = _this.playlists.findIndex(function (x) { return x.id == playlist.id; });
+            if (index !== -1) {
+                _this.playlists.splice(index, 1);
+                _this.playlists.splice(index, 0, playlist);
+            }
+        });
         this._isLoopChangedSubscription = this._audioPlayerService.getOnIsLoopEmitter()
             .subscribe(function (isLoop) { return _this.isLoop = isLoop; });
         this._playlistChangedSubscription = this._audioPlayerService.getOnPlaylistChanged()

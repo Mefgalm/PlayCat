@@ -104,7 +104,7 @@ var UploadComponent = (function () {
                 if (uploadResult.ok) {
                     _this.url = null;
                     _this.isUrlConfirm = false;
-                    _this._audioPlayerService.uploadSong(uploadResult.audio, null);
+                    _this._audioPlayerService.uploadSong(null);
                     _this.urlRequestForm.patchValue({
                         url: null,
                     });

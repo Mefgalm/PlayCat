@@ -15,6 +15,8 @@ namespace PlayCat.DataService.DTO
 
         public Guid Id { get; set; }
 
+        public double Duration { get; set; }
+
         public string AccessUrl { get; set; }
 
         public DateTime DateAdded { get; set; }

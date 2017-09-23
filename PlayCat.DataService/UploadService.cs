@@ -8,6 +8,7 @@ using PlayCat.Helpers;
 using PlayCat.Music;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PlayCat.DataService
 {
@@ -65,9 +66,9 @@ namespace PlayCat.DataService
             });
         }
 
-        public UploadResult UploadAudio(Guid userId, UploadAudioRequest request)
+        public async Task<UploadResult> UploadAudioAsync(Guid userId, UploadAudioRequest request)
         {
-            return RequestTemplateCheckModel(request, () =>
+            return await RequestTemplateCheckModelAsync(request, async () =>
             {
                 DataModel.User user = _dbContext.Users.FirstOrDefault(x => x.Id == userId);
                 if (user == null)
@@ -97,7 +98,7 @@ namespace PlayCat.DataService
                         string videoId = UrlFormatter.GetYoutubeVideoIdentifier(request.Url);
 
                         IFile videoFile = _saveVideo.Save(request.Url);
-                        IFile audioFile = _extractAudio.Extract(videoFile);
+                        IFile audioFile = await _extractAudio.ExtractAsync(videoFile);
 
                         //TODO: create upload for FileSystem, Blob, etc...
                         string accessUrl = _uploadAudio.Upload(audioFile, StorageType.FileSystem);
@@ -114,6 +115,7 @@ namespace PlayCat.DataService
                             DateCreated = DateTime.Now,
                             Artist = request.Artist,
                             Song = request.Song,
+                            Duration = audioFile.Duration,
                             Extension = audioFile.Extension,
                             FileName = audioFile.Filename,
                             UniqueIdentifier = videoId,

@@ -39,7 +39,7 @@ namespace PlayCat.Tests.UploadTests
 
             var uploadAudioRequest = new UploadAudioRequest();
             
-            UploadResult result = uploadService.UploadAudio(Guid.Empty, uploadAudioRequest);
+            UploadResult result = uploadService.UploadAudioAsync(Guid.Empty, uploadAudioRequest).Result;
 
             CheckIfFail(result);
 
@@ -70,8 +70,8 @@ namespace PlayCat.Tests.UploadTests
 
                     Guid userId = GetUserId(context);
 
-                    UploadResult result = uploadService.UploadAudio(userId, uploadAudioRequest);
-                    UploadResult resultDownloaded = uploadService.UploadAudio(userId, uploadAudioRequest);
+                    UploadResult result = uploadService.UploadAudioAsync(userId, uploadAudioRequest).Result;
+                    UploadResult resultDownloaded = uploadService.UploadAudioAsync(userId, uploadAudioRequest).Result;
 
                     CheckIfFail(resultDownloaded);
 
@@ -111,14 +111,14 @@ namespace PlayCat.Tests.UploadTests
 
                     Task.Run(() => {
 
-                        uploadService.UploadAudio(userId, uploadAudioRequest);
+                        uploadService.UploadAudioAsync(userId, uploadAudioRequest);
 
                         string audioFilePath = fileResolver.GetAudioFolderPath(StorageType.FileSystem);
 
                         File.Delete(Path.Combine(audioFilePath, "80AlC3LaPqQ.mp3"));
                     });
                     Thread.Sleep(500);
-                    UploadResult result = uploadService.UploadAudio(userId, uploadAudioRequest);                    
+                    UploadResult result = uploadService.UploadAudioAsync(userId, uploadAudioRequest).Result;                    
 
                     CheckIfFail(result);
                     Assert.Equal("User already uploading audio", result.Info);
@@ -146,7 +146,7 @@ namespace PlayCat.Tests.UploadTests
                     };
 
                     Guid userId = GetUserId(context);
-                    UploadResult result = uploadService.UploadAudio(userId, uploadAudioRequest);
+                    UploadResult result = uploadService.UploadAudioAsync(userId, uploadAudioRequest).Result;
 
                     CheckIfSuccess(result);
 
