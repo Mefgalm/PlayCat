@@ -12,7 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var AudioComponent = (function () {
     function AudioComponent() {
+        this.onPlayStart = new core_1.EventEmitter();
     }
+    AudioComponent.prototype.onPlay = function () {
+        this.onPlayStart.emit();
+    };
     return AudioComponent;
 }());
 __decorate([
@@ -27,6 +31,10 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", Number)
 ], AudioComponent.prototype, "duration", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], AudioComponent.prototype, "onPlayStart", void 0);
 AudioComponent = __decorate([
     core_1.Component({
         selector: 'audiotrack',

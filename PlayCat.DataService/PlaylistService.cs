@@ -57,7 +57,7 @@ namespace PlayCat.DataService
                 if (playlistWithAudios == null)
                     return ResponseBuilder<BaseResult>.Fail().SetInfoAndBuild(PlaylistNotFound);
 
-                if(playlistWithAudios.Playlist.IsGeneral)
+                if (playlistWithAudios.Playlist.IsGeneral)
                     return ResponseBuilder<BaseResult>.Fail().SetInfoAndBuild("General playlist cannot be removed");
 
                 _dbContext.Playlists.Remove(playlistWithAudios.Playlist);
@@ -133,7 +133,8 @@ namespace PlayCat.DataService
                              Title = p.Title,
                              Audios = _paq.Select(x => x.AudioDTO),
                          });
-                } else
+                }
+                else
                 {
                     //if no playlist id then select from general
                     playlistDtoQry =
@@ -144,7 +145,7 @@ namespace PlayCat.DataService
                          select new PlaylistDTO()
                          {
                              Id = p.Id,
-                             IsGeneral = p.IsGeneral,                            
+                             IsGeneral = p.IsGeneral,
                              Owner = p.Owner,
                              Title = p.Title,
                              Audios = _paq.Select(x => x.AudioDTO),

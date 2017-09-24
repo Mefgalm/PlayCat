@@ -18,6 +18,7 @@ var playlist_service_1 = require("./playlist.service");
 var error_module_1 = require("../../shared/components/error.module");
 var playlist_component_1 = require("./playlist.component");
 var audio_component_1 = require("./audio.component");
+var angular2_infinite_scroll_1 = require("angular2-infinite-scroll/angular2-infinite-scroll");
 var AudioPlayerModule = (function () {
     function AudioPlayerModule() {
     }
@@ -31,7 +32,8 @@ AudioPlayerModule = __decorate([
             error_module_1.ErrorModule,
             forms_1.ReactiveFormsModule,
             progressBar_module_1.ProgressBarModule,
-            primeng_1.DialogModule
+            primeng_1.DialogModule,
+            angular2_infinite_scroll_1.InfiniteScrollModule
         ],
         declarations: [
             audioPlayer_component_1.AudioPlayerComponent,

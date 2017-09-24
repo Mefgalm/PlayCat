@@ -9,11 +9,15 @@
 }
 
 .audios-panel {
-    position: absolute;
-    top: 10%;
-    height: 80%;
+    padding: 1%;
+    height: 100%;
     width: 100%;
     display: flex;
+    justify-content: space-between
+}
+
+.audios {
+    overflow-y: auto;
 }
 
 /deep/ .ui-dialog {

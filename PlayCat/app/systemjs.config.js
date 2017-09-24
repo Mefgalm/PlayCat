@@ -19,7 +19,8 @@
             '@angular/platform-browser/animations': 'npm:@angular/platform-browser/bundles/platform-browser-animations.umd.js',
             'rxjs': 'npm:rxjs',
             'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
-            'primeng': 'npm:primeng' 
+            'primeng': 'npm:primeng',
+            'angular2-infinite-scroll': 'npm:angular2-infinite-scroll' 
         },
         packages: {
             app: {
@@ -30,6 +31,9 @@
                 defaultExtension: 'js'
             },
             primeng: {
+                defaultExtension: 'js'
+            },
+            'angular2-infinite-scroll': {
                 defaultExtension: 'js'
             }
         }

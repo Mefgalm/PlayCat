@@ -4,18 +4,17 @@ import { Playlist } from '../../data/playlist';
 import { Audiotrack } from '../../data/audio';
 
 @Component({
-    selector: 'audioPlayer',
+    selector: 'audioPlayer',    
     templateUrl: './app/workspace/audioPlayer/audioPlayer.component.html',
     styleUrls: [
         './app/workspace/audioPlayer/audioPlayer.component.css', 
     ],
 })
 export class AudioPlayerComponent {
-    @ViewChild('progressBar') progressBar;
+    //@ViewChild('progressBar') progressBar;
     private _timeUpdateSubscription: any;
     private _audioChangedSubscription: any;
     private _actionChangedSubscription: any;
-    private _durationChangeSubscription: any;
     private _playlistLoadedSubscription: any;
     private _isLoopChangedSubscription: any;
     private _playlistChangedSubscription: any;
@@ -23,7 +22,6 @@ export class AudioPlayerComponent {
 
     public isPlaylistLoaded: boolean;
     public currentTime: number;
-    public duration: number;
 
     public display: boolean;
 
@@ -46,11 +44,10 @@ export class AudioPlayerComponent {
         this.isPlaying = this._audioPlayerService.isPlaying();
 
         this.volume = this._audioPlayerService.getVolume() * 100;
-        //this.playlists = this._audioPlayerService.getPlaylists();
+        this.playlists = this._audioPlayerService.getPlaylists();
         this.currentPlaylist = this._audioPlayerService.getCurrentPlaylist();
         this.audio = this._audioPlayerService.getCurrentAudio();
         this.currentTime = this._audioPlayerService.getCurrentTime();
-        this.duration = this._audioPlayerService.getDuration();
         this.isLoop = this._audioPlayerService.isLoop();
         
         if (this.playlists) {
@@ -65,9 +62,6 @@ export class AudioPlayerComponent {
 
         this._audioChangedSubscription = this._audioPlayerService.getOnAudioChanged()
             .subscribe(audio => this.audio = audio);
-
-        this._durationChangeSubscription = this._audioPlayerService.getOnDurationEmitter()
-            .subscribe(duration => this.duration = duration);
 
         this._timeUpdateSubscription = this._audioPlayerService.getOnTimeUpdateEmitter()
             .subscribe(currentTime => this.currentTime = currentTime);
@@ -150,11 +144,17 @@ export class AudioPlayerComponent {
         this._audioPlayerService.deletePlaylist(playlist.id);
     }
 
+    onScrollDown() {
+        this._audioPlayerService.loadAudios(this.currentPlaylist.id);
+    }
+
     onNgDestroy() {
         this._playlistLoadedSubscription.unsubscribe();
         this._audioChangedSubscription.unsubscribe();
-        this._durationChangeSubscription.unsubscribe();
         this._timeUpdateSubscription.unsubscribe();
         this._isLoopChangedSubscription.unsubscribe();
+        this._actionChangedSubscription.unsubscribe();
+        this._playlistChangedSubscription.unsubscribe();
+        this._playlistUpdatedSubscription.unsubscribe();
     }
 }

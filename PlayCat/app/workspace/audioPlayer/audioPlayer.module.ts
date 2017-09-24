@@ -11,6 +11,7 @@ import { PlaylistService } from './playlist.service';
 import { ErrorModule } from '../../shared/components/error.module';
 import { PlaylistComponent } from './playlist.component';
 import { AudioComponent } from './audio.component';
+import { InfiniteScrollModule } from 'angular2-infinite-scroll/angular2-infinite-scroll';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { AudioComponent } from './audio.component';
         ErrorModule,
         ReactiveFormsModule,
         ProgressBarModule,
-        DialogModule
+        DialogModule,
+        InfiniteScrollModule
     ],
     declarations: [
         AudioPlayerComponent,

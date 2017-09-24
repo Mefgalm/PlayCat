@@ -11,4 +11,10 @@ export class AudioComponent {
     @Input() artist: string;
     @Input() song: string;
     @Input() duration: number;
+
+    @Output() onPlayStart = new EventEmitter();
+
+    onPlay() {
+        this.onPlayStart.emit();
+    }
 }

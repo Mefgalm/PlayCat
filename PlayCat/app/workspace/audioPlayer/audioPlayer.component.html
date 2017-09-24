@@ -19,14 +19,14 @@
                 <button *ngIf="isPlaying" (click)="pause()">Pause</button>
                 <button *ngIf="!isPlaying" (click)="play()">Play</button>
 
-                {{currentTime | secondToTime}} {{audio.artist}} - {{audio.song}} {{duration | secondToTime}}
+                {{currentTime | secondToTime}} {{audio.artist}} - {{audio.song}} {{audio.duration | secondToTime}}
             </div>
 
             <div style="display: flex;">
-                <progressBar [min]="0" 
-                             [max]="duration"
-                             [height]="15" 
-                             [width]="300" 
+                <progressBar [min]="0"
+                             [max]="audio.duration"
+                             [height]="15"
+                             [width]="300"
                              [horizontal-padding]="10"
                              [vertical-padding]="0"
                              [currentValue]="currentTime"
@@ -43,9 +43,9 @@
                              (onClick)="volumeChanged($event)">
                 </progressBar>
 
-                <input type="checkbox" [checked]="isLoop" (change)="toggleLoop()"/>Loop
+                <input type="checkbox" [checked]="isLoop" (change)="toggleLoop()" />Loop
             </div>
-            
+
             <div>
                 <button (click)="previous()">Previous</button>
                 <button (click)="next()">Next</button>
@@ -57,28 +57,19 @@
                       [showHeader]="false"
                       [positionLeft]="0"
                       [positionTop]="80">
-                <div class="audios-panel" style="justify-content: space-between">
-                    <!--<table border="1" height="100%">
-                        <tr>
-                            <th>Play</th>
-                            <th>Artist</th>
-                            <th>Song</th>
-                        </tr>
-                        <tr *ngFor="let audio of currentPlaylist.audios">
-                            <td><button (click)="playById(audio.id)">Play</button></td>
-                            <td>{{audio.artist}}</td>
-                            <td>{{audio.song}}</td>
-
-                        </tr>
-                    </table>-->
-                    <div>
+                <div class="audios-panel">
+                    <div class="audios"
+                         infinite-scroll
+                         [infiniteScrollDistance]="2"
+                         [infiniteScrollThrottle]="100"
+                         (scrolled)="onScrollDown()"
+                         [scrollWindow]="false">
                         <div *ngFor="let audio of currentPlaylist.audios">
-                            <div>
-                                <audiotrack [artist]="audio.artist"
-                                            [song]="audio.song"
-                                            [duration]="audio.duration">
-                                </audiotrack>
-                            </div>
+                            <audiotrack [artist]="audio.artist"
+                                        [song]="audio.song"
+                                        [duration]="audio.duration"
+                                        (onPlayStart)="playById(audio.id)">
+                            </audiotrack>
                         </div>
                     </div>
                     <div>
@@ -90,9 +81,18 @@
                     </div>
                 </div>
             </p-dialog>
+            <p-dialog [(visible)]="add-to-playlist"
+                      [draggable]="false"
+                      [resizable]="false"
+                      [modal]="true"
+                      [showHeader]="true"
+                      [positionLeft]="0"
+                      [positionTop]="80">
+
+            </p-dialog>
             <button *ngIf="!display" style="float:right" (click)="showDialog()">Show</button>
             <button *ngIf="display" style="float:right" (click)="hideDialog()">Hide</button>
-        </div>        
+        </div>
     </div>
     <div *ngIf="!isPlaylistLoaded">
         L O A D I N G

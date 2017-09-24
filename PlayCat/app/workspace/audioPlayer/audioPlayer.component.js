@@ -19,11 +19,10 @@ var AudioPlayerComponent = (function () {
         this.display = false;
         this.isPlaying = this._audioPlayerService.isPlaying();
         this.volume = this._audioPlayerService.getVolume() * 100;
-        //this.playlists = this._audioPlayerService.getPlaylists();
+        this.playlists = this._audioPlayerService.getPlaylists();
         this.currentPlaylist = this._audioPlayerService.getCurrentPlaylist();
         this.audio = this._audioPlayerService.getCurrentAudio();
         this.currentTime = this._audioPlayerService.getCurrentTime();
-        this.duration = this._audioPlayerService.getDuration();
         this.isLoop = this._audioPlayerService.isLoop();
         if (this.playlists) {
             this.isPlaylistLoaded = true;
@@ -37,8 +36,6 @@ var AudioPlayerComponent = (function () {
         }
         this._audioChangedSubscription = this._audioPlayerService.getOnAudioChanged()
             .subscribe(function (audio) { return _this.audio = audio; });
-        this._durationChangeSubscription = this._audioPlayerService.getOnDurationEmitter()
-            .subscribe(function (duration) { return _this.duration = duration; });
         this._timeUpdateSubscription = this._audioPlayerService.getOnTimeUpdateEmitter()
             .subscribe(function (currentTime) { return _this.currentTime = currentTime; });
         this._actionChangedSubscription = this._audioPlayerService.getOnActionChanged()
@@ -100,19 +97,20 @@ var AudioPlayerComponent = (function () {
     AudioPlayerComponent.prototype.deletePlaylist = function (playlist) {
         this._audioPlayerService.deletePlaylist(playlist.id);
     };
+    AudioPlayerComponent.prototype.onScrollDown = function () {
+        this._audioPlayerService.loadAudios(this.currentPlaylist.id);
+    };
     AudioPlayerComponent.prototype.onNgDestroy = function () {
         this._playlistLoadedSubscription.unsubscribe();
         this._audioChangedSubscription.unsubscribe();
-        this._durationChangeSubscription.unsubscribe();
         this._timeUpdateSubscription.unsubscribe();
         this._isLoopChangedSubscription.unsubscribe();
+        this._actionChangedSubscription.unsubscribe();
+        this._playlistChangedSubscription.unsubscribe();
+        this._playlistUpdatedSubscription.unsubscribe();
     };
     return AudioPlayerComponent;
 }());
-__decorate([
-    core_1.ViewChild('progressBar'),
-    __metadata("design:type", Object)
-], AudioPlayerComponent.prototype, "progressBar", void 0);
 AudioPlayerComponent = __decorate([
     core_1.Component({
         selector: 'audioPlayer',

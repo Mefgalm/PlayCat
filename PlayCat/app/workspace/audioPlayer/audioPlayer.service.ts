@@ -9,8 +9,7 @@ import { UpdatePlaylistRequest } from '../../data/request/updatePlaylistRequest'
 
 @Injectable()
 export class AudioPlayerService {
-    private readonly _take: number = 50;
-    private _skip: number;
+    private readonly _take: number = 20;
 
     private _playlists: Playlist[];
 
@@ -22,7 +21,6 @@ export class AudioPlayerService {
     private _audio: any;
 
     private readonly onPlayerLoaded:    EventEmitter<Playlist[]>;
-    private readonly onDurationChange:  EventEmitter<number>;
     private readonly onTimeUpdate:      EventEmitter<number>;
     private readonly onAudioChanged:    EventEmitter<Audiotrack>;
     private readonly onActionChanged:   EventEmitter<boolean>;
@@ -35,24 +33,22 @@ export class AudioPlayerService {
     private _currentTime: number;
     private _duration: number;
 
-    private _playlistAudiosCount: Map<string, number>;
+    private _playlistAudiosCount: Map<string, any>;
 
     constructor(
         private _playlistService: PlaylistService,
         private _audioService: AudioService
     ) {
         this._currentIndex = 0;
-        this._skip = 0;
 
         this._audio = new Audio();
         this._isPlaying = false;
 
-        this._playlistAudiosCount = new Map<string, number>();
+        this._playlistAudiosCount = new Map<string, any>();
 
         this._audio.volume = 0.5;
 
         this.onPlayerLoaded =    new EventEmitter<Playlist[]>();
-        this.onDurationChange =  new EventEmitter<number>();
         this.onTimeUpdate =      new EventEmitter<number>();
         this.onAudioChanged =    new EventEmitter<Audiotrack>();
         this.onActionChanged =   new EventEmitter<boolean>();
@@ -69,15 +65,11 @@ export class AudioPlayerService {
             this._currentTime = this._audio.currentTime;
             this.onTimeUpdate.emit(this._audio.currentTime);
         };
-        this._audio.ondurationchange = () => {
-            this._duration = this._audio.duration;
-            this.onDurationChange.emit(this._audio.duration);
-        }
 
         this._audio.oncanplay = () => this.onAudioChanged.emit(this._currentAudio);
 
         this._playlistService
-            .userPlaylists(null, this._skip, this._take)
+            .userPlaylists(null, 0, this._take)
             .then(userPlaylistsResult => {
                 if (userPlaylistsResult.ok) {
                     this._playlists = userPlaylistsResult.playlists;
@@ -85,18 +77,15 @@ export class AudioPlayerService {
                     this.selectPlaylist(null);
                     this.selectAudio(this._currentIndex);
 
-                    this._playlistAudiosCount.set(this._currentPlaylist.id, this._currentPlaylist.audios.length);
-                    console.log(this._playlistAudiosCount);
+                    this._playlistAudiosCount.set(this._currentPlaylist.id, {
+                        skip: this._currentPlaylist.audios.length,
+                        isAllLoaded: false,
+                    });
                     this.emitPlayerLoaded();
                 }
             });
     }
     //register events
-    //on event duration
-    getOnDurationEmitter(): EventEmitter<number> {
-        return this.onDurationChange;
-    }
-
     getOnIsLoopEmitter(): EventEmitter<boolean> {
         return this.onIsLoopChanged;
     }
@@ -145,12 +134,8 @@ export class AudioPlayerService {
         return this._currentTime;
     }
 
-    getDuration(): number {
-        return this._duration;
-    }
-
     getPlaylists(): Playlist[] {
-        return this._playlists.slice();
+        return this._playlists ? this._playlists.slice() : this._playlists;
     }
 
     getCurrentPlaylist(): Playlist {
@@ -197,7 +182,7 @@ export class AudioPlayerService {
     }
 
     setCurrentTime(currentTime: number) {
-        if (currentTime >= 0 && currentTime <= this._duration) {
+        if (currentTime >= 0 && currentTime <= this._currentAudio.duration) {
             this._audio.currentTime = currentTime;
         }
     }
@@ -221,7 +206,7 @@ export class AudioPlayerService {
             if (!playlistId)
                 playlistId = this._playlists.filter(x => x.isGeneral)[0].id;
 
-            this.reloadAudioForPlaylist(playlistId, 0, this._playlistAudiosCount.get(playlistId));
+            this.reloadAudioForPlaylist(playlistId, 0, this._playlistAudiosCount.get(playlistId).skip);
         }
     }
 
@@ -273,6 +258,24 @@ export class AudioPlayerService {
                     this.emitPlayerLoaded();
                 }
             });
+    }
+
+    loadAudios(playlistId: string) {
+        let index = this._playlists.findIndex(x => x.id == playlistId);
+        if (index !== -1 && !this._playlistAudiosCount.get(playlistId).isAllLoaded) {
+            this._audioService
+                .loadAudios(playlistId, this._playlistAudiosCount.get(playlistId).skip, this._take)
+                .then(audioResult => {
+                    if (audioResult.ok) {
+                        this._playlists[index].audios = this._playlists[index].audios.concat(audioResult.audios);                    
+                        this._playlistAudiosCount.set(playlistId, {
+                            skip: this._playlists[index].audios.length,
+                            isAllLoaded: audioResult.audios.length === 0,
+                        });
+                        this.onPlaylistUpdated.emit(this._playlists[index]);
+                    }
+                });
+        }
     }
 
     private reloadAudioForPlaylist(playlistId: string, skip: number, take: number) {
