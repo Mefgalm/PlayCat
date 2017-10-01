@@ -8,13 +8,20 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 })
 
 export class AudioComponent {
+    @Input() id: string;
     @Input() artist: string;
     @Input() song: string;
     @Input() duration: number;
 
     @Output() onPlayStart = new EventEmitter();
+    @Output() onSelectAudio = new EventEmitter<string>();
 
-    onPlay() {
+    play() {
         this.onPlayStart.emit();
+    }
+
+    selectAudio() {
+        console.log(this.id);
+        this.onSelectAudio.emit(this.id);
     }
 }

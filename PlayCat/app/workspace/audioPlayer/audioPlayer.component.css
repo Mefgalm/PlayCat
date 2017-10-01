@@ -20,11 +20,15 @@
     overflow-y: auto;
 }
 
-/deep/ .ui-dialog {
+.player-dialog /deep/ .ui-dialog {
     height: calc(100% - 140px);
     width: 100%;
     border-radius: 0;
     padding: 0;
+}
+
+.playlist-dialog /deep/ .ui-dialog {
+
 }
 
 /deep/ .ui-dialog-content {

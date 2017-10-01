@@ -17,6 +17,8 @@ var AudioPlayerComponent = (function () {
         this._audioPlayerService = _audioPlayerService;
         this.isPlaylistLoaded = false;
         this.display = false;
+        this.addToPlaylistVisible = false;
+        this.selectedAudioId = null;
         this.isPlaying = this._audioPlayerService.isPlaying();
         this.volume = this._audioPlayerService.getVolume() * 100;
         this.playlists = this._audioPlayerService.getPlaylists();
@@ -99,6 +101,15 @@ var AudioPlayerComponent = (function () {
     };
     AudioPlayerComponent.prototype.onScrollDown = function () {
         this._audioPlayerService.loadAudios(this.currentPlaylist.id);
+    };
+    AudioPlayerComponent.prototype.selectAudio = function (audioId) {
+        console.log(audioId);
+        this.selectedAudioId = audioId;
+        this.addToPlaylistVisible = true;
+    };
+    AudioPlayerComponent.prototype.addToPlaylist = function (playlistId) {
+        console.log(this.selectedAudioId, playlistId);
+        this.addToPlaylistVisible = false;
     };
     AudioPlayerComponent.prototype.onNgDestroy = function () {
         this._playlistLoadedSubscription.unsubscribe();

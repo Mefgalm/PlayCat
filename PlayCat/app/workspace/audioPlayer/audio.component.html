@@ -1,6 +1,6 @@
 ﻿<div class="audio">
     <div class="play-controls">
-        <button (click)="onPlay()">Play</button>
+        <button (click)="play()">Play</button>
     </div>
     <div class="song-info">
         <div class="artist-name">
@@ -18,7 +18,7 @@
     </div>
     <div class="additional-controls">
         <div class="playlist-add">
-            <button>Add</button>
+            <button (click)="selectAudio()">Add</button>
         </div>
         <div class="download">
             <button>Download</button>

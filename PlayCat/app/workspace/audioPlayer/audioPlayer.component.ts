@@ -25,6 +25,8 @@ export class AudioPlayerComponent {
 
     public display: boolean;
 
+    public addToPlaylistVisible: boolean;
+
     public playlists: Playlist[];
     public currentPlaylist: Playlist;
     public audio: Audiotrack;
@@ -37,9 +39,14 @@ export class AudioPlayerComponent {
 
     public playListName: string;
 
+    public selectedAudioId: string;
+
     constructor(private _audioPlayerService: AudioPlayerService) {
         this.isPlaylistLoaded = false;
         this.display = false;
+        this.addToPlaylistVisible = false;
+
+        this.selectedAudioId = null;
 
         this.isPlaying = this._audioPlayerService.isPlaying();
 
@@ -146,6 +153,18 @@ export class AudioPlayerComponent {
 
     onScrollDown() {
         this._audioPlayerService.loadAudios(this.currentPlaylist.id);
+    }
+
+    selectAudio(audioId: string) {
+        console.log(audioId);
+        this.selectedAudioId = audioId;
+        this.addToPlaylistVisible = true;
+    }
+
+    addToPlaylist(playlistId: string) {
+        console.log(this.selectedAudioId, playlistId);
+
+        this.addToPlaylistVisible = false;
     }
 
     onNgDestroy() {

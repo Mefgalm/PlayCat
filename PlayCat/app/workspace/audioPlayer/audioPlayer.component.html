@@ -50,46 +50,65 @@
                 <button (click)="previous()">Previous</button>
                 <button (click)="next()">Next</button>
             </div>
-            <p-dialog [(visible)]="display"
-                      [draggable]="false"
-                      [resizable]="false"
-                      [modal]="false"
-                      [showHeader]="false"
-                      [positionLeft]="0"
-                      [positionTop]="80">
-                <div class="audios-panel">
-                    <div class="audios"
-                         infinite-scroll
-                         [infiniteScrollDistance]="2"
-                         [infiniteScrollThrottle]="100"
-                         (scrolled)="onScrollDown()"
-                         [scrollWindow]="false">
-                        <div *ngFor="let audio of currentPlaylist.audios">
-                            <audiotrack [artist]="audio.artist"
-                                        [song]="audio.song"
-                                        [duration]="audio.duration"
-                                        (onPlayStart)="playById(audio.id)">
-                            </audiotrack>
+            <div class="player-dialog">
+                <p-dialog 
+                          [(visible)]="display"
+                          [draggable]="false"
+                          [resizable]="false"
+                          [modal]="false"
+                          [showHeader]="false"
+                          [positionLeft]="0"
+                          [positionTop]="80">
+                    <div class="audios-panel">
+                        <div class="audios"
+                             infinite-scroll
+                             [infiniteScrollDistance]="2"
+                             [infiniteScrollThrottle]="100"
+                             (scrolled)="onScrollDown()"
+                             [scrollWindow]="false">
+                            <div *ngFor="let audio of currentPlaylist.audios">
+                                <audiotrack [id]="audio.id"
+                                            [artist]="audio.artist"
+                                            [song]="audio.song"
+                                            [duration]="audio.duration"
+                                            (onPlayStart)="playById(audio.id)"
+                                            (onSelectAudio)="selectAudio($event)">
+                                </audiotrack>
+                            </div>
+                        </div>
+                        <div>
+                            <playlist [playlists]="playlists"
+                                      (onCreate)="createPlaylist($event)"
+                                      (onDelete)="deletePlaylist($event)"
+                                      (onEdit)="updatePlaylist($event)">
+                            </playlist>
                         </div>
                     </div>
-                    <div>
-                        <playlist [playlists]="playlists"
-                                  (onCreate)="createPlaylist($event)"
-                                  (onDelete)="deletePlaylist($event)"
-                                  (onEdit)="updatePlaylist($event)">
-                        </playlist>
-                    </div>
-                </div>
-            </p-dialog>
-            <p-dialog [(visible)]="add-to-playlist"
-                      [draggable]="false"
-                      [resizable]="false"
-                      [modal]="true"
-                      [showHeader]="true"
-                      [positionLeft]="0"
-                      [positionTop]="80">
+                </p-dialog>
+            </div>
 
-            </p-dialog>
+            <div class="playlist-dialog">
+                <p-dialog appendTo="body"
+                          [(visible)]="addToPlaylistVisible"
+                          [draggable]="false"
+                          [resizable]="false"
+                          [modal]="true"
+                          [showHeader]="true"
+                          [positionLeft]="0"
+                          [positionTop]="80">
+                    <p-header>
+                        Add To Playlist
+                    </p-header>
+                    <p-footer>
+                        <div *ngFor="let playlist of playlists">
+                            <div>
+                                <button (click)="addToPlaylist(playlist.id)">Add</button> {{playlist.title}}
+                            </div>
+                        </div>
+                    </p-footer>
+                </p-dialog>
+            </div>
+            
             <button *ngIf="!display" style="float:right" (click)="showDialog()">Show</button>
             <button *ngIf="display" style="float:right" (click)="hideDialog()">Hide</button>
         </div>

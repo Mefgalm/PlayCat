@@ -13,12 +13,21 @@ var core_1 = require("@angular/core");
 var AudioComponent = (function () {
     function AudioComponent() {
         this.onPlayStart = new core_1.EventEmitter();
+        this.onSelectAudio = new core_1.EventEmitter();
     }
-    AudioComponent.prototype.onPlay = function () {
+    AudioComponent.prototype.play = function () {
         this.onPlayStart.emit();
+    };
+    AudioComponent.prototype.selectAudio = function () {
+        console.log(this.id);
+        this.onSelectAudio.emit(this.id);
     };
     return AudioComponent;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], AudioComponent.prototype, "id", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", String)
@@ -35,6 +44,10 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", Object)
 ], AudioComponent.prototype, "onPlayStart", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], AudioComponent.prototype, "onSelectAudio", void 0);
 AudioComponent = __decorate([
     core_1.Component({
         selector: 'audiotrack',
