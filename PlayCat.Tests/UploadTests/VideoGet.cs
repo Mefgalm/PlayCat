@@ -113,7 +113,7 @@ namespace PlayCat.Tests.UploadTests
                         Artist = "Rick Astley",
                         Song = "Together Forever",
                         Url = youtubeUrl,
-                    });
+                    }).Result;
 
                     CheckIfSuccess(uploadResult);
 
