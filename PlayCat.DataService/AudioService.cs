@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using PlayCat.DataService.Response;
 using PlayCat.DataService.Request;
+using Microsoft.EntityFrameworkCore;
 
 namespace PlayCat.DataService
 {
@@ -58,13 +59,12 @@ namespace PlayCat.DataService
             {
                 //Is need check audioId??? - perfomance issue
                 var playlistInfo =
-                    (from p in _dbContext.Playlists
-                     join ap in _dbContext.AudioPlaylists on p.Id equals ap.PlaylistId into _ap
-                     where p.Id == request.PlaylistId && p.OwnerId == userId && !p.IsGeneral
+                    (from p in _dbContext.Playlists.Include(x => x.AudioPlaylists)
+                     where p.Id == request.PlaylistId && p.OwnerId == userId
                      select new
                      {
                          Playlist = p,
-                         AddedAudioPlaylist = _ap.FirstOrDefault(x => x.AudioId == request.AudioId),
+                         AddedAudioPlaylist = p.AudioPlaylists.FirstOrDefault(x => x.AudioId == request.AudioId),
                      })
                     .FirstOrDefault();
 
@@ -87,13 +87,12 @@ namespace PlayCat.DataService
             {
                 //Is need check audioId??? - perfomance issue
                 var playlistInfo =
-                    (from p in _dbContext.Playlists
-                    join ap in _dbContext.AudioPlaylists on p.Id equals ap.PlaylistId into _ap
-                    where p.Id == request.PlaylistId && p.OwnerId == userId && !p.IsGeneral
+                    (from p in _dbContext.Playlists.Include(x => x.AudioPlaylists)
+                    where p.Id == request.PlaylistId && p.OwnerId == userId
                     select new
                     {
                         Playlist = p,
-                        IsAlreadyAdded = _ap.Any(x => x.AudioId == request.AudioId),
+                        IsAlreadyAdded = p.AudioPlaylists.Any(x => x.AudioId == request.AudioId),
                     })
                     .FirstOrDefault();
 

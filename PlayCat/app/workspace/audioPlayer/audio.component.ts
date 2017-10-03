@@ -15,13 +15,17 @@ export class AudioComponent {
 
     @Output() onPlayStart = new EventEmitter();
     @Output() onSelectAudio = new EventEmitter<string>();
+    @Output() onRemoveFromPlaylist = new EventEmitter<string>();
 
     play() {
         this.onPlayStart.emit();
     }
 
     selectAudio() {
-        console.log(this.id);
         this.onSelectAudio.emit(this.id);
+    }
+
+    removeFromPlaylist() {
+        this.onRemoveFromPlaylist.emit(this.id);
     }
 }

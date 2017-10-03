@@ -16,13 +16,15 @@ export class PlaylistComponent {
     private createModelName = 'CreatePlaylistRequest';
     private updateModelName = 'UpdatePlaylistRequest';
 
-    @Input('playlists') playlists: Playlist[];
+    @Input() playlists: Playlist[];
+    @Input() currentPlaylist: Playlist;
 
     public editPlaylists: PlaylistEdit[];
 
     @Output() onCreate: EventEmitter<Playlist>;
     @Output() onEdit:   EventEmitter<Playlist>;
     @Output() onDelete: EventEmitter<Playlist>;
+    @Output() onSelect: EventEmitter<Playlist>;
 
     public createPlaylistForm: FormGroup;
     public updatePlaylistForm: FormGroup;
@@ -38,6 +40,7 @@ export class PlaylistComponent {
         this.onCreate = new EventEmitter<Playlist>();
         this.onEdit =   new EventEmitter<Playlist>();
         this.onDelete = new EventEmitter<Playlist>();
+        this.onSelect = new EventEmitter<Playlist>();
 
         this.createErrorsValidation = new Map<string, Map<string, ValidationModel>>();
         this.updateErrorsValidation = new Map<string, Map<string, ValidationModel>>();
@@ -99,6 +102,11 @@ export class PlaylistComponent {
 
     stopEdit(playlistEdit: PlaylistEdit) {
         playlistEdit.isEditing = false;
+    }
+
+    select(playlist: Playlist) {
+        console.log(playlist.id);
+        this.onSelect.emit(playlist);
     }
 
     create({ value, valid }: { value: any, valid: boolean }) {

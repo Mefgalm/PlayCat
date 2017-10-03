@@ -72,15 +72,18 @@
                                             [song]="audio.song"
                                             [duration]="audio.duration"
                                             (onPlayStart)="playById(audio.id)"
-                                            (onSelectAudio)="selectAudio($event)">
+                                            (onSelectAudio)="selectAudio($event)"
+                                            (onRemoveFromPlaylist)="removeFromPlaylist($event)">
                                 </audiotrack>
                             </div>
                         </div>
                         <div>
                             <playlist [playlists]="playlists"
+                                      [currentPlaylist]="currentPlaylist"
                                       (onCreate)="createPlaylist($event)"
                                       (onDelete)="deletePlaylist($event)"
-                                      (onEdit)="updatePlaylist($event)">
+                                      (onEdit)="updatePlaylist($event)"
+                                      (onSelect)="selectPlaylist($event)">
                             </playlist>
                         </div>
                     </div>
@@ -99,12 +102,18 @@
                     <p-header>
                         Add To Playlist
                     </p-header>
-                    <p-footer>
+                    <div>
+                        <div *ngIf="isAddToPlaylistError">
+                            {{addToPlaylistError}}
+                        </div>
                         <div *ngFor="let playlist of playlists">
                             <div>
                                 <button (click)="addToPlaylist(playlist.id)">Add</button> {{playlist.title}}
                             </div>
                         </div>
+                    </div>
+                    <p-footer>
+                        <button (click)="closePlaylistDialog()">Close</button>
                     </p-footer>
                 </p-dialog>
             </div>

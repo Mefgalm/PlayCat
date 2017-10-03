@@ -1,6 +1,7 @@
 ﻿import { Component, ViewChild } from '@angular/core';
 import { AudioPlayerService } from './audioPlayer.service';
 import { Playlist } from '../../data/playlist';
+import { BaseResult } from '../../data/response/baseResult';
 import { Audiotrack } from '../../data/audio';
 
 @Component({
@@ -41,12 +42,18 @@ export class AudioPlayerComponent {
 
     public selectedAudioId: string;
 
+    public isAddToPlaylistError: boolean;
+    public addToPlaylistError: string;
+
     constructor(private _audioPlayerService: AudioPlayerService) {
         this.isPlaylistLoaded = false;
         this.display = false;
         this.addToPlaylistVisible = false;
 
         this.selectedAudioId = null;
+        this.addToPlaylistError = null;
+
+        this.isAddToPlaylistError = false;
 
         this.isPlaying = this._audioPlayerService.isPlaying();
 
@@ -135,8 +142,8 @@ export class AudioPlayerComponent {
         this._audioPlayerService.setCurrentTime(this.currentTime);
     }
 
-    selectPlaylist(id: string) {
-        this._audioPlayerService.selectPlaylist(id);
+    selectPlaylist(playlist: Playlist) {
+        this._audioPlayerService.selectPlaylist(playlist.id);
     }
 
     createPlaylist(playlist: Playlist) {
@@ -156,15 +163,34 @@ export class AudioPlayerComponent {
     }
 
     selectAudio(audioId: string) {
-        console.log(audioId);
         this.selectedAudioId = audioId;
         this.addToPlaylistVisible = true;
     }
 
-    addToPlaylist(playlistId: string) {
-        console.log(this.selectedAudioId, playlistId);
-
+    closePlaylistDialog() {
         this.addToPlaylistVisible = false;
+    }
+
+    async addToPlaylist(playlistId: string) {
+        if (this.selectedAudioId) {
+            this.isAddToPlaylistError = false;
+            this.addToPlaylistError = null;
+
+            let baseResult = await this._audioPlayerService.addToPlaylist(playlistId, this.selectedAudioId);
+
+            this.isAddToPlaylistError = !baseResult.ok;
+            if (this.isAddToPlaylistError) {
+                this.addToPlaylistError = baseResult.info;
+            } else {
+                this.addToPlaylistVisible = false;
+            }
+        }
+    }
+
+    removeFromPlaylist(audioId: string) {
+        this._audioPlayerService.removeFromPlaylist(audioId, (baseResult: BaseResult) => {
+            //some logic for stop loading
+        });
     }
 
     onNgDestroy() {

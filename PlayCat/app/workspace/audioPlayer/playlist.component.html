@@ -1,5 +1,5 @@
 ﻿<div>
-    <div *ngFor="let playlist of editPlaylists" style="display: flex">
+    <div *ngFor="let playlist of editPlaylists" (click)="select(playlist)" [ngClass]="{'select-playlist' : currentPlaylist.id === playlist.id }" style="display: flex">
         <div *ngIf="!playlist.isEditing" style="display: flex">
             <div *ngIf="!playlist.isGeneral" style="display: flex">
                 <div>

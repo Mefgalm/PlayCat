@@ -29,7 +29,7 @@ namespace PlayCat.Controllers
             return _audioService.GetAudios(playlistId, skip, take);
         }
 
-        [HttpPost("addToPlaylist")]
+        [HttpPut("addToPlaylist")]
         public BaseResult AddToPlaylist([FromBody] AddRemovePlaylistRequest request)
         {
             CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
@@ -39,7 +39,7 @@ namespace PlayCat.Controllers
             return _audioService.AddToPlaylist(checkTokenResult.AuthToken.UserId, request);
         }
 
-        [HttpDelete("removeFromPlaylist")]
+        [HttpPut("removeFromPlaylist")]
         public BaseResult RemoveFromPlaylist([FromBody] AddRemovePlaylistRequest request)
         {
             CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);

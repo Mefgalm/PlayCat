@@ -1,11 +1,13 @@
 ﻿import { Injectable } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { Playlist } from '../../data/playlist';
+import { BaseResult } from '../../data/response/baseResult';
 import { Audiotrack } from '../../data/audio';
 import { AudioService } from '../music/audios/audios.service';
 import { PlaylistService } from './playlist.service';
 import { CreatePlaylistRequest } from '../../data/request/createPlaylistRequest';
 import { UpdatePlaylistRequest } from '../../data/request/updatePlaylistRequest';
+import { AudioResult } from "../../data/response/audioResult";
 
 @Injectable()
 export class AudioPlayerService {
@@ -70,17 +72,20 @@ export class AudioPlayerService {
 
         this._playlistService
             .userPlaylists(null, 0, this._take)
-            .then(userPlaylistsResult => {
+            .then(async userPlaylistsResult => {
                 if (userPlaylistsResult.ok) {
-                    this._playlists = userPlaylistsResult.playlists;
+                    this._playlists = userPlaylistsResult.playlists;                   
 
-                    this.selectPlaylist(null);
+                    for (let playlist of userPlaylistsResult.playlists) {
+                        this._playlistAudiosCount.set(playlist.id, {
+                            skip: playlist.audios.length,
+                            isAllLoaded: false,
+                        });
+                    }
+
+                    await this.selectPlaylist(null);
                     this.selectAudio(this._currentIndex);
 
-                    this._playlistAudiosCount.set(this._currentPlaylist.id, {
-                        skip: this._currentPlaylist.audios.length,
-                        isAllLoaded: false,
-                    });
                     this.emitPlayerLoaded();
                 }
             });
@@ -206,17 +211,24 @@ export class AudioPlayerService {
             if (!playlistId)
                 playlistId = this._playlists.filter(x => x.isGeneral)[0].id;
 
-            this.reloadAudioForPlaylist(playlistId, 0, this._playlistAudiosCount.get(playlistId).skip);
+            this.reloadAudioForPlaylistFromList(playlistId);
         }
     }
 
-    selectPlaylist(id: string) {
+    async selectPlaylist(id: string) : Promise<void> {
         if (id) {
             this._currentPlaylist = this._playlists.find(x => x.id === id);
         } else {
             this._currentPlaylist = this._playlists.find(x => x.isGeneral);
         }
-        this.onPlaylistChanged.emit(this._currentPlaylist);
+        let audioCount = this._playlistAudiosCount.get(this._currentPlaylist.id);
+
+        if (audioCount.skip === 0 && !audioCount.isAllLoaded) {
+            await this.loadAudios(this._currentPlaylist.id)
+            this.onPlaylistChanged.emit(this._currentPlaylist);
+        } else {
+            this.onPlaylistChanged.emit(this._currentPlaylist);
+        }
     }
 
     createPlaylist(title: string) {
@@ -226,7 +238,11 @@ export class AudioPlayerService {
             .createPlaylist(createPlaylistRequest)
             .then(playlistResult => {
                 if (playlistResult.ok) {
-                    this._playlists.push(playlistResult.playlist);          
+                    this._playlists.push(playlistResult.playlist);  
+                    this._playlistAudiosCount.set(playlistResult.playlist.id, {
+                        skip: playlistResult.playlist.audios.length,
+                        isAllLoaded: false,
+                    });
                     this.emitPlayerLoaded();
                 }
             });
@@ -235,10 +251,12 @@ export class AudioPlayerService {
     deletePlaylist(id: string) {
         this._playlistService
             .deletePlaylist(id)
-            .then(baseResult => {
+            .then(async baseResult => {
                 if (baseResult.ok) {
                     let index = this._playlists.findIndex(x => x.id == id);
                     this._playlists.splice(index, 1);
+
+                    await this.selectPlaylist(null);
 
                     this.emitPlayerLoaded();
                 }                
@@ -260,10 +278,38 @@ export class AudioPlayerService {
             });
     }
 
-    loadAudios(playlistId: string) {
+    async addToPlaylist(playlistId: string, audioId: string) {
+        let index = this._playlists.findIndex(x => x.id == playlistId);
+
+        let baseResult = await this._audioService.addAudioToPlaylist(playlistId, audioId);
+        if (baseResult.ok) {
+            //TODO check this
+            this._playlistAudiosCount.set(playlistId, {
+                skip: this._playlistAudiosCount.get(playlistId).skip,
+                isAllLoaded: false,
+            });
+
+            await this.reloadAudioForPlaylistFromList(playlistId);
+        }
+        return baseResult;
+    }
+
+    removeFromPlaylist(audioId: string, resolve: (baseResult: BaseResult) => void) {
+        this._audioService.removeFromPlaylist(this._currentPlaylist.id, audioId)
+            .then(baseResult => {
+                if (baseResult.ok) {
+                    this.reloadAudioForPlaylistFromList(this._currentPlaylist.id)
+                        .then(() => resolve(baseResult));
+                } else {
+                    resolve(baseResult);
+                }
+            });
+    }
+
+    loadAudios(playlistId: string): Promise<void> {
         let index = this._playlists.findIndex(x => x.id == playlistId);
         if (index !== -1 && !this._playlistAudiosCount.get(playlistId).isAllLoaded) {
-            this._audioService
+            return this._audioService
                 .loadAudios(playlistId, this._playlistAudiosCount.get(playlistId).skip, this._take)
                 .then(audioResult => {
                     if (audioResult.ok) {
@@ -278,10 +324,14 @@ export class AudioPlayerService {
         }
     }
 
-    private reloadAudioForPlaylist(playlistId: string, skip: number, take: number) {
+    public reloadAudioForPlaylistFromList(playlistId: string): Promise<void> {
+        return this.reloadAudioForPlaylist(playlistId, 0, this._playlistAudiosCount.get(playlistId).skip);
+    }
+
+    public reloadAudioForPlaylist(playlistId: string, skip: number, take: number): Promise<void> {
         let index = this._playlists.findIndex(x => x.id == playlistId);
         if (index !== -1) {
-            this._audioService
+            return this._audioService
                 .loadAudios(playlistId, skip, take)
                 .then(audioResult => {
                     if (audioResult.ok) {

@@ -14,13 +14,16 @@ var AudioComponent = (function () {
     function AudioComponent() {
         this.onPlayStart = new core_1.EventEmitter();
         this.onSelectAudio = new core_1.EventEmitter();
+        this.onRemoveFromPlaylist = new core_1.EventEmitter();
     }
     AudioComponent.prototype.play = function () {
         this.onPlayStart.emit();
     };
     AudioComponent.prototype.selectAudio = function () {
-        console.log(this.id);
         this.onSelectAudio.emit(this.id);
+    };
+    AudioComponent.prototype.removeFromPlaylist = function () {
+        this.onRemoveFromPlaylist.emit(this.id);
     };
     return AudioComponent;
 }());
@@ -48,6 +51,10 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", Object)
 ], AudioComponent.prototype, "onSelectAudio", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], AudioComponent.prototype, "onRemoveFromPlaylist", void 0);
 AudioComponent = __decorate([
     core_1.Component({
         selector: 'audiotrack',

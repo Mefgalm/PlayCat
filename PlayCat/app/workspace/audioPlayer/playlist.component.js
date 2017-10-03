@@ -24,6 +24,7 @@ var PlaylistComponent = (function () {
         this.onCreate = new core_1.EventEmitter();
         this.onEdit = new core_1.EventEmitter();
         this.onDelete = new core_1.EventEmitter();
+        this.onSelect = new core_1.EventEmitter();
         this.createErrorsValidation = new Map();
         this.updateErrorsValidation = new Map();
         this.createPlaylistForm = this._fb.group({
@@ -74,6 +75,10 @@ var PlaylistComponent = (function () {
     PlaylistComponent.prototype.stopEdit = function (playlistEdit) {
         playlistEdit.isEditing = false;
     };
+    PlaylistComponent.prototype.select = function (playlist) {
+        console.log(playlist.id);
+        this.onSelect.emit(playlist);
+    };
     PlaylistComponent.prototype.create = function (_a) {
         var value = _a.value, valid = _a.valid;
         if (valid) {
@@ -100,9 +105,13 @@ var PlaylistComponent = (function () {
     return PlaylistComponent;
 }());
 __decorate([
-    core_1.Input('playlists'),
+    core_1.Input(),
     __metadata("design:type", Array)
 ], PlaylistComponent.prototype, "playlists", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", playlist_1.Playlist)
+], PlaylistComponent.prototype, "currentPlaylist", void 0);
 __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
@@ -115,6 +124,10 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], PlaylistComponent.prototype, "onDelete", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], PlaylistComponent.prototype, "onSelect", void 0);
 PlaylistComponent = __decorate([
     core_1.Component({
         selector: 'playlist',

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,5 +21,7 @@ namespace PlayCat.DataModel
         public virtual User Owner { get; set; }
 
         public int OrderValue { get; set; }
+
+        public virtual ICollection<AudioPlaylist> AudioPlaylists { get; set; }
     }
 }
