@@ -1,12 +1,63 @@
 ﻿.audio {
+    width: 100%;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    border-bottom: 1px solid #333;
+}
+
+.play-and-song {
+    display: flex;
+    justify-content: space-between;
     align-items: flex-start;
 }
 
 .additional-controls {
-    align-self: flex-end;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 1% 0;
 }
 
 .song-info {
     display: flex;
+    font-family: Lato, sans-serif;
+    font-size: 22px;
+}
+
+.play-controls {
+    padding: 0 1% 0;
+}
+
+.play {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/play-rounded-button.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+.playlist-add {
+    padding: 0 1% 0;
+}
+
+.playlist-add-icon {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/add-button-inside-black-circle.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+.download {
+    padding: 0 1% 0;
+}
+
+.download-icon {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/download-icon.png') no-repeat;
+    background-size: contain;
+    border: none;
 }

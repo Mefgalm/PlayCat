@@ -9,13 +9,12 @@
 }
 
 .audios-panel {
-    padding: 1%;
     margin-top: 15%;
     height: 70%;
-    width: 100%;
+    width: 80%;
     display: flex;
     justify-content: space-between;
-    background-color: #eaebf0;
+    background-color: rgba(234, 235, 240, 0.35);
 }
 
 .audios {
@@ -29,8 +28,12 @@
     padding: 0;
 }
 
-.playlist-dialog /deep/ .ui-dialog {
+.audios {
+    background-color: #eaebf0;
+    width: 70%;
+}
 
+.playlist-dialog /deep/ .ui-dialog {
 }
 
 /deep/ .ui-dialog-content {
@@ -40,6 +43,7 @@
     background: url('../app/assets/images/playlist_bg.png') no-repeat fixed !important;
     background-size: cover !important;
     display: flex;
+    justify-content: center;
     align-items: flex-end;
 }
 
