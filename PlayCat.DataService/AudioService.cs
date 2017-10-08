@@ -83,7 +83,7 @@ namespace PlayCat.DataService
 
         public BaseResult AddToPlaylist(Guid userId, AddRemovePlaylistRequest request)
         {
-            return RequestTemplate(() =>
+            return RequestTemplateWithTransaction(() =>
             {
                 //Is need check audioId??? - perfomance issue
                 var playlistInfo =
@@ -109,6 +109,9 @@ namespace PlayCat.DataService
                     Order = playlistInfo.Playlist.OrderValue,
                     PlaylistId = request.PlaylistId,                    
                 };
+
+                playlistInfo.Playlist.OrderValue++;
+                _dbContext.Entry(playlistInfo.Playlist).State = EntityState.Modified;
 
                 _dbContext.AudioPlaylists.Add(audioPlaylist);
                 _dbContext.SaveChanges();

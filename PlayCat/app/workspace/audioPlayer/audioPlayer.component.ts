@@ -171,7 +171,7 @@ export class AudioPlayerComponent {
         this.addToPlaylistVisible = false;
     }
 
-    async addToPlaylist(playlistId: string) {
+    async addToPlaylist(playlistId: string): Promise<void> {
         if (this.selectedAudioId) {
             this.isAddToPlaylistError = false;
             this.addToPlaylistError = null;
@@ -187,10 +187,8 @@ export class AudioPlayerComponent {
         }
     }
 
-    removeFromPlaylist(audioId: string) {
-        this._audioPlayerService.removeFromPlaylist(audioId, (baseResult: BaseResult) => {
-            //some logic for stop loading
-        });
+    async removeFromPlaylist(audioId: string): Promise<void> {
+        await this._audioPlayerService.removeFromPlaylist(audioId);
     }
 
     onNgDestroy() {

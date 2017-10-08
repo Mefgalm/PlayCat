@@ -49,6 +49,27 @@ namespace PlayCat.DataService
             }
         }
 
+        protected TReturn RequestTemplateWithTransaction<TReturn>(Func<TReturn> func)
+            where TReturn : BaseResult, new()
+        {
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    TReturn result = func();
+
+                    transaction.Commit();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    WriteLog(ex.Message);
+                    return GetUnexpectedServerError<TReturn>(ex.Message);
+                }
+            }
+        }
+
         protected TReturn RequestTemplateCheckModel<TReturn, TRequest>(TRequest request, Func<TReturn> func)
             where TReturn : BaseResult, new()
         {

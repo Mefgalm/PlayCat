@@ -37,6 +37,8 @@ export class AudioPlayerService {
 
     private _playlistAudiosCount: Map<string, any>;
 
+    private _audioStash: any;
+
     constructor(
         private _playlistService: PlaylistService,
         private _audioService: AudioService
@@ -84,6 +86,13 @@ export class AudioPlayerService {
                     }
 
                     await this.selectPlaylist(null);
+
+                    this._audioStash = {
+                        audios: this._currentPlaylist.audios,
+                        playlistId: this._currentPlaylist.id,
+                    };
+
+
                     this.selectAudio(this._currentIndex);
 
                     this.emitPlayerLoaded();
@@ -225,10 +234,9 @@ export class AudioPlayerService {
 
         if (audioCount.skip === 0 && !audioCount.isAllLoaded) {
             await this.loadAudios(this._currentPlaylist.id)
-            this.onPlaylistChanged.emit(this._currentPlaylist);
-        } else {
-            this.onPlaylistChanged.emit(this._currentPlaylist);
         }
+
+        this.onPlaylistChanged.emit(this._currentPlaylist);
     }
 
     createPlaylist(title: string) {
@@ -271,7 +279,10 @@ export class AudioPlayerService {
             .then(playlistResult => {
                 if (playlistResult.ok) {
                     let index = this._playlists.findIndex(x => x.id == id);
+                    let audios = this._playlists[index].audios;
+
                     this._playlists[index] = playlistResult.playlist;
+                    this._playlists[index].audios = audios;
 
                     this.emitPlayerLoaded();
                 }
@@ -285,25 +296,21 @@ export class AudioPlayerService {
         if (baseResult.ok) {
             //TODO check this
             this._playlistAudiosCount.set(playlistId, {
-                skip: this._playlistAudiosCount.get(playlistId).skip,
+                skip: this._playlistAudiosCount.get(playlistId).skip + 1,
                 isAllLoaded: false,
             });
 
-            await this.reloadAudioForPlaylistFromList(playlistId);
+            this.reloadAudioForPlaylistFromList(playlistId);
         }
         return baseResult;
     }
 
-    removeFromPlaylist(audioId: string, resolve: (baseResult: BaseResult) => void) {
-        this._audioService.removeFromPlaylist(this._currentPlaylist.id, audioId)
-            .then(baseResult => {
-                if (baseResult.ok) {
-                    this.reloadAudioForPlaylistFromList(this._currentPlaylist.id)
-                        .then(() => resolve(baseResult));
-                } else {
-                    resolve(baseResult);
-                }
-            });
+    async removeFromPlaylist(audioId: string): Promise<BaseResult> {
+        let result = await this._audioService.removeFromPlaylist(this._currentPlaylist.id, audioId);
+
+        this.reloadAudioForPlaylistFromList(this._currentPlaylist.id);
+
+        return result;
     }
 
     loadAudios(playlistId: string): Promise<void> {
@@ -318,6 +325,7 @@ export class AudioPlayerService {
                             skip: this._playlists[index].audios.length,
                             isAllLoaded: audioResult.audios.length === 0,
                         });
+                        this.checkAndUpdateStash(playlistId, audioResult.audios);
                         this.onPlaylistUpdated.emit(this._playlists[index]);
                     }
                 });
@@ -335,6 +343,8 @@ export class AudioPlayerService {
                 .loadAudios(playlistId, skip, take)
                 .then(audioResult => {
                     if (audioResult.ok) {
+                        this.checkAndUpdateStash(playlistId, audioResult.audios);
+
                         this._playlists[index].audios = audioResult.audios;
                         this.onPlaylistUpdated.emit(this._playlists[index]);
                     }
@@ -342,10 +352,22 @@ export class AudioPlayerService {
         }
     }
 
+    private checkAndUpdateStash(playlistId: string, audios: Audiotrack[]) {
+        if (this._audioStash.playlistId === playlistId) {
+            this._audioStash.audios = audios;
+            this._currentIndex = audios.findIndex(x => x.id == this._currentAudio.id);
+        }
+    }
+
     private selectById(id: string) {
-        let audio = this._currentPlaylist.audios.find(a => a.id === id);
-        if (audio) {
-            this.selectAudio(this._currentPlaylist.audios.indexOf(audio));
+        this._audioStash = {
+            audios: this._currentPlaylist.audios,
+            playlistId: this._currentPlaylist.id,
+        };
+
+        let index = this._audioStash.audios.findIndex(a => a.id === id);
+        if (index !== -1) {
+            this.selectAudio(index);
         }
     }
 
@@ -360,9 +382,9 @@ export class AudioPlayerService {
     }
 
     private selectAudio(index: number) {
-        if (this._currentPlaylist && this._currentPlaylist.audios[index]) {
+        if (this._audioStash && this._audioStash.audios[index]) {
             this._currentIndex = index;
-            this._currentAudio = this._currentPlaylist.audios[index];
+            this._currentAudio = this._audioStash.audios[index];
 
             this._audio.src = this._currentAudio.accessUrl;
         }

@@ -172,8 +172,15 @@ var AudioPlayerComponent = (function () {
         });
     };
     AudioPlayerComponent.prototype.removeFromPlaylist = function (audioId) {
-        this._audioPlayerService.removeFromPlaylist(audioId, function (baseResult) {
-            //some logic for stop loading
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this._audioPlayerService.removeFromPlaylist(audioId)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
         });
     };
     AudioPlayerComponent.prototype.onNgDestroy = function () {
