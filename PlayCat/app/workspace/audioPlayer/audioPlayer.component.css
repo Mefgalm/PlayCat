@@ -17,10 +17,6 @@
     background-color: rgba(234, 235, 240, 0.35);
 }
 
-.audios {
-    overflow-y: auto;
-}
-
 .player-dialog /deep/ .ui-dialog {
     height: calc(100% - 140px);
     width: 100%;
@@ -31,6 +27,7 @@
 .audios {
     background-color: #eaebf0;
     width: 70%;
+    overflow-y: auto;
 }
 
 .playlist-dialog /deep/ .ui-dialog {
@@ -50,4 +47,10 @@
 .audio-controls {
     display: flex;
     justify-content: space-around;
+}
+
+/*Playlists right side*/
+
+.playlists-part {
+    width: 30%;
 }

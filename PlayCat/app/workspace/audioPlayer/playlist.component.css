@@ -1,3 +1,56 @@
 ﻿.select-playlist {
-    border: 1px solid red;
+    border-bottom: 1px solid #333;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+.particular-playlist {
+    border-bottom: 1px solid #333;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/*Playlist buttons*/
+
+.playlist-buttons {
+    float: right;
+    opacity: 0;
+    transition: opacity .35s ease;
+}
+
+.particular-playlist:hover {
+    display: flex;
+    flex-direction: row;
+    background-color: #eaebf0;
+}
+
+.particular-playlist:hover .playlist-buttons {
+    opacity: 1;
+}
+
+    .particular-playlist:hover .playlist-inner {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+.edit-playlist-button {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/create-new-pencil-button.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+.delete-playlist-button {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/rubbish-bin-delete-button.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+/*+ .playlist-buttons .playlist-buttons, .playlist-title*/

@@ -1,16 +1,18 @@
 ﻿<div>
     <div *ngFor="let playlist of editPlaylists" (click)="select(playlist)" [ngClass]="{'select-playlist' : currentPlaylist.id === playlist.id }" style="display: flex">
-        <div *ngIf="!playlist.isEditing" style="display: flex">
-            <div *ngIf="!playlist.isGeneral" style="display: flex">
-                <div>
+        <div class="particular-playlist" *ngIf="!playlist.isEditing" style="display: flex">
+            <div class="playlist-inner" *ngIf="!playlist.isGeneral" style="display: flex">
+                <div class="playlist-title">
                     {{playlist.title}}
                 </div>
-                <div>
-                    <button type="button" (click)="startEdit(playlist)">Edit</button>
+                <div class="playlist-buttons" style="display:flex">
+                    <div>
+                       <button type="button" class="edit-playlist-button" (click)="startEdit(playlist)">Edit</button>
+                    </div>
+                    <div>
+                        <button type="button" class="delete-playlist-button" (click)="delete(playlist)">Delete</button>
+                    </div>
                 </div>
-                <div>
-                    <button type="button" (click)="delete(playlist)">Delete</button>
-                </div>      
             </div>
             <div *ngIf="playlist.isGeneral">
                 General
