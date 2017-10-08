@@ -9,29 +9,34 @@
         Loading
     </div>-->
 
-    <div *ngIf="isPlaylistLoaded">
+    <div class="player-inner" *ngIf="isPlaylistLoaded">
 
         <div *ngIf="!audio">
             Your playlist is empty
         </div>
         <div *ngIf="audio" class="audio-controls">
-            <div>
-                <button *ngIf="isPlaying" (click)="pause()">Pause</button>
-                <button *ngIf="!isPlaying" (click)="play()">Play</button>
-
-                {{currentTime | secondToTime}} {{audio.artist}} - {{audio.song}} {{audio.duration | secondToTime}}
+            <div style="display:flex">
+                <button class="previous-player-button" (click)="previous()"></button>
+                <button class="pause-player-button" *ngIf="isPlaying" (click)="pause()"></button>
+                <button class="play-player-button" *ngIf="!isPlaying" (click)="play()"></button>
+                <button class="next-player-button" (click)="next()"></button>
+                <div class="loop-checkbox-div"><input class="loop-checkbox" id="loop-checkbox" type="checkbox" [checked]="isLoop" (change)="toggleLoop()" /><label class="loop-label" for="loop-checkbox"></label></div>
             </div>
 
-            <div style="display: flex;">
+            <div class="volume-and-song" style="display: flex;">
                 <progressBar [min]="0"
                              [max]="audio.duration"
                              [height]="15"
-                             [width]="300"
+                             [width]="650"
                              [horizontal-padding]="10"
                              [vertical-padding]="0"
                              [currentValue]="currentTime"
                              (onClick)="currentTimeChanged($event)">
                 </progressBar>
+                {{currentTime | secondToTime}} {{audio.artist}} - {{audio.song}} {{audio.duration | secondToTime}} {{currentPlaylist}}
+            </div>
+            
+            <div>
 
                 <progressBar [min]="0"
                              [max]="100"
@@ -43,13 +48,13 @@
                              (onClick)="volumeChanged($event)">
                 </progressBar>
 
-                <input type="checkbox" [checked]="isLoop" (change)="toggleLoop()" />Loop
+                
             </div>
 
-            <div>
+           <!-- <div>
                 <button (click)="previous()">Previous</button>
                 <button (click)="next()">Next</button>
-            </div>
+            </div>-->
             <div class="player-dialog">
                 <p-dialog class="audio-panel-area"
                           [(visible)]="display"
@@ -118,8 +123,8 @@
                 </p-dialog>
             </div>
             
-            <button *ngIf="!display" style="float:right" (click)="showDialog()">Show</button>
-            <button *ngIf="display" style="float:right" (click)="hideDialog()">Hide</button>
+            <button class="show-playlist" *ngIf="!display" style="float:right" (click)="showDialog()"></button>
+            <button class="hide-playlist" *ngIf="display" style="float:right" (click)="hideDialog()"></button>
         </div>
     </div>
     <div *ngIf="!isPlaylistLoaded">

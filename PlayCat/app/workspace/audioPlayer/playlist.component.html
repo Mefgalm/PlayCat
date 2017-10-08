@@ -6,11 +6,11 @@
                     {{playlist.title}}
                 </div>
                 <div class="playlist-buttons" style="display:flex">
-                    <div>
-                       <button type="button" class="edit-playlist-button" (click)="startEdit(playlist)">Edit</button>
+                    <div class="edit-playlist-button-div">
+                       <button type="button" class="edit-playlist-button" (click)="startEdit(playlist)"></button>
                     </div>
                     <div>
-                        <button type="button" class="delete-playlist-button" (click)="delete(playlist)">Delete</button>
+                        <button type="button" class="delete-playlist-button" (click)="delete(playlist)"></button>
                     </div>
                 </div>
             </div>
@@ -18,31 +18,35 @@
                 General
             </div>                  
         </div>
-        <form *ngIf="playlist.isEditing" [formGroup]="updatePlaylistForm" novalidate (ngSubmit)="update(updatePlaylistForm)">            
-            <div style="display: flex">
-                <input type="text" formControlName="title"/>
-                <error *ngIf="updatePlaylistForm.get('title').dirty"
-                       [errorObject]="updateErrorsValidation['title']"
-                       [actualErrors]="updatePlaylistForm.get('title').errors">
-                </error>
-            </div>
-            <div>
-                <button class="submit login-button" type="submit">Update</button>
-                <button class="submit login-button" type="button" (click)="stopEdit(playlist)">Cancel</button>
+        <form class="update-playlist-form" *ngIf="playlist.isEditing" [formGroup]="updatePlaylistForm" novalidate (ngSubmit)="update(updatePlaylistForm)">
+            <div class="update-playlist-inner">
+                <div style="display: flex">
+                    <input type="text" formControlName="title" />
+                    <error *ngIf="updatePlaylistForm.get('title').dirty"
+                           [errorObject]="updateErrorsValidation['title']"
+                           [actualErrors]="updatePlaylistForm.get('title').errors">
+                    </error>
+                </div>
+                <div class="update-playlist-buttons">
+                    <button class="submit login-button update-button" type="submit"></button>
+                    <button class="submit login-button cancel-button" type="button" (click)="stopEdit(playlist)"></button>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<form [formGroup]="createPlaylistForm" novalidate (ngSubmit)="create(createPlaylistForm)">
-    <div>
-        <input type="text" formControlName="title"/>
-        <error *ngIf="createPlaylistForm.get('title').dirty"
-               [errorObject]="createErrorsValidation['title']"
-               [actualErrors]="createPlaylistForm.get('title').errors">
-        </error>
-    </div>
-    <div>
-        <button class="submit login-button" type="submit">Create</button>
+<form class="create-playlist-form" [formGroup]="createPlaylistForm" novalidate (ngSubmit)="create(createPlaylistForm)">
+    <div class="create-playlist-inner">
+        <div class="create-playlist-input-div">
+            <input class="create-playlist-input" type="text" formControlName="title" placeholder="create playlist" />
+            <error *ngIf="createPlaylistForm.get('title').dirty"
+                   [errorObject]="createErrorsValidation['title']"
+                   [actualErrors]="createPlaylistForm.get('title').errors">
+            </error>
+        </div>
+        <div class="create-playlist-button-div">
+            <button class="submit login-button" type="submit">create</button>
+        </div>
     </div>
 </form>

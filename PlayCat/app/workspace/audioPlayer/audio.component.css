@@ -50,6 +50,19 @@
     border: none;
 }
 
+.playlist-remove {
+    padding: 0 1% 0;
+}
+
+.playlist-remove-icon {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/rounded-remove-button.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+
 .download {
     padding: 0 1% 0;
 }

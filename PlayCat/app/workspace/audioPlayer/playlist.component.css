@@ -1,4 +1,6 @@
 ﻿.select-playlist {
+    font-family: Lato, sans-serif;
+    font-size: 20px;
     border-bottom: 1px solid #333;
     height: 60px;
     display: flex;
@@ -7,6 +9,8 @@
 }
 
 .particular-playlist {
+    font-family: Lato, sans-serif;
+    font-size: 20px;
     border-bottom: 1px solid #333;
     height: 60px;
     align-items: center;
@@ -19,7 +23,6 @@
 .playlist-buttons {
     float: right;
     opacity: 0;
-    transition: opacity .35s ease;
 }
 
 .particular-playlist:hover {
@@ -35,22 +38,114 @@
     .particular-playlist:hover .playlist-inner {
         width: 100%;
         justify-content: space-between;
+        margin: 0 5% 0;
     }
 
+.edit-playlist-button-div {
+    padding-right: 10%;
+}
+
 .edit-playlist-button {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     background: url('../app/assets/icons/create-new-pencil-button.png') no-repeat;
     background-size: contain;
     border: none;
 }
 
 .delete-playlist-button {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     background: url('../app/assets/icons/rubbish-bin-delete-button.png') no-repeat;
     background-size: contain;
     border: none;
 }
 
 /*+ .playlist-buttons .playlist-buttons, .playlist-title*/
+
+/*Create playlist row*/
+
+.create-playlist-form {
+    border-top: 1px solid #333;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    width: 24%;
+    bottom: 60px;
+    position: fixed;
+}
+
+.create-playlist-inner {
+    width: 100%;
+    margin: 0 5% 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+input {
+    font-family: Lato, sans-serif;
+    font-size: 20px;
+    line-height: 1.7;
+    color: #18121e;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #18121e;
+    background: transparent;
+    padding-left: 2%;
+}
+
+.create-playlist-form .login-button {
+    font-family: Lato, sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+    background-color: #ffffff;
+    color: #39118a;
+    border: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5% 20% 5%;
+}
+
+/*Udate playlist form*/
+
+.update-playlist-form {
+    width: 100%;
+    display: flex;
+} 
+
+.update-playlist-inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 5% 0;
+}
+
+.update-playlist-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.update-button {
+    width: 28px;
+    height: 28px;
+    background: url('../app/assets/icons/circle-with-check-symbol.png') no-repeat;
+    background-size: contain;
+    border: none;
+    margin-right: 10%;
+}
+
+.cancel-button {
+    width: 28px;
+    height: 28px;
+    background: url('../app/assets/icons/cross-mark-on-black-circle-background.png') no-repeat;
+    background-size: contain;
+    border: none;
+}

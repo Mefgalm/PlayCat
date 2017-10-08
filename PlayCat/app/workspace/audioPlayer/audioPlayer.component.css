@@ -1,14 +1,4 @@
-﻿.audioPlayer {
-    background-color: rgba(235, 236, 241, 0.51);
-    box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.35);
-    height: 60px;
-    z-index: 5;
-    position: fixed;
-    width: 100%;
-    top: calc(100% - 60px);
-}
-
-.audios-panel {
+﻿.audios-panel {
     margin-top: 15%;
     height: 70%;
     width: 80%;
@@ -44,13 +34,157 @@
     align-items: flex-end;
 }
 
-.audio-controls {
-    display: flex;
-    justify-content: space-around;
-}
-
 /*Playlists right side*/
 
 .playlists-part {
     width: 30%;
+}
+
+/*Add to playlist popUp*/
+
+.playlist-dialog {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    z-index: 1004;
+    left: 40%;
+    top: 20%;
+    opacity: 1;
+}
+
+/*Audio Player itself*/
+
+.audioPlayer {
+    background-color: rgba(235, 236, 241, 0.51);
+    box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.35);
+    height: 60px;
+    z-index: 5;
+    position: fixed;
+    width: 100%;
+    top: calc(100% - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-inner {
+    width: 100%;
+    /* margin: 0 5% 0;*/
+}
+
+/*Player Buttons Left Side*/
+
+.audio-controls {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 5% 0;
+}
+
+.previous-player-button {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/previous-icon.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+    .previous-player-button:active {
+        outline: none;
+    }
+
+.pause-player-button {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/pause-icon.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+    .pause-player-button:active {
+        outline: none;
+    }
+
+.play-player-button {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/play-icon.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+    .play-player-button:active {
+        outline: none;
+    }
+
+.next-player-button {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/play-next-icon.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+    .next-player-button:active {
+        outline: none;
+    }
+
+/*Show/Hide Playlist*/
+
+.show-playlist {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/show-more-button.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+    .show-playlist:active {
+        outline: none;
+    }
+
+.hide-playlist {
+    width: 32px;
+    height: 32px;
+    background: url('../app/assets/icons/show-less-fold-button.png') no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+.hide-playlist:active {
+    outline: none;
+}
+
+/*Loop checkbox*/
+
+input[type=checkbox] {
+    visibility: hidden;
+}
+
+.loop-checkbox-div {
+    width: 32px;
+    height: 32px;
+    background-color: transparent;
+    position: relative;
+}
+
+    .loop-checkbox-div label {
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        position: absolute;
+        z-index: 1;
+        background: url('../app/assets/icons/replay-arrow-unchecked.png') no-repeat;
+        background-size: contain;
+    }
+
+.loop-checkbox-div input[type=checkbox]:checked + label {
+    background: url('../app/assets/icons/replay-arrow.png') no-repeat;
+    background-size: contain;
+}
+
+/*Volume and song name*/
+
+.volume-and-song {
+    flex-direction: column;
+    width: 50%;
 }
