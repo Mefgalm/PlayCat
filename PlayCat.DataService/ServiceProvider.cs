@@ -17,6 +17,7 @@ namespace PlayCat.DataService
             service.AddScoped<IInviteService, InviteService >();
             service.AddScoped<IAuthService, AuthService>();
             service.AddScoped<IModelValidationService, ModelValidationService>();
+            service.AddScoped<IProfileService, ProfileService>();
 
             service.AddScoped<IAudioService, AudioService>();
             service.AddScoped<IUploadService, UploadService>();

@@ -20,7 +20,7 @@ namespace PlayCat.DataService
         
         public AudioResult SearchAudios(string searchString, int skip, int take)
         {
-            return RequestTemplate(() =>
+            return BaseInvoke(() =>
             {
                 if (searchString == null)
                     throw new Exception("search string can't be null");
@@ -34,7 +34,7 @@ namespace PlayCat.DataService
                     select new
                     {
                         Audio = a,
-                        Rank = a.UniqueIdentifier.StartsWith(searchString) ? 1 :
+                        Rank = a.UniqueIdentifier == searchString ? 1 :
                                a.Song.StartsWith(searchString) ? 2 :
                                a.Artist.StartsWith(searchString) ? 3 :
                                (a.Artist + " " + a.Song).StartsWith(searchString) ? 4 : excludeMarker,
@@ -55,7 +55,7 @@ namespace PlayCat.DataService
 
         public BaseResult RemoveFromPlaylist(Guid userId, AddRemovePlaylistRequest request)
         {
-            return RequestTemplate(() =>
+            return BaseInvoke(() =>
             {
                 //Is need check audioId??? - perfomance issue
                 var playlistInfo =
@@ -83,7 +83,7 @@ namespace PlayCat.DataService
 
         public BaseResult AddToPlaylist(Guid userId, AddRemovePlaylistRequest request)
         {
-            return RequestTemplateWithTransaction(() =>
+            return BaseInvokeWithTransaction(() =>
             {
                 //Is need check audioId??? - perfomance issue
                 var playlistInfo =
@@ -122,7 +122,7 @@ namespace PlayCat.DataService
 
         public AudioResult GetAudios(Guid playlistId, int skip, int take)
         {
-            return RequestTemplate(() =>
+            return BaseInvoke(() =>
             {
                 //get audios with paging
                 IEnumerable<ApiModel.Audio> apiAudios =

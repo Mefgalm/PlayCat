@@ -36,7 +36,7 @@ namespace PlayCat.DataService
             _logger.LogError(message);
         }
 
-        protected TReturn RequestTemplate<TReturn>(Func<TReturn> func)
+        protected TReturn BaseInvoke<TReturn>(Func<TReturn> func)
             where TReturn : BaseResult, new()
         {
             try
@@ -49,7 +49,7 @@ namespace PlayCat.DataService
             }
         }
 
-        protected TReturn RequestTemplateWithTransaction<TReturn>(Func<TReturn> func)
+        protected TReturn BaseInvokeWithTransaction<TReturn>(Func<TReturn> func)
             where TReturn : BaseResult, new()
         {
             using (var transaction = _dbContext.Database.BeginTransaction())
@@ -70,7 +70,7 @@ namespace PlayCat.DataService
             }
         }
 
-        protected TReturn RequestTemplateCheckModel<TReturn, TRequest>(TRequest request, Func<TReturn> func)
+        protected TReturn BaseInvokeCheckModel<TReturn, TRequest>(TRequest request, Func<TReturn> func)
             where TReturn : BaseResult, new()
         {
             try
@@ -95,7 +95,7 @@ namespace PlayCat.DataService
             }
         }
 
-        protected async Task<TReturn> RequestTemplateCheckModelAsync<TReturn, TRequest>(TRequest request, Func<Task<TReturn>> func)
+        protected async Task<TReturn> BaseInvokeCheckModelAsync<TReturn, TRequest>(TRequest request, Func<Task<TReturn>> func)
             where TReturn : BaseResult, new()
         {
             try

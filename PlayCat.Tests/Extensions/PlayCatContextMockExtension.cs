@@ -11,7 +11,7 @@ namespace PlayCat.Tests.Extensions
 {
     internal static class PlayCatContextMockExtension
     {
-        public static User CreateUser(this PlayCatDbContext context, string email, string firstname, string lastname, string password, string inviteCode)
+        public static User CreateUser(this PlayCatDbContext context, string email, string firstname, string lastname, string nickName, string password, string inviteCode)
         {
             string salt = Crypto.GenerateSalt();
             string passwordHah = Crypto.HashPassword(password + salt);
@@ -20,8 +20,9 @@ namespace PlayCat.Tests.Extensions
             {
                 Id = Guid.NewGuid(),
                 Email = email,
-                FirstName = "test",
-                LastName = "test",
+                NickName = nickName,
+                FirstName = firstname,
+                LastName = lastname,
                 PasswordHash = passwordHah,
                 PasswordSalt = salt,
                 RegisterDate = DateTime.Now,

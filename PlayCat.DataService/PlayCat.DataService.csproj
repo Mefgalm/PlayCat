@@ -145,6 +145,7 @@
     <Compile Include="IModelValidationService.cs" />
     <Compile Include="InviteService.cs" />
     <Compile Include="IPlaylistService.cs" />
+    <Compile Include="IProfileService.cs" />
     <Compile Include="ISetDbContext.cs" />
     <Compile Include="IUploadService.cs" />
     <Compile Include="Mappers\AudioMapper.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="ModelValidationService.cs" />
     <Compile Include="PlayCatDbContext.cs" />
     <Compile Include="PlaylistService.cs" />
+    <Compile Include="ProfileService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\AuthRequest\SignInRequest.cs" />
     <Compile Include="Request\AuthRequest\SignUpRequest.cs" />
@@ -186,7 +188,7 @@
     <Compile Include="Response\PlaylistResponse\PlaylistResult.cs" />
     <Compile Include="Response\AuthResponse\SignUpInResult.cs" />
     <Compile Include="Response\UploadResponse\UploadResult.cs" />
-    <Compile Include="Response\UserResponse\UpdateProfileResult.cs" />
+    <Compile Include="Response\UserResponse\GetUpdateProfileResult.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="Test\EmptyClass.cs" />
     <Compile Include="Test\TestClass.cs" />

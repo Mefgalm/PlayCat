@@ -48,7 +48,7 @@ namespace PlayCat.Tests
             string password = "123456abc";
             string email = "test@gmail.com";
 
-            DataModel.User user = context.CreateUser(email, "test", "test", password, inviteService.GenerateInvite());
+            DataModel.User user = context.CreateUser(email, "test", "test", "m", password, inviteService.GenerateInvite());
             DataModel.AuthToken authToken = context.CreateToken(DateTime.Now.AddDays(-1), false, user.Id);
 
             context.SaveChanges();
