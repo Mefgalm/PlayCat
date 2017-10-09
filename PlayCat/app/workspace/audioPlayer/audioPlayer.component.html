@@ -33,7 +33,7 @@
                              [currentValue]="currentTime"
                              (onClick)="currentTimeChanged($event)">
                 </progressBar>
-                {{currentTime | secondToTime}} {{audio.artist}} - {{audio.song}} {{audio.duration | secondToTime}} {{currentPlaylist}}
+                {{currentTime | secondToTime}} {{audio.artist}} - {{audio.song}} {{audio.duration | secondToTime}} {{currentPlaylist.title}}
             </div>
             
             <div>
@@ -94,35 +94,7 @@
                     </div>
                 </p-dialog>
             </div>
-
-            <div class="playlist-dialog">
-                <p-dialog appendTo="body"
-                          [(visible)]="addToPlaylistVisible"
-                          [draggable]="false"
-                          [resizable]="false"
-                          [modal]="true"
-                          [showHeader]="true"
-                          [positionLeft]="0"
-                          [positionTop]="80">
-                    <p-header>
-                        Add To Playlist
-                    </p-header>
-                    <div>
-                        <div *ngIf="isAddToPlaylistError">
-                            {{addToPlaylistError}}
-                        </div>
-                        <div *ngFor="let playlist of playlists">
-                            <div>
-                                <button (click)="addToPlaylist(playlist.id)">Add</button> {{playlist.title}}
-                            </div>
-                        </div>
-                    </div>
-                    <p-footer>
-                        <button (click)="closePlaylistDialog()">Close</button>
-                    </p-footer>
-                </p-dialog>
-            </div>
-            
+    
             <button class="show-playlist" *ngIf="!display" style="float:right" (click)="showDialog()"></button>
             <button class="hide-playlist" *ngIf="display" style="float:right" (click)="hideDialog()"></button>
         </div>
@@ -130,4 +102,32 @@
     <div *ngIf="!isPlaylistLoaded">
         L O A D I N G
     </div>
+</div>
+
+<div class="playlist-dialog">
+    <p-dialog appendTo="body"
+              [(visible)]="addToPlaylistVisible"
+              [draggable]="false"
+              [resizable]="false"
+              [modal]="true"
+              [showHeader]="true"
+              [positionLeft]="0"
+              [positionTop]="80">
+        <p-header>
+            Add To Playlist
+        </p-header>
+        <div>
+            <div *ngIf="isAddToPlaylistError">
+                {{addToPlaylistError}}
+            </div>
+            <div *ngFor="let playlist of playlists">
+                <div>
+                    <button (click)="addToPlaylist(playlist.id)">Add</button> {{playlist.title}}
+                </div>
+            </div>
+        </div>
+        <p-footer>
+            <button (click)="closePlaylistDialog()">Close</button>
+        </p-footer>
+    </p-dialog>
 </div>

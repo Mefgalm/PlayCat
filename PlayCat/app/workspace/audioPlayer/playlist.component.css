@@ -23,6 +23,8 @@
 .playlist-buttons {
     float: right;
     opacity: 0;
+    position: absolute;
+
 }
 
 .particular-playlist:hover {
@@ -33,6 +35,7 @@
 
 .particular-playlist:hover .playlist-buttons {
     opacity: 1;
+    position: relative;
 }
 
     .particular-playlist:hover .playlist-inner {
