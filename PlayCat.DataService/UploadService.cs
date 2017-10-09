@@ -41,7 +41,7 @@ namespace PlayCat.DataService
 
         public GetInfoResult GetInfo(UrlRequest request)
         {
-            return RequestTemplateCheckModel(request, () =>
+            return BaseInvokeCheckModel(request, () =>
             {
                 IUrlInfo urlInfo = _videoInfoGetter.GetInfo(request.Url);
 
@@ -68,7 +68,7 @@ namespace PlayCat.DataService
 
         public async Task<UploadResult> UploadAudioAsync(Guid userId, UploadAudioRequest request)
         {
-            return await RequestTemplateCheckModelAsync(request, async () =>
+            return await BaseInvokeCheckModelAsync(request, async () =>
             {
                 DataModel.User user = _dbContext.Users.FirstOrDefault(x => x.Id == userId);
                 if (user == null)

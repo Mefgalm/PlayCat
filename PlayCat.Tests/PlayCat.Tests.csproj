@@ -197,6 +197,7 @@
   <ItemGroup>
     <Compile Include="AudioTests\Audio.cs" />
     <Compile Include="PlaylistTests\Playlist.cs" />
+    <Compile Include="ProfileTests\Profile.cs" />
     <Compile Include="UploadTests\VideoUpload.cs" />
     <Compile Include="AuthTests\Auth.cs" />
     <Compile Include="AuthTests\Token.cs" />

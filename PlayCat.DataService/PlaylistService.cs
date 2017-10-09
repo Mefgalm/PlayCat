@@ -21,7 +21,7 @@ namespace PlayCat.DataService
 
         public PlaylistResult UpdatePlaylist(Guid userId, UpdatePlaylistRequest request)
         {
-            return RequestTemplateCheckModel(request, () =>
+            return BaseInvokeCheckModel(request, () =>
             {
                 DataModel.Playlist playlist = _dbContext.Playlists.FirstOrDefault(x => x.Id == request.PlaylistId && x.OwnerId == userId);
 
@@ -41,7 +41,7 @@ namespace PlayCat.DataService
 
         public BaseResult DeletePlaylist(Guid userId, Guid playlistId)
         {
-            return RequestTemplate(() =>
+            return BaseInvoke(() =>
             {
                 var playlistWithAudios =
                     (from p in _dbContext.Playlists
@@ -70,7 +70,7 @@ namespace PlayCat.DataService
 
         public PlaylistResult CreatePlaylist(Guid userId, CreatePlaylistRequest request)
         {
-            return RequestTemplateCheckModel(request, () =>
+            return BaseInvokeCheckModel(request, () =>
             {
                 var playlist = new DataModel.Playlist()
                 {
@@ -93,7 +93,7 @@ namespace PlayCat.DataService
 
         public UserPlaylistsResult GetUserPlaylists(Guid userId, Guid? playlistId, int skip, int take)
         {
-            return RequestTemplate(() =>
+            return BaseInvoke(() =>
             {
                 //get audios with paging
                 var playlistAudiosQry =

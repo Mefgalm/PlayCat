@@ -23,7 +23,7 @@ namespace PlayCat.DataService
 
         public SignUpInResult SignUp(SignUpRequest request)
         {
-            return RequestTemplateCheckModel(request, () =>
+            return BaseInvokeCheckModel(request, () =>
             {
                 var responseBuilder =
                     ResponseBuilder<SignUpInResult>
@@ -81,7 +81,7 @@ namespace PlayCat.DataService
 
         public SignUpInResult SignIn(SignInRequest request)
         {
-            return RequestTemplateCheckModel(request, () =>
+            return BaseInvokeCheckModel(request, () =>
             {
                 DataModel.User dataUser = _dbContext.Users
                     .Include(x => x.AuthToken)

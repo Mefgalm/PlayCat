@@ -145,7 +145,7 @@ namespace PlayCat.Tests.AudioTests
         }
 
         [Fact]
-        public void ShouldFailRemoveFromGeneral()
+        public void ShouldTrueRemoveFromGeneral()
         {
             SqlLiteDatabaseTest(options =>
             {
@@ -169,9 +169,8 @@ namespace PlayCat.Tests.AudioTests
                         PlaylistId = generalPlaylist.Id,
                     });
 
-                    CheckIfFail(result);
-                    Assert.Equal(context.AudioPlaylists.Count(), 1);
-                    Assert.True(result.Info.Any());
+                    CheckIfSuccess(result);
+                    Assert.Equal(context.AudioPlaylists.Count(), 0);
                 }
             });
         }

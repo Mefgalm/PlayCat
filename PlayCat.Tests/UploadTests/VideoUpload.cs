@@ -23,7 +23,7 @@ namespace PlayCat.Tests.UploadTests
             string password = "123456abc";
             string email = "test@gmail.com";
 
-            DataModel.User user = context.CreateUser(email, "test", "test", password, inviteService.GenerateInvite());
+            DataModel.User user = context.CreateUser(email, "test", "test", "m", password, inviteService.GenerateInvite());
             DataModel.Playlist playlist = context.CreatePlaylist(true, user.Id, "General", 0);
             DataModel.AuthToken authToken = context.CreateToken(DateTime.Now.AddDays(-1), false, user.Id);
 
