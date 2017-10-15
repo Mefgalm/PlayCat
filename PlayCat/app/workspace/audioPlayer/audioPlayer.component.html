@@ -103,31 +103,30 @@
         L O A D I N G
     </div>
 </div>
-
-<div class="playlist-dialog">
-    <p-dialog appendTo="body"
-              [(visible)]="addToPlaylistVisible"
-              [draggable]="false"
-              [resizable]="false"
-              [modal]="true"
-              [showHeader]="true"
-              [positionLeft]="0"
-              [positionTop]="80">
-        <p-header>
-            Add To Playlist
-        </p-header>
-        <div>
-            <div *ngIf="isAddToPlaylistError">
-                {{addToPlaylistError}}
-            </div>
-            <div *ngFor="let playlist of playlists">
-                <div>
-                    <button (click)="addToPlaylist(playlist.id)">Add</button> {{playlist.title}}
-                </div>
+<p-dialog [appendTo]="audio-panel-area"
+          styleClass="playlist-dialog"
+          [(visible)]="addToPlaylistVisible"
+          [draggable]="false"
+          [resizable]="false"
+          [modal]="true"
+          [showHeader]="true"
+          [positionLeft]="0"
+          [positionTop]="80">
+    <p-header>
+        Add To Playlist
+    </p-header>
+    <div>
+        <div *ngIf="isAddToPlaylistError">
+            {{addToPlaylistError}}
+        </div>
+        <div *ngFor="let playlist of playlists">
+            <div>
+                <button (click)="addToPlaylist(playlist.id)">Add</button> {{playlist.title}}
             </div>
         </div>
-        <p-footer>
-            <button (click)="closePlaylistDialog()">Close</button>
-        </p-footer>
-    </p-dialog>
-</div>
+    </div>
+    <p-footer>
+        <button (click)="closePlaylistDialog()">Close</button>
+    </p-footer>
+</p-dialog>
+
