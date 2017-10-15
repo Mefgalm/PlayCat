@@ -39,15 +39,6 @@
 
 /*Add to playlist popUp*/
 
-body /deep/ .ui-dialog-content {
-    display: flex;
-    flex-direction: column;
-    min-width: 150px;
-    z-index: 1004;
-    left: 40%;
-    top: 20%;
-    opacity: 1;
-}
 
 /*Audio Player itself*/
 
@@ -184,4 +175,12 @@ input[type=checkbox] {
 .volume-and-song {
     flex-direction: column;
     width: 50%;
+}
+
+/deep/ .playlist-dialog {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 150px !important;
+    left: 40% !important;
+    top: 20% !important;
 }
