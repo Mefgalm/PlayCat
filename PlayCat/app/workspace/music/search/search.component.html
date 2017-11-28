@@ -1,0 +1,15 @@
+﻿<site-menu>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <input [(ngModel)]="search" (ngModelChange)="searchChanged($event)"/>
+
+    <div>
+        <div *ngFor="let audio of audios">
+            {{audio.id}} {{audio.song}} {{audio.artist}}
+        </div>
+    </div>
+</site-menu>   

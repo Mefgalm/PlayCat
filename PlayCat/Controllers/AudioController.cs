@@ -29,6 +29,16 @@ namespace PlayCat.Controllers
             return _audioService.GetAudios(playlistId, skip, take);
         }
 
+        [HttpGet("search")]
+        public AudioResult Search(string search, int skip, int take)
+        {
+            CheckTokenResult checkTokenResult = _authService.CheckToken(AccessToken);
+            if (!checkTokenResult.Ok)
+                return new AudioResult(checkTokenResult);
+
+            return _audioService.SearchAudios(search, skip, take);
+        }
+
         [HttpPut("addToPlaylist")]
         public BaseResult AddToPlaylist([FromBody] AddRemovePlaylistRequest request)
         {
