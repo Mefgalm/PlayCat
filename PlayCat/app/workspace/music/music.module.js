@@ -8,10 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var audios_component_1 = require("./audios/audios.component");
-var playlist_component_1 = require("./playlist/playlist.component");
+var search_component_1 = require("./search/search.component");
 var upload_component_1 = require("./upload/upload.component");
 var forms_1 = require("@angular/forms");
 var upload_service_1 = require("./upload/upload.service");
+var search_service_1 = require("./search/search.service");
 var router_1 = require("@angular/router");
 var menu_module_1 = require("../menu/menu.module");
 var error_module_1 = require("../../shared/components/error.module");
@@ -41,8 +42,8 @@ MusicModule = __decorate([
                     canActivate: [authGuard_service_1.AuthGuardService],
                 },
                 {
-                    path: 'playlist',
-                    component: playlist_component_1.PlaylistComponent,
+                    path: 'search',
+                    component: search_component_1.SearchComponent,
                     canActivate: [authGuard_service_1.AuthGuardService],
                 },
                 {
@@ -54,12 +55,13 @@ MusicModule = __decorate([
         ],
         declarations: [
             audios_component_1.AudiosComponent,
-            playlist_component_1.PlaylistComponent,
+            search_component_1.SearchComponent,
             upload_component_1.UploadComponent,
             safe_pipe_1.SafePipe,
         ],
         providers: [
             upload_service_1.UploadService,
+            search_service_1.SearchService
         ],
     })
 ], MusicModule);

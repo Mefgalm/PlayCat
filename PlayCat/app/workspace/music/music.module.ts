@@ -1,9 +1,10 @@
 ﻿import { NgModule } from '@angular/core';
 import { AudiosComponent } from './audios/audios.component';
-import { PlaylistComponent } from './playlist/playlist.component';
+import { SearchComponent } from './search/search.component';
 import { UploadComponent } from './upload/upload.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { UploadService } from './upload/upload.service'
+import { UploadService } from './upload/upload.service';
+import { SearchService } from './search/search.service';
 import { RouterModule } from '@angular/router';
 import { MenuModule } from '../menu/menu.module';
 import { ErrorModule } from '../../shared/components/error.module';
@@ -28,8 +29,8 @@ import { SafePipe } from '../../shared/pipes/safe.pipe';
                 canActivate: [AuthGuardService],
             },
             {
-                path: 'playlist',
-                component: PlaylistComponent,
+                path: 'search',
+                component: SearchComponent,
                 canActivate: [AuthGuardService],
             },
             {
@@ -41,12 +42,13 @@ import { SafePipe } from '../../shared/pipes/safe.pipe';
     ],
     declarations: [
         AudiosComponent,
-        PlaylistComponent,
+        SearchComponent,
         UploadComponent,
         SafePipe,     
     ],
     providers: [
         UploadService,
+        SearchService
     ],
 })
 export class MusicModule {

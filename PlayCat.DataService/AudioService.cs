@@ -22,8 +22,8 @@ namespace PlayCat.DataService
         {
             return BaseInvoke(() =>
             {
-                if (searchString == null)
-                    throw new Exception("search string can't be null");
+                if (string.IsNullOrWhiteSpace(searchString))
+                    return ResponseBuilder<AudioResult>.SuccessBuild(new AudioResult() { Audios = Enumerable.Empty<ApiModel.Audio>() });
 
                 searchString = searchString.Trim();
 
